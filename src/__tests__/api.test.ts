@@ -34,6 +34,7 @@ describe("checking api functions", () => {
     const response = await requestPokemon({})
 
     if (!response) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(response).not.toBe(null)
       return
     }

@@ -11,17 +11,23 @@ export const OPTIONS_CONFIG = {
 // export const request = axios.create(OPTIONS_CONFIG)
 
 // Types & Interfaces
+
+export interface Pokemon {
+  name: string
+  url: string
+  [key: string]: any
+}
 export interface PokeResponse {
   count: number
   next: string
   previous: string
-  results: object[]
+  results: Pokemon[]
   [key: string]: any
 }
 
 export type PokeQuery = {
-  limit: number
-  offset: number
+  limit?: number
+  offset?: number
 }
 
 export type typeRequestPokemon = (
