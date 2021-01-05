@@ -12,16 +12,27 @@ export const PokeList: React.FC<PropsPokeList> = ({ pokemon }) => {
   return (
     <div className="poke-list">
       {pokemon.map((pokem) => (
-        <div key={pokem.name}>
+        <div key={`slot-${pokem.name}`}>
           <p>{pokem.name}</p>
-          <a
-            className="App-link"
-            href={pokem.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {`See ${pokem.name}'s stats`}
-          </a>
+
+          {!!pokem?.sprites?.front_default && (
+            <img
+              loading="lazy"
+              src={pokem.sprites.front_default}
+              alt={pokem.name}
+            ></img>
+          )}
+
+          {!!pokem.url && (
+            <a
+              className="App-link"
+              href={pokem.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {`See ${pokem.name}'s stats`}
+            </a>
+          )}
         </div>
       ))}
     </div>

@@ -20,9 +20,27 @@ export interface RefData {
 }
 
 export interface Pokemon {
+  url?: string
   name: string
-  [key: string]: any
+  id: number
+  order: number
+  height: number
+  weight: number
+  base_experience: number
+
+  is_default: boolean
+  abilities: []
+  forms: object[]
+  game_indices: object[]
+  held_items: object[]
+  moves: object[]
+  species: object
+  sprites: { front_default: string }
+  stats: object[]
+  types: object[]
+  location_area_encounters: string
 }
+
 export interface PokemonRef {
   name: string
   url: string
