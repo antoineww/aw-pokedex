@@ -11,6 +11,8 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "axios": "^0.21.1",
+    "lodash": "^4.17.20",
+    "pokeapi-js-wrapper": "^1.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
@@ -41,6 +43,21 @@
       "last 1 safari version"
     ]
   },
-  "moduleFileExtensions" :["web.js", "js", "web.ts", "ts", "web.tsx", "tsx", "json", "web.jsx", "jsx", "node", "__tests__/**.ts", "__tests__/**.tsx"]
-  
+  "moduleFileExtensions": [
+    "web.js",
+    "js",
+    "web.ts",
+    "ts",
+    "web.tsx",
+    "tsx",
+    "json",
+    "web.jsx",
+    "jsx",
+    "node",
+    "__tests__/**.ts",
+    "__tests__/**.tsx"
+  ],
+  "devDependencies": {
+    "@types/lodash": "^4.14.167"
+  }
 }

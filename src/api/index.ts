@@ -1,50 +1,15 @@
-import axios, { AxiosResponse } from "axios"
+import { FTO_PokeResponse, FT_GenResponse, PokeQuery } from "./util"
+// import PokeAPIDirect from "./direct"
+import * as PokeAPIWrapperLib from "./paw"
+export * from "./util"
 
-export const POKEMON_API = "https://pokeapi.co/api/v2/"
-export const POKEMON_QUERY_EXAMPLE = "pokemon?limit=151&offset=0"
-export const TIMEOUT = 30000
-export const POKEMON_QUERY_PARAMS = { limit: 151, offset: 0 }
-export const OPTIONS_CONFIG = {
-  baseURL: POKEMON_API,
-  timeout: TIMEOUT,
-}
-// export const request = axios.create(OPTIONS_CONFIG)
+const GEN_1: PokeQuery = { limit: 151, offset: 151 }
 
-// Types & Interfaces
-
-export interface Pokemon {
-  name: string
-  url: string
-  [key: string]: any
-}
-export interface PokeResponse {
-  count: number
-  next: string
-  previous: string
-  results: Pokemon[]
-  [key: string]: any
+export const requestPokemon: FTO_PokeResponse = async (params = GEN_1) => {
+  // return PokeAPIDirect.requestPokemon(params)
+  return await PokeAPIWrapperLib.requestPokemon(params)
 }
 
-export type PokeQuery = {
-  limit?: number
-  offset?: number
-}
-
-export type typeRequestPokemon = (
-  params: PokeQuery
-) => Promise<AxiosResponse<PokeResponse> | null>
-
-// Functions
-export const createPokemonQuery = ({ limit = 151, offset = 0 }: PokeQuery) =>
-  `pokemon?limit=${limit}&offset=${offset}`
-
-export const requestPokemon: typeRequestPokemon = async (params: PokeQuery) => {
-  try {
-    const response = await axios.get<PokeResponse>(
-      createPokemonQuery(params),
-      OPTIONS_CONFIG
-    )
-    return response
-  } catch (error) {}
-  return null
+export const requestGenerations: FT_GenResponse = async () => {
+  return await PokeAPIWrapperLib.requestGenerations()
 }
