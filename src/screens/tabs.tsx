@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
+import _ from "lodash"
 import "../css/App.css"
 
 export interface Tab {
@@ -13,13 +14,17 @@ export interface PropsTabs {
 
 const Tabs: React.FC<PropsTabs> = ({ tabs = [], setCurrentTab = () => {} }) => {
   return (
-    <>
+    <div className="tab-bar">
       {tabs.map((tab) => (
-        <button key={`tab-${tab.id}`} onClick={() => setCurrentTab(tab.id)}>
-          {tab.name}
+        <button
+          key={`tab-${tab.id}`}
+          onClick={() => setCurrentTab(tab.id)}
+          className="tab"
+        >
+          {_.capitalize(tab.name)}
         </button>
       ))}
-    </>
+    </div>
   )
 }
 

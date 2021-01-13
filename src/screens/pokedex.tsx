@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { PokedexData, requestGenerations } from "../api"
 import "../css/App.css"
+import Loading from "./loading"
 import PokeList from "./pokeList"
 import Tabs from "./tabs"
 
@@ -39,11 +40,14 @@ const Pokedex: React.FC = (props) => {
   const setCurrentTab = (tabId: number) =>
     setPokedexState({ ...pokedexState, currentGenId: tabId - 1 })
 
-  return (
+  const loading = pokedexState.generations.length < 1
+
+  return loading ? (
+    <Loading />
+  ) : (
     <>
       <Tabs tabs={generations} setCurrentTab={setCurrentTab} />
-      <h2>{title}</h2>
-      <PokeList pokemon={pokemon} />
+      <PokeList pokemon={pokemon} title={title} />
     </>
   )
 }

@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background-color: #282c34;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-logo {
@@ -14,14 +17,11 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -35,4 +35,45 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.tab-bar {
+}
+
+.tab {
+  min-width: 23vw;
+  min-height: 5vh;
+  margin: auto;
+}
+
+.tab:hover {
+  color: #5bbbd6;
+  cursor: grab;
+}
+
+.pokemon-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  border-style: solid;
+
+  border-radius: 10px;
+  border-color: antiquewhite;
+  border-width: 2px;
+
+  margin: 20px;
+}
+
+.pokemon-card-stats {
+  text-align: left;
+}
+
+.pokemon-card-stats ul {
+  list-style-type: disc;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 10px;
 }

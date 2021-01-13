@@ -19,6 +19,15 @@ export interface RefData {
   url: string
 }
 
+export interface BaseStat {
+  base_stat: number
+  effort: number
+  stat: {
+    name: string
+    url: string
+  }
+}
+
 export interface Pokemon {
   url?: string
   name: string
@@ -36,7 +45,7 @@ export interface Pokemon {
   moves: object[]
   species: object
   sprites: { front_default: string }
-  stats: object[]
+  stats: BaseStat[]
   types: object[]
   location_area_encounters: string
 }
