@@ -4,10 +4,12 @@ import {
   FT_PokeResponse,
   GenData,
   GenRefResponse,
-  GenResponse,
+  Pokemon,
   PokeQuery,
   PokeRefResponse,
 } from "./util"
+
+import _ from "lodash"
 
 // @ts-ignore
 const PokeAPI = require("pokeapi-js-wrapper")
@@ -50,7 +52,7 @@ export const requestGenerations: FT_GenResponse = async () => {
       // for (let index = 0; index < 1; index++) {
       const genData = generations[index]
 
-      const pokemons = await Promise.all(
+      const pokemons: Pokemon[] = await Promise.all(
         // eslint-disable-next-line no-loop-func
         genData.pokemon_species.map(async (poke) => {
           try {
@@ -63,7 +65,7 @@ export const requestGenerations: FT_GenResponse = async () => {
           return { ...poke, NO_DATA: true }
         })
       )
-      generations[index].pokemons = pokemons
+      generations[index].pokemons = _.sortBy(pokemons, (poke) => poke.id)
     }
 
     // console.log(generationRefs, generations)
