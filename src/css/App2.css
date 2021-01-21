@@ -18,3 +18,17 @@
   height: var(--img-lg);
   width: var(--img-lg);
 }
+
+.mk-absolute {
+  position: absolute;
+}
+
+.arena {
+  height: 80vh;
+  width: 80vh;
+}
+
+.script-box {
+  will-change: width, height, left, top;
+  /* position: relative; */
+}
