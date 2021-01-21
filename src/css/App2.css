@@ -1,0 +1,20 @@
+:root {
+  --img-sm: 10vh;
+  --img-md: 30vh;
+  --img-lg: 50vh;
+}
+
+.pokemon-img-sm {
+  height: var(--img-sm);
+  width: var(--img-sm);
+}
+
+.pokemon-img-md {
+  height: var(--img-md);
+  width: var(--img-md);
+}
+
+.pokemon-img-lg {
+  height: var(--img-lg);
+  width: var(--img-lg);
+}
