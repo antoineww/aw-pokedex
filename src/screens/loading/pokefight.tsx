@@ -1,53 +1,137 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import nidorino_img from "../../assets/images/nidorino.png"
 import nidorino_back_img from "../../assets/images/nidorino_back.png"
 import gengar_img from "../../assets/images/gengar.png"
 import gengar_back_img from "../../assets/images/gengar_back.png"
 
 import "../../css/App2.css"
-import { animated, useSpring } from "react-spring"
+import { animated, useSpring, useSprings } from "react-spring"
 
 type ArenaSide = "A" | "B"
+
+interface Stage {
+  side: ArenaSide
+  [key: number]: any
+}
+
+interface PokeFightState {
+  side: ArenaSide
+  stage: number
+}
+
+const slideRight = (zIndex = 0) => ({
+  config: { duration: 1000 },
+  to: { left: "50%" },
+  from: {
+    left: "0%",
+    top: "0%",
+    // zIndex,
+  },
+})
+
+const slideLeft = (zIndex = 0) => ({
+  config: { duration: 1000 },
+  to: { left: "0%" },
+  from: {
+    left: "50%",
+    top: "10%",
+    // zIndex,
+  },
+})
+
+const actors = {
+  nidorino: 0,
+  gengar: 1,
+}
+const springCount = Object.keys(actors).length // 2
+
+const stages: Stage[] = [
+  {
+    [actors.nidorino]: slideRight(0),
+    [actors.gengar]: slideLeft(1),
+    side: "A",
+  },
+  {
+    [actors.nidorino]: slideLeft(5),
+    [actors.gengar]: slideRight(0),
+    side: "B",
+  },
+  {
+    [actors.nidorino]: slideRight(0),
+    [actors.gengar]: slideLeft(1),
+    side: "A",
+  },
+]
+
+const getStage = (stage: number, onRest: Function) => (index: number) => {
+  let actorPart = stages[stage][index] || {}
+  if (index === springCount - 1) actorPart = { ...actorPart, onRest }
+  return actorPart
+}
+
+const initialState: PokeFightState = {
+  side: "A",
+  stage: 0,
+}
+
 const PokeFight: React.FC = () => {
-  const [stateArena, setStateArena] = useState<ArenaSide>("A")
+  const [statePokeFight, setStatePokeFight] = useState<PokeFightState>(
+    initialState
+  )
+  const { side, stage } = statePokeFight
+  const newSide = stages[stage].side || side
 
-  const animateSlideRight = useSpring({
-    config: { duration: 600 },
-    to: { left: "50%" },
-    from: {
-      left: "0%",
-      top: "0%",
-    },
-    // onRest: () => setStateArena(stateArena === "A" ? "B" : "A"),
-  })
+  const onRest = (newStage: number) => () => {
+    const goToNextStage = () => {
+      console.log("onRest ", { stage, newStage })
 
-  const animateSlideLeft = useSpring({
-    config: { duration: 600 },
-    to: { left: "0%" },
-    from: {
-      left: "50%",
-      top: "0%",
-      zIndex: 1,
-    },
-  })
+      if (newStage < stages.length)
+        setStatePokeFight({ ...statePokeFight, stage: newStage })
+    }
+
+    goToNextStage()
+  }
+  const [springs, set] = useSprings(
+    springCount,
+    getStage(stage, onRest(stage + 1))
+  )
+  const [nidorinoProps, gengarProps] = springs
+
+  useEffect(() => {
+    if (newSide !== side)
+      setStatePokeFight({ ...statePokeFight, side: newSide })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newSide])
+
+  useEffect(() => {
+    // @ts-ignore typescript broken in v8 but fixed in v9
+    set(getStage(stage, onRest(stage + 1)))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage])
 
   const nidorino = (
     <animated.img
-      src={stateArena === "A" ? nidorino_img : nidorino_back_img}
+      src={side === "A" ? nidorino_img : nidorino_back_img}
       alt="nidorino_img"
-      className="pokemon-img-lg mk-absolute"
-      style={stateArena === "A" ? animateSlideRight : animateSlideLeft}
+      className={`pokemon-img-lg mk-absolute ${
+        side === "A" ? "mk-under" : "mk-over"
+      }`}
+      style={nidorinoProps}
     />
   )
 
   const gengar = (
     <animated.img
-      src={stateArena === "B" ? gengar_img : gengar_back_img}
+      src={side === "B" ? gengar_img : gengar_back_img}
       alt="gengar_img"
-      className="pokemon-img-lg mk-absolute"
-      style={stateArena === "B" ? animateSlideRight : animateSlideLeft}
+      className={`pokemon-img-lg mk-absolute ${
+        side === "B" ? "mk-under" : "mk-over"
+      }`}
+      style={gengarProps}
     />
   )
+
+  console.log({ stage, side })
 
   return (
     <section className="section">

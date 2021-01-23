@@ -22,6 +22,12 @@
 .mk-absolute {
   position: absolute;
 }
+.mk-over {
+  z-index: 1;
+}
+.mk-under {
+  z-index: 0;
+}
 
 .arena {
   height: 80vh;
