@@ -1,67 +1,11 @@
 import React, { useEffect, useState } from "react"
-import nidorino_img from "../../assets/images/nidorino.png"
-import nidorino_back_img from "../../assets/images/nidorino_back.png"
-import gengar_img from "../../assets/images/gengar.png"
-import gengar_back_img from "../../assets/images/gengar_back.png"
+import nidorino_img from "../../../assets/images/nidorino.png"
+import nidorino_back_img from "../../../assets/images/nidorino_back.png"
+import gengar_img from "../../../assets/images/gengar.png"
+import gengar_back_img from "../../../assets/images/gengar_back.png"
 
-import "../../css/App2.css"
 import { animated, useSpring, useSprings } from "react-spring"
-
-type ArenaSide = "A" | "B"
-
-interface Stage {
-  side: ArenaSide
-  [key: number]: any
-}
-
-interface PokeFightState {
-  side: ArenaSide
-  stage: number
-}
-
-const slideRight = (zIndex = 0) => ({
-  config: { duration: 1000 },
-  to: { left: "50%" },
-  from: {
-    left: "0%",
-    top: "0%",
-    // zIndex,
-  },
-})
-
-const slideLeft = (zIndex = 0) => ({
-  config: { duration: 1000 },
-  to: { left: "0%" },
-  from: {
-    left: "50%",
-    top: "10%",
-    // zIndex,
-  },
-})
-
-const actors = {
-  nidorino: 0,
-  gengar: 1,
-}
-const springCount = Object.keys(actors).length // 2
-
-const stages: Stage[] = [
-  {
-    [actors.nidorino]: slideRight(0),
-    [actors.gengar]: slideLeft(1),
-    side: "A",
-  },
-  {
-    [actors.nidorino]: slideLeft(5),
-    [actors.gengar]: slideRight(0),
-    side: "B",
-  },
-  {
-    [actors.nidorino]: slideRight(0),
-    [actors.gengar]: slideLeft(1),
-    side: "A",
-  },
-]
+import { PokeFightState, springCount, stages } from "./util"
 
 const getStage = (stage: number, onRest: Function) => (index: number) => {
   let actorPart = stages[stage][index] || {}
@@ -79,43 +23,35 @@ const PokeFight: React.FC = () => {
     initialState
   )
   const { side, stage } = statePokeFight
-  const newSide = stages[stage].side || side
 
-  const onRest = (newStage: number) => () => {
-    const goToNextStage = () => {
-      console.log("onRest ", { stage, newStage })
+  const onRestGoToNextStage = (newStage: number, fnName: string) => () => {
+    console.log("onRest ", { stage, newStage, fnName })
 
-      if (newStage < stages.length)
-        setStatePokeFight({ ...statePokeFight, stage: newStage })
+    if (newStage < stages.length) {
+      const newSide = stages[newStage].side || side
+
+      setStatePokeFight({ ...statePokeFight, stage: newStage, side: newSide })
     }
-
-    goToNextStage()
   }
+
   const [springs, set] = useSprings(
     springCount,
-    getStage(stage, onRest(stage + 1))
+    getStage(stage, onRestGoToNextStage(stage + 1, "useSprings"))
   )
-  const [nidorinoProps, gengarProps] = springs
 
   useEffect(() => {
-    if (newSide !== side)
-      setStatePokeFight({ ...statePokeFight, side: newSide })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newSide])
-
-  useEffect(() => {
-    // @ts-ignore typescript broken in v8 but fixed in v9
-    set(getStage(stage, onRest(stage + 1)))
+    // @ts-ignore typescript-types broken in v8 but fixed in v9
+    set(getStage(stage, onRestGoToNextStage(stage + 1, "useEffect")))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage])
+
+  const [nidorinoProps, gengarProps] = springs
 
   const nidorino = (
     <animated.img
       src={side === "A" ? nidorino_img : nidorino_back_img}
       alt="nidorino_img"
-      className={`pokemon-img-lg mk-absolute ${
-        side === "A" ? "mk-under" : "mk-over"
-      }`}
+      className={`pokemon-img-lg mk-absolute`}
       style={nidorinoProps}
     />
   )
@@ -124,9 +60,7 @@ const PokeFight: React.FC = () => {
     <animated.img
       src={side === "B" ? gengar_img : gengar_back_img}
       alt="gengar_img"
-      className={`pokemon-img-lg mk-absolute ${
-        side === "B" ? "mk-under" : "mk-over"
-      }`}
+      className={`pokemon-img-lg mk-absolute`}
       style={gengarProps}
     />
   )
@@ -134,17 +68,18 @@ const PokeFight: React.FC = () => {
   console.log({ stage, side })
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="columns is-centered">
-          <div className="column notification is-primary arena">
-            {/* <FlashingBackground /> */}
-            {nidorino}
-            {gengar}
-          </div>
-        </div>
+    <div className="container is-flex is-align-items-center">
+      <div className="notification is-primary is-centered arena">
+        {/* <FlashingBackground /> */}
+        {nidorino}
+        {gengar}
       </div>
-    </section>
+      {/* <div className="columns ">
+      <div className="column notification is-primary arena ">
+        
+      </div>
+    </div> */}
+    </div>
   )
 }
 

@@ -1,22 +1,8 @@
 :root {
-  --img-sm: 10vh;
-  --img-md: 30vh;
-  --img-lg: 50vh;
-}
-
-.pokemon-img-sm {
-  height: var(--img-sm);
-  width: var(--img-sm);
-}
-
-.pokemon-img-md {
-  height: var(--img-md);
-  width: var(--img-md);
-}
-
-.pokemon-img-lg {
-  height: var(--img-lg);
-  width: var(--img-lg);
+  --img-sm: 10%;
+  --img-md: 30%;
+  --img-lg: 50%;
+  --img-min: 100px;
 }
 
 .mk-absolute {
@@ -28,10 +14,56 @@
 .mk-under {
   z-index: 0;
 }
+.mk-container-center {
+  display: flex;
+  flex: 1;
+}
+
+.pokemon-img-sm {
+  height: var(--img-sm);
+  min-height: var(--img-min);
+}
+
+.pokemon-img-md {
+  height: var(--img-md);
+  min-height: var(--img-min);
+}
+
+.pokemon-img-lg {
+  height: var(--img-lg);
+  min-height: var(--img-min);
+}
+
+.App {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 .arena {
-  height: 80vh;
-  width: 80vh;
+  height: 60vh;
+  width: 60vw;
 }
 
 .script-box {
