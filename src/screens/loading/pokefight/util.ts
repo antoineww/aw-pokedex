@@ -1,19 +1,25 @@
+import nidorino_img from "../../../assets/images/nidorino.png"
+import nidorino_back_img from "../../../assets/images/nidorino_back.png"
+import gengar_img from "../../../assets/images/gengar.png"
 import gengar_back_img from "../../../assets/images/gengar_back.png"
-
 export type ArenaSide = "A" | "B"
 
 export interface PokeFightState {
-  side: ArenaSide
   stage: number
 }
 export interface Stage {
-  side?: ArenaSide
+  animations: { [key: number]: any }
+  imageIndecies?: { [key: number]: number }
   coverScreen?: boolean
-  [key: number]: any
 }
 
+const images = [nidorino_img, nidorino_back_img, gengar_img, gengar_back_img]
+
+export const getActorImage = (index: number) => images[index]
+
 export const config = { duration: 3000 }
-export const config_fast = { duration: 100 }
+export const config_fast = { duration: 0 }
+export const config_instant = { duration: 0 }
 
 const max = {
   right: "70%",
@@ -83,43 +89,89 @@ export const springCount = Object.keys(actors).length // 2
 
 export const stages: Stage[] = [
   {
-    [actors.nidorino]: slideRight,
-    [actors.gengar]: slideLeft,
-    side: "A",
+    animations: {
+      [actors.nidorino]: slideRight,
+      [actors.gengar]: slideLeft,
+    },
+    imageIndecies: {
+      [actors.nidorino]: 0,
+      [actors.gengar]: 3,
+    },
     coverScreen: false,
   },
+  // {
+  //   animations: {
+  //     [actors.gengar]: {
+  //       ...slideLeft,
+  //       config: config_instant,
+  //       to: { ...slideLeft.to, transform: "scaleX(-1)" },
+  //     },
+  //   },
+  //   imageIndecies: {
+  //     [actors.nidorino]: 0,
+  //     [actors.gengar]: 3,
+  //   },
+  // },
+
   {
-    [actors.nidorino]: {
-      ...slideDown,
-      config: config_fast,
-      to: { ...slideDown.to, ...goOver.to },
+    animations: {
+      [actors.nidorino]: {
+        ...slideDown,
+        config: config_fast,
+        from: { ...slideDown.from, ...goOver.from },
+        to: { ...slideDown.to, ...goOver.to },
+      },
+      [actors.gengar]: {
+        ...slideUp,
+        config: config_fast,
+        from: { ...slideUp.from, ...goUnder.from },
+        to: {
+          ...slideUp.to,
+          ...goUnder.to,
+        },
+      },
     },
-    [actors.gengar]: {
-      ...slideUp,
-      config: config_fast,
-      to: { ...slideUp.to, ...goUnder.to },
+    imageIndecies: {
+      [actors.nidorino]: 0,
+      [actors.gengar]: 2,
     },
   },
   {
-    [actors.nidorino]: slideLeft,
-    [actors.gengar]: slideRight,
-    side: "B",
-  },
-  {
-    [actors.nidorino]: {
-      ...slideUp,
-      config: config_fast,
-      to: { ...slideUp.to, ...goUnder.to },
+    animations: {
+      [actors.nidorino]: slideLeft,
+      [actors.gengar]: slideRight,
     },
-    [actors.gengar]: {
-      ...slideDown,
-      config: config_fast,
-      to: { ...slideDown.to, ...goOver.to },
+    imageIndecies: {
+      [actors.nidorino]: 1,
+      [actors.gengar]: 2,
     },
   },
   {
-    [actors.nidorino]: slideRight,
-    [actors.gengar]: slideLeft,
-    side: "A",
+    animations: {
+      [actors.nidorino]: {
+        ...slideUp,
+        config: config_fast,
+        to: { ...slideUp.to, ...goUnder.to },
+      },
+      [actors.gengar]: {
+        ...slideDown,
+        config: config_fast,
+        to: { ...slideDown.to, ...goOver.to },
+      },
+    },
+    imageIndecies: {
+      [actors.nidorino]: 0,
+      [actors.gengar]: 2,
+    },
+  },
+  {
+    animations: {
+      [actors.nidorino]: slideRight,
+      [actors.gengar]: slideLeft,
+    },
+    imageIndecies: {
+      [actors.nidorino]: 0,
+      [actors.gengar]: 3,
+    },
   },
 ]

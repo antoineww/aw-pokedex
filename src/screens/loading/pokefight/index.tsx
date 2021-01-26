@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react"
-import nidorino_img from "../../../assets/images/nidorino.png"
-import nidorino_back_img from "../../../assets/images/nidorino_back.png"
-import gengar_img from "../../../assets/images/gengar.png"
-import gengar_back_img from "../../../assets/images/gengar_back.png"
-
 import { animated, useSpring, useSprings } from "react-spring"
-import { PokeFightState, springCount, stages } from "./util"
+import {
+  actors,
+  getActorImage,
+  PokeFightState,
+  springCount,
+  stages,
+} from "./util"
 
 const getStage = (stage: number, onRest: Function) => (index: number) => {
-  let actorPart = stages[stage][index] || {}
+  let actorPart = stages[stage].animations[index] || {}
   if (index === springCount - 1) actorPart = { ...actorPart, onRest }
   return actorPart
 }
 
 const initialState: PokeFightState = {
-  side: "A",
   stage: 0,
 }
 
@@ -22,15 +22,13 @@ const PokeFight: React.FC = () => {
   const [statePokeFight, setStatePokeFight] = useState<PokeFightState>(
     initialState
   )
-  const { side, stage } = statePokeFight
+  const { stage } = statePokeFight
 
   const onRestGoToNextStage = (newStage: number, fnName: string) => () => {
     console.log("onRest ", { stage, newStage, fnName })
 
     if (newStage < stages.length) {
-      const newSide = stages[newStage].side || side
-
-      setStatePokeFight({ ...statePokeFight, stage: newStage, side: newSide })
+      setStatePokeFight({ ...statePokeFight, stage: newStage })
     }
   }
 
@@ -46,10 +44,19 @@ const PokeFight: React.FC = () => {
   }, [stage])
 
   const [nidorinoProps, gengarProps] = springs
+  let nidorino_img
+  let gengar_img
+
+  const currentStage = stages[stage]
+
+  if (currentStage.imageIndecies) {
+    nidorino_img = getActorImage(currentStage.imageIndecies[actors.nidorino])
+    gengar_img = getActorImage(currentStage.imageIndecies[actors.gengar])
+  }
 
   const nidorino = (
     <animated.img
-      src={side === "A" ? nidorino_img : nidorino_back_img}
+      src={nidorino_img}
       alt="nidorino_img"
       className={`pokemon-img-lg mk-absolute`}
       style={nidorinoProps}
@@ -58,14 +65,14 @@ const PokeFight: React.FC = () => {
 
   const gengar = (
     <animated.img
-      src={side === "B" ? gengar_img : gengar_back_img}
+      src={gengar_img}
       alt="gengar_img"
       className={`pokemon-img-lg mk-absolute`}
       style={gengarProps}
     />
   )
 
-  console.log({ stage, side })
+  console.log({ stage })
 
   return (
     <div className="container is-flex is-align-items-center">
