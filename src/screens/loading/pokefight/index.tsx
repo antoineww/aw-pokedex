@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { animated, useSpring, useSprings } from "react-spring"
+import { animated, AnimatedValue, useSpring, useSprings } from "react-spring"
 import {
   actors,
+  applyInterpolation,
   getActorImage,
   PokeFightState,
   springCount,
+  Stage,
   stages,
 } from "./util"
 
@@ -16,6 +18,59 @@ const getStage = (stage: number, onRest: Function) => (index: number) => {
 
 const initialState: PokeFightState = {
   stage: 0,
+}
+interface getFighterProps {
+  springs: AnimatedValue<Pick<object, never>>[]
+  currentStage: Stage
+}
+
+const getFighters: (params: getFighterProps) => any = ({
+  springs,
+  currentStage,
+}) => {
+  let nidorinoStyle = springs[actors.nidorino]
+  let gengarStyle = springs[actors.gengar]
+  if (currentStage.interpolations) {
+    console.log({ nidorinoStyle, gengarStyle })
+    nidorinoStyle = applyInterpolation(
+      currentStage.interpolations[actors.nidorino],
+      nidorinoStyle
+    )
+    gengarStyle = applyInterpolation(
+      currentStage.interpolations[actors.gengar],
+      gengarStyle
+    )
+  }
+
+  let nidorino_img
+  let gengar_img
+  if (currentStage.imageIndecies) {
+    nidorino_img = getActorImage(currentStage.imageIndecies[actors.nidorino])
+    gengar_img = getActorImage(currentStage.imageIndecies[actors.gengar])
+  }
+
+  const nidorino = (
+    <animated.img
+      src={nidorino_img}
+      alt="nidorino_img"
+      className={`pokemon-img-lg mk-absolute`}
+      style={nidorinoStyle}
+    />
+  )
+
+  const gengar = (
+    <animated.img
+      src={gengar_img}
+      alt="gengar_img"
+      className={`pokemon-img-lg mk-absolute`}
+      style={gengarStyle}
+    />
+  )
+
+  return {
+    nidorino,
+    gengar,
+  }
 }
 
 const PokeFight: React.FC = () => {
@@ -43,34 +98,8 @@ const PokeFight: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage])
 
-  const [nidorinoProps, gengarProps] = springs
-  let nidorino_img
-  let gengar_img
-
   const currentStage = stages[stage]
-
-  if (currentStage.imageIndecies) {
-    nidorino_img = getActorImage(currentStage.imageIndecies[actors.nidorino])
-    gengar_img = getActorImage(currentStage.imageIndecies[actors.gengar])
-  }
-
-  const nidorino = (
-    <animated.img
-      src={nidorino_img}
-      alt="nidorino_img"
-      className={`pokemon-img-lg mk-absolute`}
-      style={nidorinoProps}
-    />
-  )
-
-  const gengar = (
-    <animated.img
-      src={gengar_img}
-      alt="gengar_img"
-      className={`pokemon-img-lg mk-absolute`}
-      style={gengarProps}
-    />
-  )
+  const { nidorino, gengar } = getFighters({ springs, currentStage })
 
   console.log({ stage })
 
