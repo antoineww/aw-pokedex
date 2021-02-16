@@ -30,7 +30,6 @@ export const requestPokemon: FT_PokeResponse = async (params: PokeQuery) => {
   try {
     initPokeAPI()
     const pokemonRefs: PokeRefResponse = await pokeAPI.getPokemonsList()
-    // console.log(pokemonRefs)
     return pokemonRefs
   } catch (error) {}
   return null
@@ -60,15 +59,13 @@ export const requestGenerations: FT_GenResponse = async () => {
             // const pokemonData = await pokeAPI.getPokemonByName("ditto")
             return pokemonData
           } catch (error) {
-            console.log(error)
+            // console.log(error)
           }
           return { ...poke, NO_DATA: true }
         })
       )
       generations[index].pokemons = _.sortBy(pokemons, (poke) => poke.id)
     }
-
-    // console.log(generationRefs, generations)
 
     return {
       generations,

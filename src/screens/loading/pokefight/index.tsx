@@ -31,7 +31,6 @@ const getFighters: (params: getFighterProps) => any = ({
   let nidorinoStyle = springs[actors.nidorino]
   let gengarStyle = springs[actors.gengar]
   if (currentStage.interpolations) {
-    console.log({ nidorinoStyle, gengarStyle })
     nidorinoStyle = applyInterpolation(
       currentStage.interpolations[actors.nidorino],
       nidorinoStyle
@@ -80,7 +79,7 @@ const PokeFight: React.FC = () => {
   const { stage } = statePokeFight
 
   const onRestGoToNextStage = (newStage: number, fnName: string) => () => {
-    console.log("onRest ", { stage, newStage, fnName })
+    // console.log("onRest ", { stage, newStage, fnName })
 
     if (newStage < stages.length) {
       setStatePokeFight({ ...statePokeFight, stage: newStage })
@@ -101,8 +100,6 @@ const PokeFight: React.FC = () => {
   const currentStage = stages[stage]
   const { nidorino, gengar } = getFighters({ springs, currentStage })
 
-  console.log({ stage })
-
   return (
     <div className="container is-flex is-align-items-center">
       <div className="notification is-primary is-centered arena">
@@ -110,11 +107,6 @@ const PokeFight: React.FC = () => {
         {nidorino}
         {gengar}
       </div>
-      {/* <div className="columns ">
-      <div className="column notification is-primary arena ">
-        
-      </div>
-    </div> */}
     </div>
   )
 }
