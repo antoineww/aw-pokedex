@@ -10,20 +10,28 @@ export interface Tab {
 export interface PropsTabs {
   tabs: Tab[]
   setCurrentTab: (tabId: number) => void
+  currentId: number
 }
 
-const Tabs: React.FC<PropsTabs> = ({ tabs = [], setCurrentTab = () => {} }) => {
+const Tabs: React.FC<PropsTabs> = ({
+  tabs = [],
+  setCurrentTab = () => {},
+  currentId,
+}) => {
   return (
-    <div className="tab-bar">
-      {tabs.map((tab) => (
-        <button
-          key={`tab-${tab.id}`}
-          onClick={() => setCurrentTab(tab.id)}
-          className="tab"
-        >
-          {_.capitalize(tab.name)}
-        </button>
-      ))}
+    <div className="tabs is-toggle is-centered is-fullwidth m-4">
+      <ul>
+        {tabs.map((tab) => (
+          <li
+            className={currentId === tab.id ? `is-active` : ``}
+            key={`tab-${tab.id}`}
+          >
+            <a href={`#${tab.name}`} onClick={() => setCurrentTab(tab.id)}>
+              <span>{_.capitalize(tab.name)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

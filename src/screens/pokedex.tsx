@@ -46,7 +46,11 @@ const Pokedex: React.FC = (props) => {
     <Loading />
   ) : (
     <>
-      <Tabs tabs={generations} setCurrentTab={setCurrentTab} />
+      <Tabs
+        tabs={generations}
+        setCurrentTab={setCurrentTab}
+        currentId={currentGenId + 1}
+      />
       <PokeList pokemon={pokemon} title={title} />
     </>
   )
