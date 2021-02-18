@@ -14,40 +14,65 @@ const PokemonCard: React.FC<Pokemon> = (pokem) => {
   const { stats } = pokem
 
   return (
-    <div key={`slot-${pokem.name}`} className="pokemon-card">
-      <div className="pokemon-card-display">
-        {!!pokem.id && <h3>{`No. ${pokem.id}`}</h3>}
-        <p>{formattedName}</p>
+    <div key={`slot-${pokem.name}`} className="card">
+      <header className="card-header">
+        {!!pokem.id && (
+          <p className="card-header-title">{`No. ${pokem.id}   ${formattedName}`}</p>
+        )}
 
+        {/* <button className="card-header-icon" aria-label="more options">
+            <span className="icon">
+              <i className="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button> */}
+      </header>
+      <div className="card-image">
         {!!pokem?.sprites?.front_default && (
-          <img
-            loading="lazy"
-            src={pokem.sprites.front_default}
-            alt={pokem.name}
-          ></img>
-        )}
-
-        {!!pokem.url && (
-          <a
-            className="App-link"
-            href={pokem.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {`See ${pokem.name}'s stats`}
-          </a>
+          <figure className="image is-256x256 mk-center-x">
+            <img
+              loading="lazy"
+              src={pokem.sprites.front_default}
+              alt={pokem.name}
+            />
+          </figure>
         )}
       </div>
-      <div className="pokemon-card-stats">
-        <p>Stats</p>
+      <div className="card-content">
+        <div className="content">
+          <div className="pokemon-card-display">
+            {!!pokem.url && (
+              <a
+                className="App-link"
+                href={pokem.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {`See ${pokem.name}'s stats`}
+              </a>
+            )}
+          </div>
+          <div className="pokemon-card-stats">
+            <p>Stats</p>
 
-        <ul>
-          {Array.isArray(stats) &&
-            stats.map((stat) => (
-              <li>{`${_.capitalize(stat.stat.name)}: ${stat.base_stat}`}</li>
-            ))}
-        </ul>
+            <ul>
+              {Array.isArray(stats) &&
+                stats.map((stat) => (
+                  <li>{`${_.capitalize(stat.stat.name)}: ${
+                    stat.base_stat
+                  }`}</li>
+                ))}
+            </ul>
+          </div>
+        </div>
       </div>
+      <footer className="card-footer">
+        <a href={`#expand-${pokem.name}`} className="card-footer-item">
+          Expand
+        </a>
+        <a href={`#evolve-${pokem.name}`} className="card-footer-item">
+          Evolve
+        </a>
+      </footer>
     </div>
   )
 }
@@ -57,12 +82,18 @@ export const PokeList: React.FC<PropsPokeList> = ({ pokemon, title }) => {
 
   return (
     <>
-      <h2>{_.capitalize(title)}</h2>
+      <h1 className="title has-text-primary-light is-1">
+        {_.capitalize(title)}
+      </h1>
 
       <div className="poke-list">
-        {pokemon.map((pokem) => (
-          <PokemonCard {...pokem} />
-        ))}
+        <div className="columns is-flex-wrap-wrap mx-6">
+          {pokemon.map((pokem) => (
+            <div className="column is-3">
+              <PokemonCard {...pokem} />
+            </div>
+          ))}
+        </div>
       </div>
     </>
   )
