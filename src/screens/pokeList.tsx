@@ -1,12 +1,39 @@
 import React from "react"
 import _ from "lodash"
 import "../css/App.css"
-import { Pokemon } from "../api"
+import { BaseStat, Pokemon } from "../api"
 
 export interface PropsPokeList {
   pokemon?: Pokemon[]
   title?: string
 }
+
+const BaseStatTags: React.FC<{ stats: BaseStat[]; pokem: Pokemon }> = ({
+  stats,
+  pokem,
+}) => (
+  <div className="box">
+    <div className="columns is-flex-wrap-wrap">
+      {stats
+        .sort(
+          (a: BaseStat, b: BaseStat) => a.stat.name.length - b.stat.name.length
+        )
+        .map((stat) => (
+          <div className="column is-6 p-1">
+            <div
+              key={`${pokem.name}-${stat.stat.name}`}
+              className="tags has-addons are-medium"
+            >
+              <span className="tag is-flex-grow-1 p-0">{`${_.capitalize(
+                stat.stat.name
+              )}`}</span>
+              <span className="tag is-primary">{`${stat.base_stat}`}</span>
+            </div>
+          </div>
+        ))}
+    </div>
+  </div>
+)
 
 const PokemonCard: React.FC<Pokemon> = (pokem) => {
   const formattedName = _.capitalize(pokem.name)
@@ -39,30 +66,18 @@ const PokemonCard: React.FC<Pokemon> = (pokem) => {
       </div>
       <div className="card-content">
         <div className="content">
-          <div className="pokemon-card-display">
-            {!!pokem.url && (
-              <a
-                className="App-link"
-                href={pokem.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {`See ${pokem.name}'s stats`}
-              </a>
-            )}
-          </div>
-          <div className="pokemon-card-stats">
-            <p>Stats</p>
+          {!!pokem.url && (
+            <a
+              className="App-link"
+              href={pokem.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {`See ${pokem.name}'s stats`}
+            </a>
+          )}
 
-            <ul>
-              {Array.isArray(stats) &&
-                stats.map((stat) => (
-                  <li>{`${_.capitalize(stat.stat.name)}: ${
-                    stat.base_stat
-                  }`}</li>
-                ))}
-            </ul>
-          </div>
+          {Array.isArray(stats) && <BaseStatTags stats={stats} pokem={pokem} />}
         </div>
       </div>
       <footer className="card-footer">
