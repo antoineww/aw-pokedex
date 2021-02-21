@@ -1,8 +1,44 @@
+:root {
+  --img-sm: 10%;
+  --img-md: 30%;
+  --img-lg: 50%;
+  --img-min: 100px;
+}
+
+.mk-absolute {
+  position: absolute;
+}
+.mk-over {
+  z-index: 1;
+}
+.mk-under {
+  z-index: 0;
+}
+.mk-container-center {
+  display: flex;
+  flex: 1;
+}
+
+.pokemon-img-sm {
+  height: var(--img-sm);
+  min-height: var(--img-min);
+}
+
+.pokemon-img-md {
+  height: var(--img-md);
+  min-height: var(--img-min);
+}
+
+.pokemon-img-lg {
+  height: var(--img-lg);
+  min-height: var(--img-min);
+}
+
 .App {
-  text-align: center;
   background-color: #282c34;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -16,18 +52,6 @@
   }
 }
 
-.App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -37,43 +61,21 @@
   }
 }
 
-.tab-bar {
+.arena {
+  height: 60vh;
+  width: 60vw;
 }
 
-.tab {
-  min-width: 23vw;
-  min-height: 5vh;
-  margin: auto;
+.script-box {
+  will-change: width, height, left, top;
+  /* position: relative; */
 }
 
-.tab:hover {
-  color: #5bbbd6;
-  cursor: grab;
+.image.is-256x256 {
+  height: 256px;
+  width: 256px;
 }
 
-.pokemon-card {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-
-  border-style: solid;
-
-  border-radius: 10px;
-  border-color: antiquewhite;
-  border-width: 2px;
-
-  margin: 20px;
-}
-
-.pokemon-card-stats {
-  text-align: left;
-}
-
-.pokemon-card-stats ul {
-  list-style-type: disc;
-  margin-block-start: 0.5em;
-  margin-block-end: 0.5em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  padding-inline-start: 10px;
+.mk-center-x {
+  margin: 0 auto;
 }
