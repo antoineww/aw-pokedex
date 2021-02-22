@@ -2,7 +2,8 @@ import React, { useState } from "react"
 import _ from "lodash"
 import "../../css/App.css"
 import { Pokemon } from "../../api"
-import { PokemonCard } from "./pokeCard"
+import PokemonCard from "./pokeCard"
+import PokeModal from "./pokeModal"
 
 export interface PropsPokeList {
   pokemon?: Pokemon[]
@@ -17,10 +18,18 @@ export const PokeList: React.FC<PropsPokeList> = ({ pokemon, title }) => {
 
   if (!pokemon) return null
   const { pokemonSelected, modalOpen } = statePokeList
-  const setPokemonSelected = (pokemon = null) =>
-    setStatePokeList({ ...statePokeList, pokemonSelected: pokemon })
-  const setModalOpen = (open = true) =>
-    setStatePokeList({ ...statePokeList, modalOpen: open })
+  const setModalOpen = (open = true, pokem = null) =>
+    setStatePokeList({
+      ...statePokeList,
+      modalOpen: open,
+      pokemonSelected: pokem ?? statePokeList.pokemonSelected,
+    })
+
+  const modalProps = {
+    modalOpen,
+    setModalOpen,
+    pokemonSelected,
+  }
 
   return (
     <div className="mx-6 ">
@@ -28,22 +37,13 @@ export const PokeList: React.FC<PropsPokeList> = ({ pokemon, title }) => {
         {_.capitalize(title)}
       </h1>
 
-      <div className={`modal ${modalOpen ? `is-active` : ``}`}>
-        <div className="modal-background"></div>
-        <div className="modal-content"></div>
-        <button
-          className="modal-close is-large"
-          aria-label="close"
-          onClick={() => setModalOpen(false)}
-        ></button>
-      </div>
+      <PokeModal {...modalProps} />
 
       <div className="columns is-flex-wrap-wrap ">
         {pokemon.map((pokem, index) => (
           <PokemonCard
             key={`slot-${index}`}
             pokemon={pokem}
-            setPokemonSelected={setPokemonSelected}
             setModalOpen={setModalOpen}
           />
         ))}

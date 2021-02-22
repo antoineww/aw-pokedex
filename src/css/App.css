@@ -4,7 +4,9 @@
   --img-lg: 50%;
   --img-min: 100px;
 }
-
+.mk-center-x {
+  margin: 0 auto;
+}
 .mk-absolute {
   position: absolute;
 }
@@ -76,6 +78,16 @@
   width: 256px;
 }
 
-.mk-center-x {
-  margin: 0 auto;
+.image.is-384x384 {
+  height: 384px;
+  width: 384px;
+}
+
+.mk-modal {
+  display: flex;
+  position: relative;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
