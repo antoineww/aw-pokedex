@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { GenResponse, PokedexData, requestGenerations } from "../api"
-import "../css/App.css"
-import Loading from "./loading"
+import { GenResponse, PokedexData, requestGenerations } from "../../api"
+import "../../css/App.css"
+import Loading from "../loading"
 import PokeList from "./pokeList"
 import Tabs from "./tabs"
-import { testGeneration } from "../__tests__/testList"
+import { testGeneration } from "../../__tests__/testList"
 const POKEDEX_STATE_DEFAULT: PokedexData = {
   generations: [],
   currentGenId: 0,

@@ -1,12 +1,6 @@
 import React from "react"
 import _ from "lodash"
-import "../css/App.css"
-import { BaseStat, Pokemon } from "../api"
-
-export interface PropsPokeList {
-  pokemon?: Pokemon[]
-  title?: string
-}
+import { BaseStat, Pokemon } from "../../api"
 
 const BaseStatTags: React.FC<{ stats: BaseStat[]; pokem: Pokemon }> = ({
   stats,
@@ -35,10 +29,28 @@ const BaseStatTags: React.FC<{ stats: BaseStat[]; pokem: Pokemon }> = ({
   </div>
 )
 
-const PokemonCard: React.FC<Pokemon> = (pokem) => {
-  const formattedName = _.capitalize(pokem.name)
+interface I_PokemonCard {
+  pokemon: Pokemon
+  setPokemonSelected: Function
+  setModalOpen: Function
+}
 
+type T_ButtonClick = (
+  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+) => void
+
+export const PokemonCard: React.FC<I_PokemonCard> = ({
+  pokemon: pokem,
+  setPokemonSelected,
+  setModalOpen,
+}) => {
+  const formattedName = _.capitalize(pokem.name)
   const { stats } = pokem
+  const expandInfo: T_ButtonClick = (e) => {
+    e.preventDefault()
+    setPokemonSelected(pokem)
+    setModalOpen(true)
+  }
 
   return (
     <div className="card column is-3">
@@ -48,10 +60,10 @@ const PokemonCard: React.FC<Pokemon> = (pokem) => {
         )}
 
         {/* <button className="card-header-icon" aria-label="more options">
-            <span className="icon">
-              <i className="fas fa-angle-down" aria-hidden="true"></i>
-            </span>
-          </button> */}
+              <span className="icon">
+                <i className="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button> */}
       </header>
       <div className="card-image">
         {!!pokem?.sprites?.front_default && (
@@ -81,7 +93,11 @@ const PokemonCard: React.FC<Pokemon> = (pokem) => {
         </div>
       </div>
       <footer className="card-footer">
-        <a href={`#expand-${pokem.name}`} className="card-footer-item">
+        <a
+          href={`#expand-${pokem.name}`}
+          className="card-footer-item"
+          onClick={expandInfo}
+        >
           Expand
         </a>
         <a href={`#evolve-${pokem.name}`} className="card-footer-item">
@@ -92,22 +108,4 @@ const PokemonCard: React.FC<Pokemon> = (pokem) => {
   )
 }
 
-export const PokeList: React.FC<PropsPokeList> = ({ pokemon, title }) => {
-  if (!pokemon) return null
-
-  return (
-    <div className="mx-6 ">
-      <h1 className="title has-text-primary-light has-text-centered">
-        {_.capitalize(title)}
-      </h1>
-
-      <div className="columns is-flex-wrap-wrap ">
-        {pokemon.map((pokem, index) => (
-          <PokemonCard key={`slot-${index}`} {...pokem} />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-export default PokeList
+export default PokemonCard

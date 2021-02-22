@@ -1,6 +1,6 @@
 import React from "react"
 import _ from "lodash"
-import "../css/App.css"
+import "../../css/App.css"
 
 export interface Tab {
   name: string
