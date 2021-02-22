@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react"
-import { PokedexData, requestGenerations } from "../api"
+import { GenResponse, PokedexData, requestGenerations } from "../api"
 import "../css/App.css"
 import Loading from "./loading"
 import PokeList from "./pokeList"
 import Tabs from "./tabs"
-
+import { testGeneration } from "../__tests__/testList"
 const POKEDEX_STATE_DEFAULT: PokedexData = {
   generations: [],
   currentGenId: 0,
+}
+
+const getPokemonGenerations: (
+  arg: boolean
+) => Promise<GenResponse | null> = async (isTest = false) => {
+  if (isTest) return await testGeneration
+  return await requestGenerations()
 }
 
 const Pokedex: React.FC = (props) => {
@@ -15,7 +22,7 @@ const Pokedex: React.FC = (props) => {
 
   useEffect(() => {
     const setInfo = async () => {
-      const response = await requestGenerations()
+      const response = await getPokemonGenerations(true)
       if (!response) return
       const { generations } = response
       setPokedexState({

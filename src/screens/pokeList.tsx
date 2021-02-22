@@ -19,11 +19,11 @@ const BaseStatTags: React.FC<{ stats: BaseStat[]; pokem: Pokemon }> = ({
           (a: BaseStat, b: BaseStat) => a.stat.name.length - b.stat.name.length
         )
         .map((stat) => (
-          <div className="column is-6 p-1">
-            <div
-              key={`${pokem.name}-${stat.stat.name}`}
-              className="tags has-addons are-medium"
-            >
+          <div
+            key={`${pokem.name}-${stat.stat.name}`}
+            className="column is-6 p-1"
+          >
+            <div className="tags has-addons are-medium">
               <span className="tag is-flex-grow-1 p-0">{`${_.capitalize(
                 stat.stat.name
               )}`}</span>
@@ -41,7 +41,7 @@ const PokemonCard: React.FC<Pokemon> = (pokem) => {
   const { stats } = pokem
 
   return (
-    <div key={`slot-${pokem.name}`} className="card">
+    <div className="card column is-3">
       <header className="card-header">
         {!!pokem.id && (
           <p className="card-header-title">{`No. ${pokem.id}   ${formattedName}`}</p>
@@ -96,21 +96,17 @@ export const PokeList: React.FC<PropsPokeList> = ({ pokemon, title }) => {
   if (!pokemon) return null
 
   return (
-    <>
-      <h1 className="title has-text-primary-light is-1">
+    <div className="mx-6 ">
+      <h1 className="title has-text-primary-light has-text-centered">
         {_.capitalize(title)}
       </h1>
 
-      <div className="poke-list">
-        <div className="columns is-flex-wrap-wrap mx-6">
-          {pokemon.map((pokem) => (
-            <div className="column is-3">
-              <PokemonCard {...pokem} />
-            </div>
-          ))}
-        </div>
+      <div className="columns is-flex-wrap-wrap ">
+        {pokemon.map((pokem, index) => (
+          <PokemonCard key={`slot-${index}`} {...pokem} />
+        ))}
       </div>
-    </>
+    </div>
   )
 }
 

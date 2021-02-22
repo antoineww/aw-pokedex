@@ -8,6 +8,7 @@ import {
   springCount,
   Stage,
   stages,
+  STAGE_STOP,
 } from "./util"
 
 const getStage = (stage: number, onRest: Function) => (index: number) => {
@@ -18,6 +19,7 @@ const getStage = (stage: number, onRest: Function) => (index: number) => {
 
 const initialState: PokeFightState = {
   stage: 0,
+  stop: false,
 }
 interface getFighterProps {
   springs: AnimatedValue<Pick<object, never>>[]
@@ -76,10 +78,11 @@ const PokeFight: React.FC = () => {
   const [statePokeFight, setStatePokeFight] = useState<PokeFightState>(
     initialState
   )
-  const { stage } = statePokeFight
+  const { stage, stop } = statePokeFight
 
   const onRestGoToNextStage = (newStage: number, fnName: string) => () => {
     // console.log("onRest ", { stage, newStage, fnName })
+    if (stop) return
 
     if (newStage < stages.length) {
       setStatePokeFight({ ...statePokeFight, stage: newStage })
@@ -94,6 +97,14 @@ const PokeFight: React.FC = () => {
   useEffect(() => {
     // @ts-ignore typescript-types broken in v8 but fixed in v9
     set(getStage(stage, onRestGoToNextStage(stage + 1, "useEffect")))
+
+    return () => {
+      setStatePokeFight({ ...statePokeFight, stop: true })
+      set((index: number) => {
+        let actorPart = STAGE_STOP.animations[index]
+        return actorPart
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage])
 

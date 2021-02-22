@@ -5,6 +5,7 @@ import gengar_back_img from "../../../assets/images/gengar_back.png"
 export type ArenaSide = "A" | "B"
 
 export interface PokeFightState {
+  stop: boolean
   stage: number
 }
 export interface StageActor {
@@ -181,6 +182,24 @@ export const STAGE_RESET: Stage = {
       from: { squish: 0, strafe: 0, attack: 0 },
       to: { squish: 0, strafe: 0, attack: 0 },
       config: config_instant,
+    },
+  },
+  imageIndecies: {
+    [actors.nidorino]: 0,
+    [actors.gengar]: 3,
+  },
+}
+export const STAGE_STOP: Stage = {
+  animations: {
+    [actors.nidorino]: {
+      from: {},
+      to: {},
+      immediate: true,
+    },
+    [actors.gengar]: {
+      from: {},
+      to: {},
+      immediate: true,
     },
   },
   imageIndecies: {
