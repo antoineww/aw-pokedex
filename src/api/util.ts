@@ -27,6 +27,22 @@ export interface BaseStat {
     url: string
   }
 }
+export interface PokeType {
+  slot: number
+  type: {
+    name: string
+    url: string
+  }
+}
+
+export interface PokeAbility {
+  slot: number
+  ability: {
+    name: string
+    url: string
+  }
+  is_hidden: boolean
+}
 
 export interface Pokemon {
   url?: string
@@ -38,7 +54,7 @@ export interface Pokemon {
   base_experience: number
 
   is_default: boolean
-  abilities: []
+  abilities: PokeAbility[]
   forms: object[]
   game_indices: object[]
   held_items: object[]
@@ -46,7 +62,7 @@ export interface Pokemon {
   species: object
   sprites: { front_default: string }
   stats: BaseStat[]
-  types: object[]
+  types: PokeType[]
   location_area_encounters: string
 }
 
