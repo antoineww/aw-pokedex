@@ -95,3 +95,19 @@
 .mk-scroll {
   overflow-y: auto;
 }
+
+/* Disable highcharts background*/
+.highcharts-container {
+  background: none !important;
+}
+.highcharts-background {
+  fill: none !important;
+}
+rect[Attributes Style] {
+  fill: none !important;
+}
+.highcharts-credits {
+  display: none !important;
+  pointer-events: none !important;
+}
+/**/
