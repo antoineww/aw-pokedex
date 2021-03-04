@@ -152,8 +152,8 @@ const PokemonModalDisplay: React.FC<{ pokemon: Pokemon }> = ({
         <h1 className="title has-text-primary-light is-1 is-align-self-center p-6">{`No. ${pokem.id}   ${formattedName}`}</h1>
       )}
 
-      <div className="columns is-justify-content-center">
-        <div className="column is-4 p-1 m-0">
+      <div className="columns is-justify-content-center mb-6">
+        <div className="column is-3 p-1 m-0">
           {!!pokem?.sprites?.front_default && (
             <figure className="image is-384x384 mk-center-x">
               <img
@@ -164,7 +164,7 @@ const PokemonModalDisplay: React.FC<{ pokemon: Pokemon }> = ({
             </figure>
           )}
         </div>
-        <div className="column is-4 p-1 m-0">
+        <div className="column is-6 p-1 m-0">
           <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
       </div>

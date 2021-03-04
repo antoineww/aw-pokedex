@@ -11,7 +11,7 @@ const POKEDEX_STATE_DEFAULT: PokedexData = {
 }
 
 const getPokemonGenerations: (
-  arg: boolean
+  arg?: boolean
 ) => Promise<GenResponse | null> = async (isTest = false) => {
   if (isTest) return await testGeneration
   return await requestGenerations()

@@ -110,4 +110,16 @@ rect[Attributes Style] {
   display: none !important;
   pointer-events: none !important;
 }
+
+/* Disable highcharts background*/
+.highcharts-container text {
+  font-size: 1.3em !important;
+  fill: whitesmoke !important;
+}
+
+/* .highcharts-legend-item text {
+  font-size: 1.2em !important;
+  fill: whitesmoke !important;
+  position: absolute !important;
+} */
 /**/
