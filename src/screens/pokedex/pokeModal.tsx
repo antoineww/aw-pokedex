@@ -153,7 +153,7 @@ const PokemonModalDisplay: React.FC<{ pokemon: Pokemon }> = ({
       )}
 
       <div className="columns is-justify-content-center mb-6">
-        <div className="column is-3 p-1 m-0">
+        <div className="column is-3 p-1 m-0 is-flex is-flex-direction-column is-align-items-center is-justify-content-center">
           {!!pokem?.sprites?.front_default && (
             <figure className="image is-384x384 mk-center-x">
               <img
@@ -163,6 +163,9 @@ const PokemonModalDisplay: React.FC<{ pokemon: Pokemon }> = ({
               />
             </figure>
           )}
+          <button className="button is-primary evolveModalButton">
+            Evolve
+          </button>
         </div>
         <div className="column is-6 p-1 m-0">
           <HighchartsReact highcharts={Highcharts} options={options} />

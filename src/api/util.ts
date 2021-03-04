@@ -8,10 +8,12 @@ export const OPTIONS_CONFIG = {
 }
 
 // Types & Interfaces
-
+type typeProgress = "empty" | "load" | "complete" | "error"
 export interface PokedexData {
   generations: GenData[]
+  evolutionChains: PokeEvolutionChain[]
   currentGenId: number
+  loadEvolutions: typeProgress
 }
 
 export interface RefData {
@@ -66,6 +68,42 @@ export interface Pokemon {
   location_area_encounters: string
 }
 
+export interface PokeEvolutionChain {
+  id: number
+  baby_trigger_item: any
+  chain: {
+    is_baby: boolean
+    species: {
+      name: string
+      url: string
+    }
+    evolution_details: null
+    evolves_to: [
+      {
+        is_baby: boolean
+        species: {
+          name: string
+          url: string
+        }
+        evolution_details: object[]
+        evolves_to: object[]
+      }
+    ]
+  }
+}
+
+export interface PokeEvolutionChainRef {
+  url: string
+}
+
+export interface PokeEvolutionsResponse {
+  count: number
+  next: string
+  previous: string
+  evolutionChains: PokeEvolutionChain[]
+  results: PokeEvolutionChainRef[]
+}
+
 export interface PokemonRef {
   name: string
   url: string
@@ -108,3 +146,5 @@ export type FTO_PokeResponse = (
 ) => Promise<PokeRefResponse | null>
 
 export type FT_GenResponse = () => Promise<GenResponse | null>
+
+export type FT_PokeEvolutionsResponse = () => Promise<PokeEvolutionsResponse | null>

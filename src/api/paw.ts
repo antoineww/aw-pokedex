@@ -1,9 +1,12 @@
 // import lodash from "lodash"
 import {
   FT_GenResponse,
+  FT_PokeEvolutionsResponse,
   FT_PokeResponse,
   GenData,
   GenRefResponse,
+  PokeEvolutionChain,
+  PokeEvolutionsResponse,
   Pokemon,
   PokeQuery,
   PokeRefResponse,
@@ -23,6 +26,55 @@ const POKE_API_CONFIG = {
 
 const initPokeAPI = () => {
   if (!pokeAPI) pokeAPI = new PokeAPI.Pokedex(POKE_API_CONFIG)
+}
+
+export const requestEvolutions: FT_PokeEvolutionsResponse = async () => {
+  try {
+    initPokeAPI()
+    const pokeEvolutions: PokeEvolutionsResponse = await pokeAPI.getEvolutionChainsList()
+    // console.log({ pokeEvolutions })
+    // fetch chains
+    const { results } = pokeEvolutions
+    // const evolutionChains: PokeEvolutionChain[] = []
+    // for (let index = 0; index < 1; index++) {
+    //   // for (let index = 0; index < results.length; index++) {
+    //   const { url } = results[index]
+    //   const [idPart] = url.split("evolution-chain").reverse()
+    //   const id = parseInt(idPart.replace("/", ""))
+    //   if (!!id) {
+    //     console.log({ id })
+
+    //     const evolutionChain = await pokeAPI.getEvolutionChainById(id)
+    //     evolutionChains.push(evolutionChain)
+    //   }
+    // }
+
+    const evolutionChains: PokeEvolutionChain[] = await Promise.all(
+      results.map(async (result) => {
+        try {
+          const { url } = result
+          const [idPart] = url.split("evolution-chain").reverse()
+          const id = parseInt(idPart.replace("/", ""))
+          if (!!id) {
+            // console.log({ id })
+
+            const evolutionChain = await pokeAPI.getEvolutionChainById(id)
+            return evolutionChain
+          }
+        } catch (error) {
+          // console.log(error)
+        }
+        return { ...result, NO_DATA: true }
+      })
+    )
+
+    pokeEvolutions.evolutionChains = evolutionChains
+
+    // console.log({ pokeEvolutions })
+
+    return pokeEvolutions
+  } catch (error) {}
+  return null
 }
 
 //Get all Pokemon

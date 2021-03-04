@@ -5,9 +5,12 @@ import Loading from "../loading"
 import PokeList from "./pokeList"
 import Tabs from "./tabs"
 import { testGeneration } from "../../__tests__/testList"
+import { requestEvolutions } from "../../api/paw"
 const POKEDEX_STATE_DEFAULT: PokedexData = {
   generations: [],
+  evolutionChains: [],
   currentGenId: 0,
+  loadEvolutions: "empty",
 }
 
 const getPokemonGenerations: (
@@ -19,8 +22,11 @@ const getPokemonGenerations: (
 
 const Pokedex: React.FC = (props) => {
   const [pokedexState, setPokedexState] = useState(POKEDEX_STATE_DEFAULT)
+  const { generations, currentGenId, loadEvolutions } = pokedexState
 
   useEffect(() => {
+    if (pokedexState.generations.length > 0) return
+
     const setInfo = async () => {
       const response = await getPokemonGenerations(true)
       if (!response) return
@@ -28,13 +34,36 @@ const Pokedex: React.FC = (props) => {
       setPokedexState({
         ...pokedexState,
         generations,
+        loadEvolutions: "load",
       })
     }
-    if (pokedexState.generations.length < 1) setInfo()
+    setInfo()
     // eslint-disable-next-line
   }, [])
 
-  const { generations, currentGenId } = pokedexState
+  useEffect(() => {
+    if (loadEvolutions !== "load") return
+
+    const setInfo = async () => {
+      const response = await requestEvolutions()
+      if (!response) {
+        return setPokedexState({
+          ...pokedexState,
+          loadEvolutions: "error",
+        })
+      }
+      const { evolutionChains } = response
+      setPokedexState({
+        ...pokedexState,
+        evolutionChains,
+        loadEvolutions: "complete",
+      })
+    }
+
+    setInfo()
+    // eslint-disable-next-line
+  }, [loadEvolutions])
+
   const generation = generations[currentGenId]
 
   let title

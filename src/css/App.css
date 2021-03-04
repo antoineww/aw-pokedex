@@ -96,6 +96,10 @@
   overflow-y: auto;
 }
 
+.evolveModalButton {
+  margin-top: -4em;
+}
+
 /* Disable highcharts background*/
 .highcharts-container {
   background: none !important;
