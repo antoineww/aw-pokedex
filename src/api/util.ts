@@ -13,7 +13,8 @@ export interface PokedexData {
   generations: GenData[]
   evolutionChains: PokeEvolutionChain[]
   currentGenId: number
-  loadEvolutions: typeProgress
+  progressGenerations: typeProgress
+  progressEvolutions: typeProgress
 }
 
 export interface RefData {
