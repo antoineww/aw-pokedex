@@ -1,17 +1,3 @@
-// import lodash from "lodash"
-import {
-  FT_GenResponse,
-  FT_PokeEvolutionsResponse,
-  FT_PokeResponse,
-  GenData,
-  GenRefResponse,
-  PokeEvolutionChain,
-  PokeEvolutionsResponse,
-  Pokemon,
-  PokeQuery,
-  PokeRefResponse,
-} from "./util"
-
 import _ from "lodash"
 
 // @ts-ignore

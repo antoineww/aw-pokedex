@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { animated, AnimatedValue, useSpring, useSprings } from "react-spring"
+import { animated, useSpring, useSprings } from "react-spring"
 import {
+  stages,
+  springCount,
   actors,
   applyInterpolation,
   getActorImage,
-  PokeFightState,
-  springCount,
-  Stage,
-  stages,
-  STAGE_STOP,
 } from "./util"
 
 const getStage = (stage: number, onRest: Function) => (index: number) => {
@@ -20,10 +17,6 @@ const getStage = (stage: number, onRest: Function) => (index: number) => {
 const initialState: PokeFightState = {
   stage: 0,
   stop: false,
-}
-interface getFighterProps {
-  springs: AnimatedValue<Pick<object, never>>[]
-  currentStage: Stage
 }
 
 const getFighters: (params: getFighterProps) => any = ({
@@ -98,13 +91,13 @@ const PokeFight: React.FC = () => {
     // @ts-ignore typescript-types broken in v8 but fixed in v9
     set(getStage(stage, onRestGoToNextStage(stage + 1, "useEffect")))
 
-    return () => {
-      setStatePokeFight({ ...statePokeFight, stop: true })
-      set((index: number) => {
-        let actorPart = STAGE_STOP.animations[index]
-        return actorPart
-      })
-    }
+    // return () => {
+    //   setStatePokeFight({ ...statePokeFight, stop: true })
+    //   set((index: number) => {
+    //     let actorPart = STAGE_STOP.animations[index]
+    //     return actorPart
+    //   })
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage])
 

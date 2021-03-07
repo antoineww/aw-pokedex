@@ -2,27 +2,6 @@ import nidorino_img from "../../../assets/images/nidorino.png"
 import nidorino_back_img from "../../../assets/images/nidorino_back.png"
 import gengar_img from "../../../assets/images/gengar.png"
 import gengar_back_img from "../../../assets/images/gengar_back.png"
-export type ArenaSide = "A" | "B"
-
-export interface PokeFightState {
-  stop: boolean
-  stage: number
-}
-export interface StageActor {
-  to: object
-  from: object
-  config?: object
-  [key: string]: any
-}
-
-export interface Stage {
-  animations: {
-    [key: number]: StageActor
-  }
-  imageIndecies?: { [key: number]: number }
-  interpolations?: { [key: number]: any }
-  coverScreen?: boolean
-}
 
 const images = [nidorino_img, nidorino_back_img, gengar_img, gengar_back_img]
 
@@ -91,14 +70,7 @@ export const goOver = {
   to: { zIndex: 1 },
   from: { zIndex: 0 },
 }
-export interface BasicAnimatedValue {
-  [key: string]: any
-}
-export interface TransformArgs {
-  translate?: { x: number; y: number }
-  scale?: number
-  rotate?: number
-}
+
 export const ipSquish: (props: BasicAnimatedValue) => {} = ({
   squish,
   ...restOfProps

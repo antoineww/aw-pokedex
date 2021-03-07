@@ -4,7 +4,6 @@ import "highcharts/css/themes/dark-unica.css"
 // import "highcharts/css/themes/grid-light.css"
 // import "highcharts/css/themes/sand-signika.css"
 import _ from "lodash"
-import { Pokemon } from "../../../api"
 import { sortAscending } from "../pokeCard"
 
 HighchartsMore(Highcharts)

@@ -1,6 +1,5 @@
 import React from "react"
 import _ from "lodash"
-import { BaseStat, Pokemon } from "../../api"
 
 export const sortAscending = (a: string, b: string) => a.length - b.length
 export const sortStatsAscending = (a: BaseStat, b: BaseStat) =>
@@ -23,15 +22,6 @@ export const BaseStatTags: React.FC<{ stats: BaseStat[]; pokem: Pokemon }> = ({
     ))}
   </div>
 )
-
-interface I_PokemonCard {
-  pokemon: Pokemon
-  setModalOpen: Function
-}
-
-type T_ButtonClick = (
-  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-) => void
 
 export const PokemonCard: React.FC<I_PokemonCard> = ({
   pokemon: pokem,

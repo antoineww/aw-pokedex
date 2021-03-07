@@ -1,21 +1,10 @@
 import React, { useState } from "react"
 import _ from "lodash"
 import "../../css/App.css"
-import { PokeEvolutionChain, Pokemon } from "../../api"
 import PokemonCard from "./pokeCard"
 import PokeModal from "./pokeModal"
 
-export interface PropsPokeList {
-  pokemon?: Pokemon[]
-  title?: string
-  getPokeEvolutionChain?: (pokem: Pokemon) => PokeEvolutionChain | null
-}
-
-const DEFAULT_STATE: {
-  modalOpen: boolean
-  pokemonSelected: Pokemon | null
-  evolutionChain: PokeEvolutionChain | null
-} = {
+const DEFAULT_STATE: StatePokeList = {
   modalOpen: false,
   pokemonSelected: null,
   evolutionChain: null,

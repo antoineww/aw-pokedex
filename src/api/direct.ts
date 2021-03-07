@@ -1,10 +1,5 @@
 import axios from "axios"
-import {
-  PokeQuery,
-  FT_PokeResponse,
-  OPTIONS_CONFIG,
-  PokeRefResponse,
-} from "./util"
+import { OPTIONS_CONFIG } from "./util"
 
 export const createPokemonQuery = ({ limit = 10000, offset = 0 }: PokeQuery) =>
   `pokemon?limit=${limit}&offset=${offset}`

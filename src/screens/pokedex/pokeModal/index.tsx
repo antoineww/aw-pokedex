@@ -1,14 +1,6 @@
 import PokemonModalDisplay from "./pokemonModalDisplay"
-import { PokeEvolutionChain, Pokemon } from "../../../api"
 
-interface PropsPokeModal {
-  modalOpen: boolean
-  setModalOpen: Function
-  pokemonSelected: Pokemon | null
-  evolutionChain?: PokeEvolutionChain | null
-}
-
-export const PokeModal: React.FC<PropsPokeModal> = ({
+const PokeModal: React.FC<PropsPokeModal> = ({
   modalOpen,
   setModalOpen,
   pokemonSelected,

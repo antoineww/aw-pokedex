@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react"
-import {
-  GenResponse,
-  PokeChainLink,
-  PokedexData,
-  PokeEvolutionChain,
-  PokeEvolutionsResponse,
-  Pokemon,
-  PokemonRef,
-  requestGenerations,
-} from "../../api"
+
 import "../../css/App.css"
 import Loading from "../loading"
 import PokeList from "./pokeList"
 import Tabs from "./tabs"
 import { testEvolutionChain, testGeneration } from "../../__tests__/testList"
-import { requestEvolutions } from "../../api/paw"
+import { requestEvolutions, requestGenerations } from "../../api/paw"
 import _ from "lodash"
+
 const POKEDEX_STATE_DEFAULT: PokedexData = {
   generations: [],
   evolutionChains: [],
@@ -51,11 +43,6 @@ const getChainForms = (evoChain: PokeEvolutionChain) => {
   addForm(evoChain.chain)
   return chainForms
 }
-
-type FT_EvolutionChain = (
-  pokemons: Pokemon[],
-  evolutionChains: PokeEvolutionChain[]
-) => (pokem: Pokemon) => PokeEvolutionChain | null
 
 const getEvolutionChain: FT_EvolutionChain = (
   pokemons: Pokemon[],

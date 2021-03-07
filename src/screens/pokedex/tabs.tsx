@@ -2,17 +2,6 @@ import React from "react"
 import _ from "lodash"
 import "../../css/App.css"
 
-export interface Tab {
-  name: string
-  id: number
-}
-
-export interface PropsTabs {
-  tabs: Tab[]
-  setCurrentTab: (tabId: number) => void
-  currentId: number
-}
-
 const Tabs: React.FC<PropsTabs> = ({
   tabs = [],
   setCurrentTab = () => {},

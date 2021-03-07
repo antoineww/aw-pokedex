@@ -1,4 +1,3 @@
-import { FTO_PokeResponse, FT_GenResponse, PokeQuery } from "./util"
 // import PokeAPIDirect from "./direct"
 import * as PokeAPIWrapperLib from "./paw"
 export * from "./util"
