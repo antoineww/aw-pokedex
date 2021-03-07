@@ -5,132 +5,15 @@ import "highcharts/css/themes/dark-unica.css"
 // import "highcharts/css/themes/grid-light.css"
 // import "highcharts/css/themes/sand-signika.css"
 import _ from "lodash"
-import { PokeEvolutionChain, Pokemon } from "../../api"
-import { BaseStatTags, sortAscending } from "./pokeCard"
+import { PokeEvolutionChain, Pokemon } from "../../../api"
+import { BaseStatTags } from "../pokeCard"
 import { useEffect, useState } from "react"
+import { getOptions } from "./util"
 
 HighchartsMore(Highcharts)
 
 // const options: Highcharts.Options = {
 
-interface PropsPokeModal {
-  modalOpen: boolean
-  setModalOpen: Function
-  pokemonSelected: Pokemon | null
-  evolutionChain?: PokeEvolutionChain | null
-}
-
-const getTitle = (...pokemon: Pokemon[]) => {
-  let titleNames = ""
-  pokemon.forEach((pokem, index) => {
-    titleNames += `${index > 0 ? "vs " : ""}${_.capitalize(pokem.name)}`
-  })
-  return titleNames
-}
-
-const getOptions = (...pokemon: Pokemon[]) => {
-  let categoriesKeys: string[] = []
-  let categories: string[] = []
-  // const series: { [key: string]: any }[] = []
-  const series: Highcharts.SeriesOptionsType[] = []
-  const title = getTitle(...pokemon)
-
-  pokemon.forEach((pokem) => {
-    const { stats, weight, height } = pokem
-
-    let baseStats: { [key: string]: number } = {}
-    stats.forEach((stat) => {
-      baseStats[stat.stat.name] = stat.base_stat
-    })
-
-    if (categoriesKeys.length < 1) {
-      categoriesKeys = [
-        ...Object.keys(baseStats).sort(sortAscending),
-        "weight",
-        "height",
-      ]
-      categories = categoriesKeys.map((cat) => _.capitalize(cat))
-    }
-    baseStats = { ...baseStats, weight, height }
-
-    const data = categoriesKeys.map((cat) => baseStats[cat])
-
-    series.push({
-      name: _.capitalize(pokem.name),
-      //@ts-ignore
-      data,
-      pointPlacement: "on",
-    })
-  })
-
-  const options: Highcharts.Options = {
-    chart: {
-      polar: true,
-      type: "line",
-    },
-
-    accessibility: {
-      description: title,
-    },
-
-    title: {
-      text: title,
-      x: -80,
-    },
-
-    pane: {
-      size: "80%",
-    },
-
-    xAxis: {
-      categories,
-      tickmarkPlacement: "on",
-      lineWidth: 0,
-    },
-
-    yAxis: {
-      gridLineInterpolation: "polygon",
-      lineWidth: 0,
-      min: 0,
-    },
-
-    tooltip: {
-      shared: true,
-      pointFormat:
-        // eslint-disable-next-line no-template-curly-in-string
-        '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
-    },
-
-    legend: {
-      align: "right",
-      verticalAlign: "middle",
-      layout: "vertical",
-    },
-
-    series,
-
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 500,
-          },
-          chartOptions: {
-            legend: {
-              align: "center",
-              verticalAlign: "bottom",
-              layout: "horizontal",
-            },
-            pane: {
-              size: "100%",
-            },
-          },
-        },
-      ],
-    },
-  }
-  return { options }
-}
 const EvolutionChainDisplay: React.FC<{
   evolutionChain?: PokeEvolutionChain
 }> = ({ evolutionChain }) => {
@@ -273,39 +156,4 @@ const PokemonModalDisplay: React.FC<{
   )
 }
 
-export const PokeModal: React.FC<PropsPokeModal> = ({
-  modalOpen,
-  setModalOpen,
-  pokemonSelected,
-  evolutionChain,
-}) => {
-  let pokemonDisplay = null
-
-  if (pokemonSelected !== null)
-    pokemonDisplay = (
-      <PokemonModalDisplay
-        pokemon={pokemonSelected}
-        evolutionChain={evolutionChain}
-      />
-    )
-
-  return (
-    <div
-      className={`modal is-clipped is-align-items-stretch ${
-        modalOpen ? `is-active` : ``
-      }`}
-    >
-      <div className="modal-background"></div>
-      {/* <div className="container"> */}
-      <div className="mk-modal mk-scroll p-3">{pokemonDisplay}</div>
-      {/* </div> */}
-      <button
-        className="modal-close is-large"
-        aria-label="close"
-        onClick={() => setModalOpen(false)}
-      ></button>
-    </div>
-  )
-}
-
-export default PokeModal
+export default PokemonModalDisplay
