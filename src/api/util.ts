@@ -69,28 +69,17 @@ export interface Pokemon {
   location_area_encounters: string
 }
 
+export interface PokeChainLink {
+  is_baby: boolean
+  species: PokemonRef
+  evolution_details: object[]
+  evolves_to: PokeChainLink[]
+}
 export interface PokeEvolutionChain {
   id: number
   baby_trigger_item: any
-  chain: {
-    is_baby: boolean
-    species: {
-      name: string
-      url: string
-    }
-    evolution_details: null
-    evolves_to: [
-      {
-        is_baby: boolean
-        species: {
-          name: string
-          url: string
-        }
-        evolution_details: object[]
-        evolves_to: object[]
-      }
-    ]
-  }
+  chain: PokeChainLink
+  chainForms?: PokemonRef[]
 }
 
 export interface PokeEvolutionChainRef {

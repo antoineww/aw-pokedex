@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react"
 import {
   GenResponse,
+  PokeChainLink,
   PokedexData,
+  PokeEvolutionChain,
   PokeEvolutionsResponse,
+  Pokemon,
+  PokemonRef,
   requestGenerations,
 } from "../../api"
 import "../../css/App.css"
@@ -11,6 +15,7 @@ import PokeList from "./pokeList"
 import Tabs from "./tabs"
 import { testEvolutionChain, testGeneration } from "../../__tests__/testList"
 import { requestEvolutions } from "../../api/paw"
+import _ from "lodash"
 const POKEDEX_STATE_DEFAULT: PokedexData = {
   generations: [],
   evolutionChains: [],
@@ -35,10 +40,69 @@ const getPokemonEvolutions: (
 
 const DEV_MODE = true
 
+const getChainForms = (evoChain: PokeEvolutionChain) => {
+  const chainForms: PokemonRef[] = []
+  const addForm = (chain: PokeChainLink) => {
+    chainForms.push(chain.species)
+    if (Array.isArray(chain.evolves_to)) {
+      chain.evolves_to.forEach((form) => addForm(form))
+    }
+  }
+  addForm(evoChain.chain)
+  return chainForms
+}
+
+type FT_EvolutionChain = (
+  pokemons: Pokemon[],
+  evolutionChains: PokeEvolutionChain[]
+) => (pokem: Pokemon) => PokeEvolutionChain | null
+
+const getEvolutionChain: FT_EvolutionChain = (
+  pokemons: Pokemon[],
+  evolutionChains: PokeEvolutionChain[]
+) => (pokem: Pokemon) => {
+  let found: boolean = false
+  let foundChain: PokeEvolutionChain | null = null
+
+  evolutionChains.forEach((evoChain) => {
+    const blob = JSON.stringify(evoChain.chain).toLowerCase()
+    let foundUrl =
+      !!pokem.url && blob.indexOf(`${pokem.url}`.toLowerCase()) > -1
+
+    if (foundUrl) {
+      found = foundUrl
+    } else {
+      found = blob.indexOf(`${pokem.name}`.toLowerCase()) > -1
+    }
+    if (found) {
+      const chainForms = getChainForms(evoChain)
+      chainForms.forEach((form, index) => {
+        const foundPokem = _.find(
+          pokemons,
+          (pokemCurrent) =>
+            pokemCurrent.name.toLowerCase() === form.name.toLowerCase()
+        )
+        if (foundPokem)
+          chainForms[index] = { ...chainForms[index], ...foundPokem }
+      })
+
+      evoChain.chainForms = chainForms
+      foundChain = evoChain
+      return
+    }
+  })
+
+  if (found) {
+    return foundChain
+  }
+  return null
+}
+
 const Pokedex: React.FC = (props) => {
   const [pokedexState, setPokedexState] = useState(POKEDEX_STATE_DEFAULT)
   const {
     generations,
+    evolutionChains,
     currentGenId,
     progressGenerations,
     progressEvolutions,
@@ -87,8 +151,8 @@ const Pokedex: React.FC = (props) => {
 
   const generation = generations[currentGenId]
 
-  let title
-  let pokemon
+  let title: string | undefined
+  let pokemon: Pokemon[] | undefined
   if (generation) {
     title = generation.name
     pokemon = generation.pokemons
@@ -96,6 +160,12 @@ const Pokedex: React.FC = (props) => {
 
   const setCurrentTab = (tabId: number) =>
     setPokedexState({ ...pokedexState, currentGenId: tabId - 1 })
+
+  let getPokeEvolutionChain:
+    | ((pokem: Pokemon) => PokeEvolutionChain | null)
+    | undefined
+  if (pokemon)
+    getPokeEvolutionChain = getEvolutionChain(pokemon, evolutionChains)
 
   const loading = progressGenerations === "empty"
 
@@ -108,7 +178,11 @@ const Pokedex: React.FC = (props) => {
         setCurrentTab={setCurrentTab}
         currentId={currentGenId + 1}
       />
-      <PokeList pokemon={pokemon} title={title} />
+      <PokeList
+        pokemon={pokemon}
+        title={title}
+        getPokeEvolutionChain={getPokeEvolutionChain}
+      />
     </>
   )
 }

@@ -5,7 +5,7 @@ import "highcharts/css/themes/dark-unica.css"
 // import "highcharts/css/themes/grid-light.css"
 // import "highcharts/css/themes/sand-signika.css"
 import _ from "lodash"
-import { Pokemon } from "../../api"
+import { PokeEvolutionChain, Pokemon } from "../../api"
 import { BaseStatTags, sortAscending } from "./pokeCard"
 import { useEffect, useState } from "react"
 
@@ -17,6 +17,7 @@ interface PropsPokeModal {
   modalOpen: boolean
   setModalOpen: Function
   pokemonSelected: Pokemon | null
+  evolutionChain?: PokeEvolutionChain | null
 }
 
 const getTitle = (...pokemon: Pokemon[]) => {
@@ -130,10 +131,36 @@ const getOptions = (...pokemon: Pokemon[]) => {
   }
   return { options }
 }
+const EvolutionChainDisplay: React.FC<{
+  evolutionChain?: PokeEvolutionChain
+}> = ({ evolutionChain }) => {
+  if (!evolutionChain?.chainForms) return null
+  // console.log({ "evolutionChain.chainForms": evolutionChain.chainForms })
+  return (
+    <div className="is-flex is-flex-direction-row">
+      {evolutionChain.chainForms.map(
+        (pokem) =>
+          !!pokem?.sprites?.front_default && (
+            <figure
+              key={`Evolution-Chain-Display-${pokem.name}`}
+              className="image is-128x128 mk-center-x"
+            >
+              <img
+                loading="lazy"
+                src={pokem.sprites.front_default}
+                alt={`Evolution-Chain-Display-${pokem.name}`}
+              />
+            </figure>
+          )
+      )}
+    </div>
+  )
+}
 
-const PokemonModalDisplay: React.FC<{ pokemon: Pokemon }> = ({
-  pokemon: pokem,
-}) => {
+const PokemonModalDisplay: React.FC<{
+  pokemon: Pokemon
+  evolutionChain?: PokeEvolutionChain | null
+}> = ({ pokemon: pokem, evolutionChain }) => {
   const [statePokemonModalDisplay, setStatePokemonModalDisplay] = useState({
     options: {},
   })
@@ -149,7 +176,7 @@ const PokemonModalDisplay: React.FC<{ pokemon: Pokemon }> = ({
   return (
     <>
       {!!pokem.id && (
-        <h1 className="title has-text-primary-light is-1 is-align-self-center p-6">{`No. ${pokem.id}   ${formattedName}`}</h1>
+        <h1 className="title has-text-primary-light is-1 is-align-self-center p-5">{`No. ${pokem.id}   ${formattedName}`}</h1>
       )}
 
       <div className="columns is-justify-content-center mb-6">
@@ -163,9 +190,23 @@ const PokemonModalDisplay: React.FC<{ pokemon: Pokemon }> = ({
               />
             </figure>
           )}
-          <button className="button is-primary evolveModalButton">
-            Evolve
-          </button>
+          <div className="is-flex is-flex-direction-row">
+            <button
+              className="button is-primary devolveModalButton m-0 mx-3"
+              onClick={() => {}}
+            >
+              Devolve
+            </button>
+            <button
+              className="button is-primary evolveModalButton m-0 mx-3"
+              onClick={() => {}}
+            >
+              Evolve
+            </button>
+          </div>
+          {!!evolutionChain && (
+            <EvolutionChainDisplay evolutionChain={evolutionChain} />
+          )}
         </div>
         <div className="column is-6 p-1 m-0">
           <HighchartsReact highcharts={Highcharts} options={options} />
@@ -236,11 +277,17 @@ export const PokeModal: React.FC<PropsPokeModal> = ({
   modalOpen,
   setModalOpen,
   pokemonSelected,
+  evolutionChain,
 }) => {
   let pokemonDisplay = null
 
   if (pokemonSelected !== null)
-    pokemonDisplay = <PokemonModalDisplay pokemon={pokemonSelected} />
+    pokemonDisplay = (
+      <PokemonModalDisplay
+        pokemon={pokemonSelected}
+        evolutionChain={evolutionChain}
+      />
+    )
 
   return (
     <div
@@ -250,7 +297,7 @@ export const PokeModal: React.FC<PropsPokeModal> = ({
     >
       <div className="modal-background"></div>
       {/* <div className="container"> */}
-      <div className="mk-modal mk-scroll p-6">{pokemonDisplay}</div>
+      <div className="mk-modal mk-scroll p-3">{pokemonDisplay}</div>
       {/* </div> */}
       <button
         className="modal-close is-large"
