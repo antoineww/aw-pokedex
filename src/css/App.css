@@ -99,6 +99,9 @@
 .evolveModalButton {
   margin-top: -4em;
 }
+.evolution-chain-display {
+  height: 128px;
+}
 
 /* Disable highcharts background*/
 .highcharts-container {
