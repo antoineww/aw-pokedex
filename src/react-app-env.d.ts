@@ -81,7 +81,7 @@ interface PokeEvolutionChain {
   id: number
   baby_trigger_item: any
   chain: PokeChainLink
-  chainForms?: PokemonRef[]
+  chainForms?: Pokemon[]
 }
 
 interface PokeEvolutionChainRef {
@@ -204,14 +204,23 @@ interface StatePokeList {
   evolutionChain: PokeEvolutionChain | null
 }
 
+type volveType = "evolve" | "devolve"
+
+type FT_getChainBlobIndex = (
+  evoChain: PokeEvolutionChain,
+  pokem: Pokemon
+) => number
+
 type FT_EvolutionChain = (
   pokemons: Pokemon[],
   evolutionChains: PokeEvolutionChain[]
 ) => (pokem: Pokemon) => PokeEvolutionChain | null
 
+type FT_setModalOpen = (open?: boolean, pokem?: Pokemon | null) => void
+
 interface I_PokemonCard {
   pokemon: Pokemon
-  setModalOpen: Function
+  setModalOpen: FT_setModalOpen
 }
 
 type T_ButtonClick = (
@@ -220,7 +229,17 @@ type T_ButtonClick = (
 
 interface PropsPokeModal {
   modalOpen: boolean
-  setModalOpen: Function
+  setModalOpen: FT_setModalOpen
   pokemonSelected: Pokemon | null
   evolutionChain?: PokeEvolutionChain | null
+}
+
+interface PropsPokemonModalDisplay {
+  pokemon: Pokemon
+  evolutionChain?: PokeEvolutionChain | null
+  setModalOpen: FT_setModalOpen
+}
+
+interface PropsEvolutionChainDisplay {
+  evolutionChain?: PokeEvolutionChain
 }

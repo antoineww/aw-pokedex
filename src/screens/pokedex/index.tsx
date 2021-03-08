@@ -44,6 +44,18 @@ const getChainForms = (evoChain: PokeEvolutionChain) => {
   return chainForms
 }
 
+export const getChainBlobIndex: FT_getChainBlobIndex = (
+  evoChain: PokeEvolutionChain,
+  pokem: Pokemon
+) => {
+  const blob = JSON.stringify(evoChain.chain).toLowerCase()
+  const indexByUrl = blob.indexOf(`${pokem.url}`.toLowerCase())
+  let foundUrl = !!pokem.url && indexByUrl > -1
+  if (foundUrl) return indexByUrl
+
+  return blob.indexOf(`${pokem.name}`.toLowerCase())
+}
+
 const getEvolutionChain: FT_EvolutionChain = (
   pokemons: Pokemon[],
   evolutionChains: PokeEvolutionChain[]
@@ -52,15 +64,8 @@ const getEvolutionChain: FT_EvolutionChain = (
   let foundChain: PokeEvolutionChain | null = null
 
   evolutionChains.forEach((evoChain) => {
-    const blob = JSON.stringify(evoChain.chain).toLowerCase()
-    let foundUrl =
-      !!pokem.url && blob.indexOf(`${pokem.url}`.toLowerCase()) > -1
+    found = getChainBlobIndex(evoChain, pokem) > -1
 
-    if (foundUrl) {
-      found = foundUrl
-    } else {
-      found = blob.indexOf(`${pokem.name}`.toLowerCase()) > -1
-    }
     if (found) {
       const chainForms = getChainForms(evoChain)
       chainForms.forEach((form, index) => {
@@ -73,7 +78,7 @@ const getEvolutionChain: FT_EvolutionChain = (
           chainForms[index] = { ...chainForms[index], ...foundPokem }
       })
 
-      evoChain.chainForms = chainForms
+      evoChain.chainForms = chainForms as Pokemon[]
       foundChain = evoChain
       return
     }

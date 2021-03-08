@@ -19,7 +19,7 @@ export const PokeList: React.FC<PropsPokeList> = ({
 
   if (!pokemon) return null
   const { modalOpen, pokemonSelected, evolutionChain } = statePokeList
-  const setModalOpen = (open = true, pokem = null) => {
+  const setModalOpen: FT_setModalOpen = (open = true, pokem = null) => {
     const pokemonSelected = pokem ?? statePokeList.pokemonSelected
     // console.log({ pokemonSelected })
     // setStatePokeList({

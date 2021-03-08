@@ -13,6 +13,7 @@ const PokeModal: React.FC<PropsPokeModal> = ({
       <PokemonModalDisplay
         pokemon={pokemonSelected}
         evolutionChain={evolutionChain}
+        setModalOpen={setModalOpen}
       />
     )
 
