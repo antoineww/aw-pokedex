@@ -35,7 +35,7 @@ export const PokemonCard: React.FC<I_PokemonCard> = ({
   }
 
   return (
-    <div className="card column is-3">
+    <div className="card column is-3 my-1 mr-3">
       <header className="card-header">
         {!!pokem.id && (
           <p className="card-header-title">{`No. ${pokem.id}   ${formattedName}`}</p>

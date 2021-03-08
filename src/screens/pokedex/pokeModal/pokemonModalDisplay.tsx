@@ -72,7 +72,7 @@ const PokemonModalDisplay: React.FC<{
   useEffect(() => {
     setStatePokemonModalDisplay(getOptions(pokem))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [pokem])
 
   return (
     <>
