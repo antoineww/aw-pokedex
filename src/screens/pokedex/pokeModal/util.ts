@@ -26,7 +26,11 @@ export const getOptions = (...pokemon: Pokemon[]) => {
   const title = getTitle(...pokemon)
 
   pokemon.forEach((pokem) => {
-    const { stats, weight, height } = pokem
+    const {
+      stats,
+      // weight,
+      // height
+    } = pokem
 
     let baseStats: { [key: string]: number } = {}
     stats.forEach((stat) => {
@@ -36,12 +40,16 @@ export const getOptions = (...pokemon: Pokemon[]) => {
     if (categoriesKeys.length < 1) {
       categoriesKeys = [
         ...Object.keys(baseStats).sort(sortAscending),
-        "weight",
-        "height",
+        // "weight",
+        // "height",
       ]
       categories = categoriesKeys.map((cat) => _.capitalize(cat))
     }
-    baseStats = { ...baseStats, weight, height }
+    baseStats = {
+      ...baseStats,
+      // weight,
+      // height,
+    }
 
     const data = categoriesKeys.map((cat) => baseStats[cat])
 
