@@ -243,3 +243,10 @@ interface PropsPokemonModalDisplay {
 interface PropsEvolutionChainDisplay {
   evolutionChain?: PokeEvolutionChain
 }
+
+//
+
+interface PokeFightProps {
+  isTest?: boolean
+  canLoop?: boolean
+}

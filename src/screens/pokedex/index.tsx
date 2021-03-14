@@ -31,6 +31,7 @@ const getPokemonEvolutions: (
 }
 
 const DEV_MODE = true
+const DEV_MODE_LOADING = true
 
 const getChainForms = (evoChain: PokeEvolutionChain) => {
   const chainForms: PokemonRef[] = []
@@ -159,10 +160,10 @@ const Pokedex: React.FC = (props) => {
   if (pokemon)
     getPokeEvolutionChain = getEvolutionChain(pokemon, evolutionChains)
 
-  const loading = progressGenerations === "empty"
+  const loading = DEV_MODE_LOADING || progressGenerations === "empty"
 
   return loading ? (
-    <Loading />
+    <Loading isTest={DEV_MODE_LOADING} canLoop={true} />
   ) : (
     <>
       <Tabs

@@ -67,7 +67,10 @@ const getFighters: (params: getFighterProps) => any = ({
   }
 }
 
-const PokeFight: React.FC = () => {
+const PokeFight: React.FC<PokeFightProps> = ({
+  isTest = false,
+  canLoop = false,
+}) => {
   const [statePokeFight, setStatePokeFight] = useState<PokeFightState>(
     initialState
   )
@@ -79,6 +82,8 @@ const PokeFight: React.FC = () => {
 
     if (newStage < stages.length) {
       setStatePokeFight({ ...statePokeFight, stage: newStage })
+    } else if (canLoop) {
+      setStatePokeFight({ ...statePokeFight, stage: 0 })
     }
   }
 
@@ -111,6 +116,16 @@ const PokeFight: React.FC = () => {
         {nidorino}
         {gengar}
       </div>
+      {isTest && (
+        <div className="debugSection p-6">
+          <p>{`Stage: ${stage}`}</p>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(currentStage, undefined, 2),
+            }}
+          ></div>
+        </div>
+      )}
     </div>
   )
 }
