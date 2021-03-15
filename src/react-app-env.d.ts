@@ -11,12 +11,13 @@ declare module "*.png" {
 // Types & Interfaces
 type typeProgress = "empty" | "load" | "complete" | "error"
 
-interface PokedexData {
+interface PokedexProps {
   generations: GenData[]
   evolutionChains: PokeEvolutionChain[]
   currentGenId: number
   progressGenerations: typeProgress
   progressEvolutions: typeProgress
+  loadingSafeToStop: boolean
 }
 
 interface RefData {
@@ -249,4 +250,5 @@ interface PropsEvolutionChainDisplay {
 interface PokeFightProps {
   isTest?: boolean
   canLoop?: boolean
+  endLoading?: Function
 }

@@ -8,12 +8,13 @@ import { testEvolutionChain, testGeneration } from "../../__tests__/testList"
 import { requestEvolutions, requestGenerations } from "../../api/paw"
 import _ from "lodash"
 
-const POKEDEX_STATE_DEFAULT: PokedexData = {
+const POKEDEX_STATE_DEFAULT: PokedexProps = {
   generations: [],
   evolutionChains: [],
   currentGenId: 0,
   progressGenerations: "empty",
   progressEvolutions: "empty",
+  loadingSafeToStop: false,
 }
 
 const getPokemonGenerations: (
@@ -99,6 +100,7 @@ const Pokedex: React.FC = (props) => {
     currentGenId,
     progressGenerations,
     progressEvolutions,
+    loadingSafeToStop,
   } = pokedexState
 
   useEffect(() => {
@@ -115,7 +117,9 @@ const Pokedex: React.FC = (props) => {
         progressEvolutions: "load",
       })
     }
-    setInfo()
+    if (DEV_MODE) setTimeout(() => setInfo(), 5000)
+    else setInfo()
+
     // eslint-disable-next-line
   }, [])
 
@@ -160,10 +164,18 @@ const Pokedex: React.FC = (props) => {
   if (pokemon)
     getPokeEvolutionChain = getEvolutionChain(pokemon, evolutionChains)
 
-  const loading = DEV_MODE_LOADING || progressGenerations === "empty"
+  const initialLoading =
+    progressGenerations !== "complete" && progressGenerations !== "error"
+  const loading = DEV_MODE_LOADING || (initialLoading && !loadingSafeToStop)
+  const endLoading =
+    DEV_MODE_LOADING || initialLoading
+      ? undefined
+      : () => setPokedexState({ ...pokedexState, loadingSafeToStop: true })
+
+  // console.log({ initialLoading, loadingSafeToStop, endLoading })
 
   return loading ? (
-    <Loading isTest={DEV_MODE_LOADING} canLoop={true} />
+    <Loading isTest={DEV_MODE_LOADING} canLoop={true} endLoading={endLoading} />
   ) : (
     <>
       <Tabs

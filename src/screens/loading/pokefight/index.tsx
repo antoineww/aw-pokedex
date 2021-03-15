@@ -6,6 +6,7 @@ import {
   actors,
   applyInterpolation,
   getActorImage,
+  STAGE_STOP,
 } from "./util"
 
 const getStage = (stage: number, onRest: Function) => (index: number) => {
@@ -70,6 +71,7 @@ const getFighters: (params: getFighterProps) => any = ({
 const PokeFight: React.FC<PokeFightProps> = ({
   isTest = false,
   canLoop = false,
+  endLoading,
 }) => {
   const [statePokeFight, setStatePokeFight] = useState<PokeFightState>(
     initialState
@@ -93,21 +95,28 @@ const PokeFight: React.FC<PokeFightProps> = ({
   )
 
   useEffect(() => {
+    if (typeof endLoading == "function") {
+      set((index: number) => {
+        let actorPart = STAGE_STOP.animations[index]
+        return actorPart
+      })
+      setStatePokeFight({ ...statePokeFight, stop: true })
+      return
+    }
     // @ts-ignore typescript-types broken in v8 but fixed in v9
     set(getStage(stage, onRestGoToNextStage(stage + 1, "useEffect")))
 
-    // return () => {
-    //   setStatePokeFight({ ...statePokeFight, stop: true })
-    //   set((index: number) => {
-    //     let actorPart = STAGE_STOP.animations[index]
-    //     return actorPart
-    //   })
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage])
+  }, [stage, endLoading])
+
+  useEffect(() => {
+    if (stop && typeof endLoading == "function") endLoading()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stop])
 
   const currentStage = stages[stage]
   const { nidorino, gengar } = getFighters({ springs, currentStage })
+  // console.log({ currentStage })
 
   return (
     <div className="container is-flex is-align-items-center">
