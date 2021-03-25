@@ -3,6 +3,7 @@
   --img-md: 30%;
   --img-lg: 50%;
   --img-min: 100px;
+  --bg-color: #282c34;
 }
 .mk-center-x {
   margin: 0 auto;
@@ -36,8 +37,12 @@
   min-height: var(--img-min);
 }
 
+html,
+body {
+  background-color: var(--bg-color);
+}
 .App {
-  background-color: #282c34;
+  background-color: var(--bg-color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
