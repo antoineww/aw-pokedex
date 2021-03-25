@@ -79,7 +79,7 @@ const PokeFight: React.FC<PokeFightProps> = ({
   const { stage, stop } = statePokeFight
 
   const onRestGoToNextStage = (newStage: number, fnName: string) => () => {
-    // console.log("onRest ", { stage, newStage, fnName })
+    // console.log("onRest ", { stage, newStage, canLoop, fnName })
     if (stop) return
 
     if (newStage < stages.length) {

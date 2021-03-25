@@ -29,23 +29,31 @@ const placing = {
   under: "20%",
 }
 
-export const slideRight = {
+export const slideRight = (a = "0%", b = max.right) => ({
   config,
-  to: { left: max.right },
+  to: { left: b },
   from: {
-    left: "0%",
+    left: a,
     top: placing.over,
   },
-}
+})
 
-export const slideLeft = {
+export const slideLeft = (a = max.right, b = "0%") => ({
   config,
-  to: { left: "0%" },
+  to: { left: b },
   from: {
-    left: max.right,
+    left: a,
     top: placing.under,
   },
-}
+})
+
+export const flipX = (b = "-1") => ({
+  config,
+  to: {
+    transform: `scaleX(${b})`,
+  },
+  from: {},
+})
 
 export const slideUp = {
   config,
@@ -95,6 +103,28 @@ export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
     })
     .interpolate((val: any) => `translate(${val}%)`),
 })
+
+const PARABOLA_CONVEX = (x: number) => 6 * x - Math.pow(x, 2)
+const PARABOLA_CONCAVE = (x: number) => 6 * x + Math.pow(x, 2)
+export const ipHop: (
+  args: TransformArgs
+) => (props: BasicAnimatedValue) => {} = ({ translate = {} }) => ({
+  strafe,
+  ...restOfProps
+}) => ({
+  ...restOfProps,
+  transform: strafe
+    .interpolate({
+      range: [0, 0.3, 0.5, 1],
+      output: [0, -8, 0, -8],
+    })
+    .interpolate(
+      (val: any) =>
+        `translate(${val * (translate?.x ?? 1)}%,${
+          PARABOLA_CONCAVE(val) * (translate?.y ?? 1)
+        }%)`
+    ),
+})
 export const ipSwipe: (
   args: TransformArgs
 ) => (props: BasicAnimatedValue) => {} = ({ translate }) => ({
@@ -105,16 +135,18 @@ export const ipSwipe: (
   transform: attack
     .interpolate({
       range: [0, 0.3, 1],
-      output: [-4, 9, -4],
+      output: [0, 8, 0],
     })
     .interpolate(
       (val: any) =>
-        `translate(${
-          val * 12 * (translate?.x ?? 1)
-        }0%, -${val}0%) rotate(${val}0deg)`
+        `translate(${val * (translate?.x ?? 1)}0%, ${
+          PARABOLA_CONVEX(val) * (translate?.y ?? 1)
+        }0%) rotate(${val}0deg)`
     ),
 })
-export const ipTilt: (props: BasicAnimatedValue) => {} = ({
+export const ipTilt: (
+  args: TransformArgs
+) => (props: BasicAnimatedValue) => {} = ({ rotate }) => ({
   attack,
   ...restOfProps
 }) => ({
@@ -124,7 +156,7 @@ export const ipTilt: (props: BasicAnimatedValue) => {} = ({
       range: [0, 0.2, 0.4, 0.6, 0.8, 1],
       output: [1, 0, -1, -2, -3, -4],
     })
-    .interpolate((val: any) => `rotate(${val}0deg)`),
+    .interpolate((val: any) => `rotate(${val * (rotate ?? 1)}0deg)`),
 })
 
 export const applyInterpolation = (
@@ -179,12 +211,73 @@ export const STAGE_STOP: Stage = {
     [actors.gengar]: 3,
   },
 }
+export const STAGE_ENTRY: Stage = {
+  animations: {
+    [actors.nidorino]: {
+      from: {},
+      to: {
+        ...flipX("-1").to,
+        ...slideLeft().to,
+        ...slideUp.to,
+      },
+      config: config_instant,
+    },
+    [actors.gengar]: {
+      from: {},
+      to: {
+        ...flipX("-1").to,
+        ...slideRight().to,
+        ...slideDown.to,
+      },
+      config: config_instant,
+    },
+  },
+  imageIndecies: {
+    [actors.nidorino]: 0,
+    [actors.gengar]: 3,
+  },
+  coverScreen: false,
+}
+export const STAGE_POSED_1: Stage = {
+  animations: {
+    [actors.nidorino]: {
+      from: {
+        ...STAGE_RESET.animations[actors.nidorino].from,
+      },
+      to: {
+        ...STAGE_RESET.animations[actors.nidorino].to,
+        ...flipX("-1").to,
+        ...slideRight().to,
+        ...slideUp.to,
+      },
+      config: config_instant,
+    },
+    [actors.gengar]: {
+      from: {
+        ...STAGE_RESET.animations[actors.gengar].from,
+      },
+      to: {
+        ...STAGE_RESET.animations[actors.gengar].to,
+        ...flipX("-1").to,
+        ...slideLeft().to,
+        ...slideDown.to,
+      },
+      config: config_instant,
+    },
+  },
+  imageIndecies: {
+    [actors.nidorino]: 0,
+    [actors.gengar]: 3,
+  },
+  coverScreen: false,
+}
 
 export const stages: Stage[] = [
+  //Slide X1
   {
     animations: {
-      [actors.nidorino]: slideRight,
-      [actors.gengar]: slideLeft,
+      [actors.nidorino]: slideRight(),
+      [actors.gengar]: slideLeft(),
     },
     imageIndecies: {
       [actors.nidorino]: 0,
@@ -192,19 +285,8 @@ export const stages: Stage[] = [
     },
     coverScreen: false,
   },
-  // {
-  //   animations: {
-  //     [actors.gengar]: {
-  //       ...slideLeft,
-  //       config: config_instant,
-  //       to: { ...slideLeft.to, transform: "scaleX(-1)" },
-  //     },
-  //   },
-  //   imageIndecies: {
-  //     [actors.nidorino]: 0,
-  //     [actors.gengar]: 3,
-  //   },
-  // },
+
+  // Slide Y1
   {
     animations: {
       [actors.nidorino]: {
@@ -228,16 +310,20 @@ export const stages: Stage[] = [
       [actors.gengar]: 2,
     },
   },
+
+  // Slide X2
   {
     animations: {
-      [actors.nidorino]: slideLeft,
-      [actors.gengar]: slideRight,
+      [actors.nidorino]: slideLeft(),
+      [actors.gengar]: slideRight(),
     },
     imageIndecies: {
       [actors.nidorino]: 1,
       [actors.gengar]: 2,
     },
   },
+
+  // Slide Y2
   {
     animations: {
       [actors.nidorino]: {
@@ -256,17 +342,23 @@ export const stages: Stage[] = [
       [actors.gengar]: 2,
     },
   },
+
+  // Slide X3(X1)
   {
     animations: {
-      [actors.nidorino]: slideRight,
-      [actors.gengar]: slideLeft,
+      [actors.nidorino]: slideRight(),
+      [actors.gengar]: slideLeft(),
     },
     imageIndecies: {
       [actors.nidorino]: 0,
       [actors.gengar]: 3,
     },
   },
+
+  // PREP FIGHT
   STAGE_RESET,
+
+  // SQUISH
   {
     animations: {
       [actors.nidorino]: { from: { squish: 0 }, to: { squish: 1 } },
@@ -281,6 +373,7 @@ export const stages: Stage[] = [
       [actors.gengar]: ipSquish,
     },
   },
+  // STRAFE 1
   {
     animations: {
       [actors.nidorino]: {
@@ -304,6 +397,8 @@ export const stages: Stage[] = [
       [actors.gengar]: ipStrafe,
     },
   },
+
+  // ATTACK 1
 
   {
     animations: {
@@ -330,6 +425,7 @@ export const stages: Stage[] = [
   },
   STAGE_RESET,
 
+  // STRAFE 2
   {
     animations: {
       [actors.nidorino]: {
@@ -352,6 +448,8 @@ export const stages: Stage[] = [
       [actors.gengar]: ipStrafe,
     },
   },
+
+  // ATTACK 2
   {
     animations: {
       [actors.nidorino]: {
