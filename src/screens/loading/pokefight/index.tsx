@@ -40,8 +40,8 @@ const getFighters: (params: getFighterProps) => any = ({
   let nidorino_img
   let gengar_img
   if (currentStage.imageIndecies) {
-    nidorino_img = getActorImage(currentStage.imageIndecies[actors.nidorino])
-    gengar_img = getActorImage(currentStage.imageIndecies[actors.gengar])
+    nidorino_img = getActorImage(...currentStage.imageIndecies[actors.nidorino])
+    gengar_img = getActorImage(...currentStage.imageIndecies[actors.gengar])
   }
 
   const nidorino = (

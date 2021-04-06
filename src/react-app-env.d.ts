@@ -146,6 +146,14 @@ type FT_PokeEvolutionsResponse = () => Promise<PokeEvolutionsResponse | null>
 
 type ArenaSide = "A" | "B"
 
+interface PokeFightImage {
+  front: any
+  back: any
+}
+interface PokeFightImages {
+  [key: string]: PokeFightImage
+}
+
 interface PokeFightState {
   stop: boolean
   stage: number
@@ -161,7 +169,7 @@ interface Stage {
   animations: {
     [key: number]: StageActor
   }
-  imageIndecies?: { [key: number]: number }
+  imageIndecies?: { [key: number]: [number, number?] }
   interpolations?: { [key: number]: any }
   coverScreen?: boolean
 }

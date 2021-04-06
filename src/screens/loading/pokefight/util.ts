@@ -1,11 +1,11 @@
-import nidorino_img from "../../../assets/images/nidorino.png"
-import nidorino_back_img from "../../../assets/images/nidorino_back.png"
-import gengar_img from "../../../assets/images/gengar.png"
-import gengar_back_img from "../../../assets/images/gengar_back.png"
+import poke_images from "../../../assets/images"
 
-const images = [nidorino_img, nidorino_back_img, gengar_img, gengar_back_img]
+// @ts-ignore
+const images = Object.entries(poke_images)
+// console.log({ poke_images, images })
 
-export const getActorImage = (index: number) => images[index]
+export const getActorImage = (index: number, indexFront: any = 0) =>
+  indexFront === 0 ? images[index][1].front : images[index][1].back
 
 export const config_slow = { duration: 5000 }
 export const config = { duration: 1000 }
@@ -189,8 +189,8 @@ export const STAGE_RESET: Stage = {
     },
   },
   imageIndecies: {
-    [actors.nidorino]: 0,
-    [actors.gengar]: 3,
+    [actors.nidorino]: [0, 0],
+    [actors.gengar]: [1, 1],
   },
 }
 export const STAGE_STOP: Stage = {
@@ -207,8 +207,8 @@ export const STAGE_STOP: Stage = {
     },
   },
   imageIndecies: {
-    [actors.nidorino]: 0,
-    [actors.gengar]: 3,
+    [actors.nidorino]: [0, 0],
+    [actors.gengar]: [1, 1],
   },
 }
 export const STAGE_ENTRY: Stage = {
@@ -233,8 +233,8 @@ export const STAGE_ENTRY: Stage = {
     },
   },
   imageIndecies: {
-    [actors.nidorino]: 0,
-    [actors.gengar]: 3,
+    [actors.nidorino]: [0, 0],
+    [actors.gengar]: [1, 1],
   },
   coverScreen: false,
 }
@@ -266,8 +266,8 @@ export const STAGE_POSED_1: Stage = {
     },
   },
   imageIndecies: {
-    [actors.nidorino]: 0,
-    [actors.gengar]: 3,
+    [actors.nidorino]: [0, 0],
+    [actors.gengar]: [1, 1],
   },
   coverScreen: false,
 }
@@ -282,8 +282,8 @@ export const stages: Stage[] = [
       [actors.gengar]: slideLeft(undefined, center.left),
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -300,8 +300,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -313,8 +313,8 @@ export const stages: Stage[] = [
       [actors.gengar]: slideLeft(center.left, undefined),
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -327,8 +327,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -352,8 +352,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 2,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 0],
     },
   },
 
@@ -370,8 +370,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 2,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 0],
     },
     coverScreen: false,
   },
@@ -387,8 +387,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 1,
-      [actors.gengar]: 2,
+      [actors.nidorino]: [0, 1],
+      [actors.gengar]: [1, 0],
     },
     coverScreen: false,
   },
@@ -405,8 +405,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 1,
-      [actors.gengar]: 2,
+      [actors.nidorino]: [0, 1],
+      [actors.gengar]: [1, 0],
     },
     coverScreen: false,
   },
@@ -418,8 +418,8 @@ export const stages: Stage[] = [
       [actors.nidorino]: slideLeft(center.left, undefined),
     },
     imageIndecies: {
-      [actors.nidorino]: 1,
-      [actors.gengar]: 2,
+      [actors.nidorino]: [0, 1],
+      [actors.gengar]: [1, 0],
     },
     coverScreen: false,
   },
@@ -436,8 +436,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 1,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 1],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -457,8 +457,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
   },
 
@@ -470,8 +470,8 @@ export const stages: Stage[] = [
       [actors.gengar]: slideLeft(undefined, center.left),
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -488,8 +488,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -501,8 +501,8 @@ export const stages: Stage[] = [
       [actors.gengar]: slideLeft(center.left, undefined),
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -515,8 +515,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     coverScreen: false,
   },
@@ -535,8 +535,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     interpolations: {
       [actors.nidorino]: ipSquish,
@@ -559,8 +559,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     interpolations: {
       [actors.nidorino]: ipStrafe,
@@ -584,8 +584,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     interpolations: {
       [actors.nidorino]: ipHop({ translate: { x: 4, y: 1 } }),
@@ -609,8 +609,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     interpolations: {
       [actors.nidorino]: ipStrafe,
@@ -634,8 +634,8 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: 0,
-      [actors.gengar]: 3,
+      [actors.nidorino]: [0, 0],
+      [actors.gengar]: [1, 1],
     },
     interpolations: {
       [actors.nidorino]: ipSwipe({ translate: { x: -30, y: -2 } }),
