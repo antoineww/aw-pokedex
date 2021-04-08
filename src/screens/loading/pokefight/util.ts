@@ -169,483 +169,671 @@ export const applyInterpolation = (
   return style
 }
 
-export const actors = {
-  actorA: 0,
-  actorB: 1,
-}
+export class StageShow {
+  constructor(actorA?: number, actorB?: number) {
+    this.actors_images = {
+      actorA: actorA ?? this.actors_images.actorA,
+      actorB: actorB ?? this.actors_images.actorB,
+    }
+  }
 
-export const rotateActors = () => {
-  actors.actorA = (actors.actorA + 1) % images.length
-  actors.actorB = (actors.actorB + 1) % images.length
-}
+  actors = {
+    actorA: 0,
+    actorB: 1,
+  }
 
-export const springCount = Object.keys(actors).length // 2
-export const STAGE_RESET: Stage = {
-  animations: {
-    [actors.actorA]: {
-      from: { squish: 0, strafe: 0, attack: 0 },
-      to: { squish: 0, strafe: 0, attack: 0 },
-      config: config_instant,
-    },
-    [actors.actorB]: {
-      from: { squish: 0, strafe: 0, attack: 0 },
-      to: { squish: 0, strafe: 0, attack: 0 },
-      config: config_instant,
-    },
-  },
-  imageIndecies: {
-    [actors.actorA]: [0, 0],
-    [actors.actorB]: [1, 1],
-  },
-}
-export const STAGE_STOP: Stage = {
-  animations: {
-    [actors.actorA]: {
-      from: {},
-      to: {},
-      immediate: true,
-    },
-    [actors.actorB]: {
-      from: {},
-      to: {},
-      immediate: true,
-    },
-  },
-  imageIndecies: {
-    [actors.actorA]: [0, 0],
-    [actors.actorB]: [1, 1],
-  },
-}
-export const STAGE_ENTRY: Stage = {
-  animations: {
-    [actors.actorA]: {
-      from: {},
-      to: {
-        ...flipX("-1").to,
-        ...slideLeft().to,
-        ...slideUp.to,
-      },
-      config: config_instant,
-    },
-    [actors.actorB]: {
-      from: {},
-      to: {
-        ...flipX("-1").to,
-        ...slideRight().to,
-        ...slideDown.to,
-      },
-      config: config_instant,
-    },
-  },
-  imageIndecies: {
-    [actors.actorA]: [0, 0],
-    [actors.actorB]: [1, 1],
-  },
-  coverScreen: false,
-}
-export const STAGE_POSED_1: Stage = {
-  animations: {
-    [actors.actorA]: {
-      from: {
-        ...STAGE_RESET.animations[actors.actorA].from,
-      },
-      to: {
-        ...STAGE_RESET.animations[actors.actorA].to,
-        ...flipX("-1").to,
-        ...slideRight().to,
-        ...slideUp.to,
-      },
-      config: config_instant,
-    },
-    [actors.actorB]: {
-      from: {
-        ...STAGE_RESET.animations[actors.actorB].from,
-      },
-      to: {
-        ...STAGE_RESET.animations[actors.actorB].to,
-        ...flipX("-1").to,
-        ...slideLeft().to,
-        ...slideDown.to,
-      },
-      config: config_instant,
-    },
-  },
-  imageIndecies: {
-    [actors.actorA]: [0, 0],
-    [actors.actorB]: [1, 1],
-  },
-  coverScreen: false,
-}
+  flipActor = this.actors.actorB
 
-export const stages: Stage[] = [
-  STAGE_ENTRY,
+  actors_images = {
+    actorA: 3,
+    actorB: 0,
+  }
 
-  //Slide X1
-  {
+  actors_pose = {
+    front: 0,
+    back: 1,
+  }
+
+  getRotatedActorImages = () => {
+    return [
+      (this.actors_images.actorA + 1) % images.length,
+      (this.actors_images.actorB + 1) % images.length,
+    ]
+  }
+
+  // rotateActorImages = () => {
+  //   if (this.flipActor === this.actors.actorA) {
+  //     this.flipActor = this.actors.actorB
+  //     this.actors_images.actorA =
+  //       (this.actors_images.actorA + 1) % images.length
+  //   } else {
+  //     this.flipActor = this.actors.actorA
+  //     this.actors_images.actorB =
+  //       (this.actors_images.actorB + 1) % images.length
+  //   }
+  // }
+  rotateActorImages = () => {
+    this.actors_images.actorA = (this.actors_images.actorA + 1) % images.length
+    this.actors_images.actorB = (this.actors_images.actorB + 1) % images.length
+  }
+
+  STAGE_RESET: Stage = {
     animations: {
-      [actors.actorA]: slideRight(undefined, center.left),
-      [actors.actorB]: slideLeft(undefined, center.left),
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    coverScreen: false,
-  },
-  // Flip X1
-  {
-    animations: {
-      [actors.actorA]: {
-        ...flipX("1"),
+      [this.actors.actorA]: {
+        from: { squish: 0, strafe: 0, attack: 0 },
+        to: { squish: 0, strafe: 0, attack: 0 },
         config: config_instant,
       },
-      [actors.actorB]: {
-        ...flipX("1"),
+      [this.actors.actorB]: {
+        from: { squish: 0, strafe: 0, attack: 0 },
+        to: { squish: 0, strafe: 0, attack: 0 },
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
+      [this.actors.actorA]: [this.actors_images.actorA, this.actors_pose.front],
+      [this.actors.actorB]: [this.actors_images.actorB, this.actors_pose.back],
     },
-    coverScreen: false,
-  },
-  //Slide X1-2
-  {
+  }
+  STAGE_STOP: Stage = {
     animations: {
-      [actors.actorA]: slideRight(center.left, undefined),
-
-      [actors.actorB]: slideLeft(center.left, undefined),
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    coverScreen: false,
-  },
-  // Flip X1-2
-  {
-    animations: {
-      [actors.actorB]: {
-        ...flipX(),
-        config: config_instant,
+      [this.actors.actorA]: {
+        from: {},
+        to: {},
+        immediate: true,
+      },
+      [this.actors.actorB]: {
+        from: {},
+        to: {},
+        immediate: true,
       },
     },
     imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
+      [this.actors.actorA]: [this.actors_images.actorA, this.actors_pose.front],
+      [this.actors.actorB]: [this.actors_images.actorB, this.actors_pose.back],
     },
-    coverScreen: false,
-  },
-  // Slide Y1
-  {
+  }
+  STAGE_ENTRY: Stage = {
     animations: {
-      [actors.actorA]: {
-        ...slideDown,
-        config: config_fast,
-        from: { ...slideDown.from, ...goOver.from },
-        to: { ...slideDown.to, ...goOver.to },
-      },
-      [actors.actorB]: {
-        ...slideUp,
-        config: config_fast,
-        from: { ...slideUp.from, ...goUnder.from },
+      [this.actors.actorA]: {
+        from: {},
         to: {
+          ...flipX("-1").to,
+          ...slideLeft().to,
           ...slideUp.to,
-          ...goUnder.to,
         },
-      },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 0],
-    },
-  },
-
-  // Flip X2
-  {
-    animations: {
-      [actors.actorB]: {
-        ...flipX("-1"),
         config: config_instant,
       },
-      [actors.actorA]: {
-        ...flipX("-1"),
-        config: config_instant,
-      },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 0],
-    },
-    coverScreen: false,
-  },
-  // Slide X2
-  {
-    animations: {
-      [actors.actorB]: slideRight(undefined, center.left),
-      [actors.actorA]: {
-        ...slideLeft(),
+      [this.actors.actorB]: {
+        from: {},
         to: {
-          ...slideLeft(undefined, center.left).to,
+          ...flipX("-1").to,
+          ...slideRight().to,
+          ...slideDown.to,
+        },
+        config: config_instant,
+      },
+    },
+    imageIndecies: {
+      [this.actors.actorA]: [this.actors_images.actorA, this.actors_pose.front],
+      [this.actors.actorB]: [this.actors_images.actorB, this.actors_pose.back],
+    },
+    coverScreen: false,
+  }
+  STAGE_POSED_1: Stage = {
+    animations: {
+      [this.actors.actorA]: {
+        from: {
+          ...this.STAGE_RESET.animations[this.actors.actorA].from,
+        },
+        to: {
+          ...this.STAGE_RESET.animations[this.actors.actorA].to,
+          ...flipX("-1").to,
+          ...slideRight().to,
+          ...slideUp.to,
+        },
+        config: config_instant,
+      },
+      [this.actors.actorB]: {
+        from: {
+          ...this.STAGE_RESET.animations[this.actors.actorB].from,
+        },
+        to: {
+          ...this.STAGE_RESET.animations[this.actors.actorB].to,
+          ...flipX("-1").to,
+          ...slideLeft().to,
+          ...slideDown.to,
+        },
+        config: config_instant,
+      },
+    },
+    imageIndecies: {
+      [this.actors.actorA]: [this.actors_images.actorA, this.actors_pose.front],
+      [this.actors.actorB]: [this.actors_images.actorB, this.actors_pose.back],
+    },
+    coverScreen: false,
+  }
+
+  test_stages: Stage[] = [
+    this.STAGE_ENTRY,
+    {
+      animations: {
+        [this.actors.actorA]: slideRight(center.left, undefined),
+
+        [this.actors.actorB]: slideLeft(center.left, undefined),
+      },
+      imageIndecies: {
+        [this.actors.actorA]: [
+          this.actors_images.actorA,
+          this.actors_pose.front,
+        ],
+        [this.actors.actorB]: [
+          this.actors_images.actorB,
+          this.actors_pose.back,
+        ],
+      },
+      coverScreen: false,
+    },
+  ]
+
+  getStages = () => {
+    const stages: Stage[] = [
+      this.STAGE_ENTRY,
+
+      //Slide X1
+      {
+        animations: {
+          [this.actors.actorA]: slideRight(undefined, center.left),
+          [this.actors.actorB]: slideLeft(undefined, center.left),
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
+      },
+      // Flip X1
+      {
+        animations: {
+          [this.actors.actorA]: {
+            ...flipX("1"),
+            config: config_instant,
+          },
+          [this.actors.actorB]: {
+            ...flipX("1"),
+            config: config_instant,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
+      },
+      //Slide X1-2
+      {
+        animations: {
+          [this.actors.actorA]: slideRight(center.left, undefined),
+
+          [this.actors.actorB]: slideLeft(center.left, undefined),
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
+      },
+      // Flip X1-2
+      {
+        animations: {
+          [this.actors.actorB]: {
+            ...flipX(),
+            config: config_instant,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
+      },
+      // Slide Y1
+      {
+        animations: {
+          [this.actors.actorA]: {
+            ...slideDown,
+            config: config_fast,
+            from: { ...slideDown.from, ...goOver.from },
+            to: { ...slideDown.to, ...goOver.to },
+          },
+          [this.actors.actorB]: {
+            ...slideUp,
+            config: config_fast,
+            from: { ...slideUp.from, ...goUnder.from },
+            to: {
+              ...slideUp.to,
+              ...goUnder.to,
+            },
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.front,
+          ],
         },
       },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 1],
-      [actors.actorB]: [1, 0],
-    },
-    coverScreen: false,
-  },
-  // Flip X2-2
-  {
-    animations: {
-      [actors.actorB]: {
-        ...flipX("1"),
-        config: config_instant,
-      },
-      [actors.actorA]: {
-        ...flipX("1"),
-        config: config_instant,
-      },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 1],
-      [actors.actorB]: [1, 0],
-    },
-    coverScreen: false,
-  },
-  // Slide X2-2
-  {
-    animations: {
-      [actors.actorB]: slideRight(center.left, undefined),
 
-      [actors.actorA]: slideLeft(center.left, undefined),
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 1],
-      [actors.actorB]: [1, 0],
-    },
-    coverScreen: false,
-  },
-  // Flip X2-3
-  {
-    animations: {
-      [actors.actorB]: {
-        ...flipX("-1"),
-        config: config_instant,
+      // Flip X2
+      {
+        animations: {
+          [this.actors.actorB]: {
+            ...flipX("-1"),
+            config: config_instant,
+          },
+          [this.actors.actorA]: {
+            ...flipX("-1"),
+            config: config_instant,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.front,
+          ],
+        },
+        coverScreen: false,
       },
-      [actors.actorA]: {
-        ...flipX("-1"),
-        config: config_instant,
+      // Slide X2
+      {
+        animations: {
+          [this.actors.actorB]: slideRight(undefined, center.left),
+          [this.actors.actorA]: {
+            ...slideLeft(),
+            to: {
+              ...slideLeft(undefined, center.left).to,
+            },
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.back,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.front,
+          ],
+        },
+        coverScreen: false,
       },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 1],
-      [actors.actorB]: [1, 1],
-    },
-    coverScreen: false,
-  },
+      // Flip X2-2
+      {
+        animations: {
+          [this.actors.actorB]: {
+            ...flipX("1"),
+            config: config_instant,
+          },
+          [this.actors.actorA]: {
+            ...flipX("1"),
+            config: config_instant,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.back,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.front,
+          ],
+        },
+        coverScreen: false,
+      },
+      // Slide X2-2
+      {
+        animations: {
+          [this.actors.actorB]: slideRight(center.left, undefined),
 
-  // Slide Y2
-  {
-    animations: {
-      [actors.actorA]: {
-        ...slideUp,
-        config: config_fast,
-        to: { ...slideUp.to, ...goUnder.to },
+          [this.actors.actorA]: slideLeft(center.left, undefined),
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.back,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.front,
+          ],
+        },
+        coverScreen: false,
       },
-      [actors.actorB]: {
-        ...slideDown,
-        config: config_fast,
-        to: { ...slideDown.to, ...goOver.to },
+      // Flip X2-3
+      {
+        animations: {
+          [this.actors.actorB]: {
+            ...flipX("-1"),
+            config: config_instant,
+          },
+          [this.actors.actorA]: {
+            ...flipX("-1"),
+            config: config_instant,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.back,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
       },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-  },
 
-  // Slide X3(X1)
-  STAGE_ENTRY,
-  {
-    animations: {
-      [actors.actorA]: slideRight(undefined, center.left),
-      [actors.actorB]: slideLeft(undefined, center.left),
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    coverScreen: false,
-  },
-  // Flip X1
-  {
-    animations: {
-      [actors.actorA]: {
-        ...flipX("1"),
-        config: config_instant,
+      // Slide Y2
+      {
+        animations: {
+          [this.actors.actorA]: {
+            ...slideUp,
+            config: config_fast,
+            to: { ...slideUp.to, ...goUnder.to },
+          },
+          [this.actors.actorB]: {
+            ...slideDown,
+            config: config_fast,
+            to: { ...slideDown.to, ...goOver.to },
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
       },
-      [actors.actorB]: {
-        ...flipX("1"),
-        config: config_instant,
-      },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    coverScreen: false,
-  },
-  //Slide X1-2
-  {
-    animations: {
-      [actors.actorA]: slideRight(center.left, undefined),
 
-      [actors.actorB]: slideLeft(center.left, undefined),
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    coverScreen: false,
-  },
-  // Flip X1-2
-  {
-    animations: {
-      [actors.actorB]: {
-        ...flipX(),
-        config: config_instant,
+      // Slide X3(X1)
+      this.STAGE_ENTRY,
+      {
+        animations: {
+          [this.actors.actorA]: slideRight(undefined, center.left),
+          [this.actors.actorB]: slideLeft(undefined, center.left),
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
       },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    coverScreen: false,
-  },
+      // Flip X1
+      {
+        animations: {
+          [this.actors.actorA]: {
+            ...flipX("1"),
+            config: config_instant,
+          },
+          [this.actors.actorB]: {
+            ...flipX("1"),
+            config: config_instant,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
+      },
+      //Slide X1-2
+      {
+        animations: {
+          [this.actors.actorA]: slideRight(center.left, undefined),
 
-  // PREP FIGHT
-  STAGE_RESET,
-  // SQUISH
-  {
-    animations: {
-      [actors.actorA]: { from: { squish: 0 }, to: { squish: 1 }, config },
-      [actors.actorB]: {
-        from: { squish: 0 },
-        to: { squish: 1 },
-        config,
-        delay: 1000,
+          [this.actors.actorB]: slideLeft(center.left, undefined),
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
       },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    interpolations: {
-      [actors.actorA]: ipSquish,
-      [actors.actorB]: ipSquish,
-    },
-  },
-  // STRAFE 1
-  {
-    animations: {
-      [actors.actorA]: {
-        from: { strafe: 0 },
-        to: { strafe: 1.5 },
-        config: config_fast,
+      // Flip X1-2
+      {
+        animations: {
+          [this.actors.actorB]: {
+            ...flipX(),
+            config: config_instant,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        coverScreen: false,
       },
-      [actors.actorB]: {
-        from: { strafe: 0 },
-        to: { strafe: 1 },
-        config: config,
-        delay: 1000,
-      },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    interpolations: {
-      [actors.actorA]: ipStrafe,
-      [actors.actorB]: ipStrafe,
-    },
-  },
-  // STAGE_POSED_1,
-  STAGE_RESET,
-  // ATTACK 1
-  {
-    animations: {
-      [actors.actorA]: {
-        from: { strafe: 0 },
-        to: { strafe: 0.8 },
-        config,
-      },
-      [actors.actorB]: {
-        from: { attack: 0 },
-        to: { attack: 0.6 },
-        config,
-      },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    interpolations: {
-      [actors.actorA]: ipHop({ translate: { x: 4, y: 1 } }),
-      [actors.actorB]: ipSwipe({ translate: { x: 18, y: 1 } }),
-    },
-  },
-  STAGE_RESET,
 
-  // STRAFE 2
-  {
-    animations: {
-      [actors.actorA]: {
-        from: { strafe: 0 },
-        to: { strafe: 1 },
-        config: config_fast,
+      // PREP FIGHT
+      this.STAGE_RESET,
+      // SQUISH
+      {
+        animations: {
+          [this.actors.actorA]: {
+            from: { squish: 0 },
+            to: { squish: 1 },
+            config,
+          },
+          [this.actors.actorB]: {
+            from: { squish: 0 },
+            to: { squish: 1 },
+            config,
+            delay: 1000,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        interpolations: {
+          [this.actors.actorA]: ipSquish,
+          [this.actors.actorB]: ipSquish,
+        },
       },
-      [actors.actorB]: {
-        from: { strafe: 0 },
-        to: { strafe: 1 },
-        config,
+      // STRAFE 1
+      {
+        animations: {
+          [this.actors.actorA]: {
+            from: { strafe: 0 },
+            to: { strafe: 1.5 },
+            config: config_fast,
+          },
+          [this.actors.actorB]: {
+            from: { strafe: 0 },
+            to: { strafe: 1 },
+            config: config,
+            delay: 1000,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        interpolations: {
+          [this.actors.actorA]: ipStrafe,
+          [this.actors.actorB]: ipStrafe,
+        },
       },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    interpolations: {
-      [actors.actorA]: ipStrafe,
-      [actors.actorB]: ipStrafe,
-    },
-  },
+      // this.STAGE_POSED_1,
+      this.STAGE_RESET,
+      // ATTACK 1
+      {
+        animations: {
+          [this.actors.actorA]: {
+            from: { strafe: 0 },
+            to: { strafe: 0.8 },
+            config,
+          },
+          [this.actors.actorB]: {
+            from: { attack: 0 },
+            to: { attack: 0.6 },
+            config,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        interpolations: {
+          [this.actors.actorA]: ipHop({ translate: { x: 4, y: 1 } }),
+          [this.actors.actorB]: ipSwipe({ translate: { x: 18, y: 1 } }),
+        },
+      },
+      this.STAGE_RESET,
 
-  // ATTACK 2
-  {
-    animations: {
-      [actors.actorA]: {
-        from: { attack: 0 },
-        to: { attack: 0.9 },
-        config: config_slow,
+      // STRAFE 2
+      {
+        animations: {
+          [this.actors.actorA]: {
+            from: { strafe: 0 },
+            to: { strafe: 1 },
+            config: config_fast,
+          },
+          [this.actors.actorB]: {
+            from: { strafe: 0 },
+            to: { strafe: 1 },
+            config,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        interpolations: {
+          [this.actors.actorA]: ipStrafe,
+          [this.actors.actorB]: ipStrafe,
+        },
       },
-      [actors.actorB]: {
-        from: { attack: 0 },
-        to: { attack: 1 },
-        config,
-        delay: 400,
+
+      // ATTACK 2
+      {
+        animations: {
+          [this.actors.actorA]: {
+            from: { attack: 0 },
+            to: { attack: 0.9 },
+            config: config_slow,
+          },
+          [this.actors.actorB]: {
+            from: { attack: 0 },
+            to: { attack: 1 },
+            config,
+            delay: 400,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        interpolations: {
+          [this.actors.actorA]: ipSwipe({ translate: { x: -30, y: -2 } }),
+          [this.actors.actorB]: ipTilt({ rotate: 2 }),
+        },
       },
-    },
-    imageIndecies: {
-      [actors.actorA]: [0, 0],
-      [actors.actorB]: [1, 1],
-    },
-    interpolations: {
-      [actors.actorA]: ipSwipe({ translate: { x: -30, y: -2 } }),
-      [actors.actorB]: ipTilt({ rotate: 2 }),
-    },
-  },
-  // STAGE_STOP,
-]
+      // this.STAGE_STOP,
+    ]
+
+    return stages
+  }
+}

@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { animated, useSpring, useSprings } from "react-spring"
-import {
-  stages,
-  springCount,
-  actors,
-  applyInterpolation,
-  getActorImage,
-  STAGE_STOP,
-  rotateActors,
-} from "./util"
+import { StageShow, applyInterpolation, getActorImage } from "./util"
 
-const getStage = (stage: number, onRest: Function) => (index: number) => {
-  let actorPart = stages[stage].animations[index] || {}
+const stageShow = new StageShow()
+
+const getStage = (springCount: number, stage: number, onRest: Function) => (
+  index: number
+) => {
+  let actorPart = stageShow.getStages()[stage].animations[index] || {}
   if (index === springCount - 1) actorPart = { ...actorPart, onRest }
   return actorPart
 }
@@ -25,15 +21,15 @@ const getFighters: (params: getFighterProps) => any = ({
   springs,
   currentStage,
 }) => {
-  let actorAStyle = springs[actors.actorA]
-  let actorBStyle = springs[actors.actorB]
+  let actorAStyle = springs[stageShow.actors.actorA]
+  let actorBStyle = springs[stageShow.actors.actorB]
   if (currentStage.interpolations) {
     actorAStyle = applyInterpolation(
-      currentStage.interpolations[actors.actorA],
+      currentStage.interpolations[stageShow.actors.actorA],
       actorAStyle
     )
     actorBStyle = applyInterpolation(
-      currentStage.interpolations[actors.actorB],
+      currentStage.interpolations[stageShow.actors.actorB],
       actorBStyle
     )
   }
@@ -41,8 +37,12 @@ const getFighters: (params: getFighterProps) => any = ({
   let actorA_img
   let actorB_img
   if (currentStage.imageIndecies) {
-    actorA_img = getActorImage(...currentStage.imageIndecies[actors.actorA])
-    actorB_img = getActorImage(...currentStage.imageIndecies[actors.actorB])
+    actorA_img = getActorImage(
+      ...currentStage.imageIndecies[stageShow.actors.actorA]
+    )
+    actorB_img = getActorImage(
+      ...currentStage.imageIndecies[stageShow.actors.actorB]
+    )
   }
 
   const actorA = (
@@ -83,30 +83,34 @@ const PokeFight: React.FC<PokeFightProps> = ({
     // console.log("onRest ", { stage, newStage, canLoop, fnName })
     if (stop) return
 
-    if (newStage < stages.length) {
+    if (newStage < stageShow.getStages().length) {
       setStatePokeFight({ ...statePokeFight, stage: newStage })
     } else if (canLoop) {
-      // rotateActors()
+      stageShow.rotateActorImages()
       setStatePokeFight({ ...statePokeFight, stage: 0 })
     }
   }
 
+  const springCount = Object.keys(stageShow.actors).length // 2
+
   const [springs, set] = useSprings(
     springCount,
-    getStage(stage, onRestGoToNextStage(stage + 1, "useSprings"))
+    getStage(springCount, stage, onRestGoToNextStage(stage + 1, "useSprings"))
   )
 
   useEffect(() => {
     if (typeof endLoading == "function") {
       set((index: number) => {
-        let actorPart = STAGE_STOP.animations[index]
+        let actorPart = stageShow.STAGE_STOP.animations[index]
         return actorPart
       })
       setStatePokeFight({ ...statePokeFight, stop: true })
       return
     }
     // @ts-ignore typescript-types broken in v8 but fixed in v9
-    set(getStage(stage, onRestGoToNextStage(stage + 1, "useEffect")))
+    set(
+      getStage(springCount, stage, onRestGoToNextStage(stage + 1, "useEffect"))
+    )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, endLoading])
@@ -116,7 +120,7 @@ const PokeFight: React.FC<PokeFightProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stop])
 
-  const currentStage = stages[stage]
+  const currentStage = stageShow.getStages()[stage]
   const { actorA, actorB } = getFighters({ springs, currentStage })
   // console.log({ currentStage })
 
