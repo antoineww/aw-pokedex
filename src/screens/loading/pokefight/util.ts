@@ -170,50 +170,55 @@ export const applyInterpolation = (
 }
 
 export const actors = {
-  nidorino: 0,
-  gengar: 1,
+  actorA: 0,
+  actorB: 1,
+}
+
+export const rotateActors = () => {
+  actors.actorA = (actors.actorA + 1) % images.length
+  actors.actorB = (actors.actorB + 1) % images.length
 }
 
 export const springCount = Object.keys(actors).length // 2
 export const STAGE_RESET: Stage = {
   animations: {
-    [actors.nidorino]: {
+    [actors.actorA]: {
       from: { squish: 0, strafe: 0, attack: 0 },
       to: { squish: 0, strafe: 0, attack: 0 },
       config: config_instant,
     },
-    [actors.gengar]: {
+    [actors.actorB]: {
       from: { squish: 0, strafe: 0, attack: 0 },
       to: { squish: 0, strafe: 0, attack: 0 },
       config: config_instant,
     },
   },
   imageIndecies: {
-    [actors.nidorino]: [0, 0],
-    [actors.gengar]: [1, 1],
+    [actors.actorA]: [0, 0],
+    [actors.actorB]: [1, 1],
   },
 }
 export const STAGE_STOP: Stage = {
   animations: {
-    [actors.nidorino]: {
+    [actors.actorA]: {
       from: {},
       to: {},
       immediate: true,
     },
-    [actors.gengar]: {
+    [actors.actorB]: {
       from: {},
       to: {},
       immediate: true,
     },
   },
   imageIndecies: {
-    [actors.nidorino]: [0, 0],
-    [actors.gengar]: [1, 1],
+    [actors.actorA]: [0, 0],
+    [actors.actorB]: [1, 1],
   },
 }
 export const STAGE_ENTRY: Stage = {
   animations: {
-    [actors.nidorino]: {
+    [actors.actorA]: {
       from: {},
       to: {
         ...flipX("-1").to,
@@ -222,7 +227,7 @@ export const STAGE_ENTRY: Stage = {
       },
       config: config_instant,
     },
-    [actors.gengar]: {
+    [actors.actorB]: {
       from: {},
       to: {
         ...flipX("-1").to,
@@ -233,31 +238,31 @@ export const STAGE_ENTRY: Stage = {
     },
   },
   imageIndecies: {
-    [actors.nidorino]: [0, 0],
-    [actors.gengar]: [1, 1],
+    [actors.actorA]: [0, 0],
+    [actors.actorB]: [1, 1],
   },
   coverScreen: false,
 }
 export const STAGE_POSED_1: Stage = {
   animations: {
-    [actors.nidorino]: {
+    [actors.actorA]: {
       from: {
-        ...STAGE_RESET.animations[actors.nidorino].from,
+        ...STAGE_RESET.animations[actors.actorA].from,
       },
       to: {
-        ...STAGE_RESET.animations[actors.nidorino].to,
+        ...STAGE_RESET.animations[actors.actorA].to,
         ...flipX("-1").to,
         ...slideRight().to,
         ...slideUp.to,
       },
       config: config_instant,
     },
-    [actors.gengar]: {
+    [actors.actorB]: {
       from: {
-        ...STAGE_RESET.animations[actors.gengar].from,
+        ...STAGE_RESET.animations[actors.actorB].from,
       },
       to: {
-        ...STAGE_RESET.animations[actors.gengar].to,
+        ...STAGE_RESET.animations[actors.actorB].to,
         ...flipX("-1").to,
         ...slideLeft().to,
         ...slideDown.to,
@@ -266,8 +271,8 @@ export const STAGE_POSED_1: Stage = {
     },
   },
   imageIndecies: {
-    [actors.nidorino]: [0, 0],
-    [actors.gengar]: [1, 1],
+    [actors.actorA]: [0, 0],
+    [actors.actorB]: [1, 1],
   },
   coverScreen: false,
 }
@@ -278,70 +283,70 @@ export const stages: Stage[] = [
   //Slide X1
   {
     animations: {
-      [actors.nidorino]: slideRight(undefined, center.left),
-      [actors.gengar]: slideLeft(undefined, center.left),
+      [actors.actorA]: slideRight(undefined, center.left),
+      [actors.actorB]: slideLeft(undefined, center.left),
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
   // Flip X1
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         ...flipX("1"),
         config: config_instant,
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...flipX("1"),
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
   //Slide X1-2
   {
     animations: {
-      [actors.nidorino]: slideRight(center.left, undefined),
+      [actors.actorA]: slideRight(center.left, undefined),
 
-      [actors.gengar]: slideLeft(center.left, undefined),
+      [actors.actorB]: slideLeft(center.left, undefined),
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
   // Flip X1-2
   {
     animations: {
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...flipX(),
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
   // Slide Y1
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         ...slideDown,
         config: config_fast,
         from: { ...slideDown.from, ...goOver.from },
         to: { ...slideDown.to, ...goOver.to },
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...slideUp,
         config: config_fast,
         from: { ...slideUp.from, ...goUnder.from },
@@ -352,34 +357,34 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 0],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 0],
     },
   },
 
   // Flip X2
   {
     animations: {
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...flipX("-1"),
         config: config_instant,
       },
-      [actors.nidorino]: {
+      [actors.actorA]: {
         ...flipX("-1"),
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 0],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 0],
     },
     coverScreen: false,
   },
   // Slide X2
   {
     animations: {
-      [actors.gengar]: slideRight(undefined, center.left),
-      [actors.nidorino]: {
+      [actors.actorB]: slideRight(undefined, center.left),
+      [actors.actorA]: {
         ...slideLeft(),
         to: {
           ...slideLeft(undefined, center.left).to,
@@ -387,57 +392,57 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 1],
-      [actors.gengar]: [1, 0],
+      [actors.actorA]: [0, 1],
+      [actors.actorB]: [1, 0],
     },
     coverScreen: false,
   },
   // Flip X2-2
   {
     animations: {
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...flipX("1"),
         config: config_instant,
       },
-      [actors.nidorino]: {
+      [actors.actorA]: {
         ...flipX("1"),
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 1],
-      [actors.gengar]: [1, 0],
+      [actors.actorA]: [0, 1],
+      [actors.actorB]: [1, 0],
     },
     coverScreen: false,
   },
   // Slide X2-2
   {
     animations: {
-      [actors.gengar]: slideRight(center.left, undefined),
+      [actors.actorB]: slideRight(center.left, undefined),
 
-      [actors.nidorino]: slideLeft(center.left, undefined),
+      [actors.actorA]: slideLeft(center.left, undefined),
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 1],
-      [actors.gengar]: [1, 0],
+      [actors.actorA]: [0, 1],
+      [actors.actorB]: [1, 0],
     },
     coverScreen: false,
   },
   // Flip X2-3
   {
     animations: {
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...flipX("-1"),
         config: config_instant,
       },
-      [actors.nidorino]: {
+      [actors.actorA]: {
         ...flipX("-1"),
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 1],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 1],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
@@ -445,20 +450,20 @@ export const stages: Stage[] = [
   // Slide Y2
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         ...slideUp,
         config: config_fast,
         to: { ...slideUp.to, ...goUnder.to },
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...slideDown,
         config: config_fast,
         to: { ...slideDown.to, ...goOver.to },
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
   },
 
@@ -466,57 +471,57 @@ export const stages: Stage[] = [
   STAGE_ENTRY,
   {
     animations: {
-      [actors.nidorino]: slideRight(undefined, center.left),
-      [actors.gengar]: slideLeft(undefined, center.left),
+      [actors.actorA]: slideRight(undefined, center.left),
+      [actors.actorB]: slideLeft(undefined, center.left),
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
   // Flip X1
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         ...flipX("1"),
         config: config_instant,
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...flipX("1"),
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
   //Slide X1-2
   {
     animations: {
-      [actors.nidorino]: slideRight(center.left, undefined),
+      [actors.actorA]: slideRight(center.left, undefined),
 
-      [actors.gengar]: slideLeft(center.left, undefined),
+      [actors.actorB]: slideLeft(center.left, undefined),
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
   // Flip X1-2
   {
     animations: {
-      [actors.gengar]: {
+      [actors.actorB]: {
         ...flipX(),
         config: config_instant,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     coverScreen: false,
   },
@@ -526,8 +531,8 @@ export const stages: Stage[] = [
   // SQUISH
   {
     animations: {
-      [actors.nidorino]: { from: { squish: 0 }, to: { squish: 1 }, config },
-      [actors.gengar]: {
+      [actors.actorA]: { from: { squish: 0 }, to: { squish: 1 }, config },
+      [actors.actorB]: {
         from: { squish: 0 },
         to: { squish: 1 },
         config,
@@ -535,23 +540,23 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     interpolations: {
-      [actors.nidorino]: ipSquish,
-      [actors.gengar]: ipSquish,
+      [actors.actorA]: ipSquish,
+      [actors.actorB]: ipSquish,
     },
   },
   // STRAFE 1
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         from: { strafe: 0 },
         to: { strafe: 1.5 },
         config: config_fast,
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         from: { strafe: 0 },
         to: { strafe: 1 },
         config: config,
@@ -559,12 +564,12 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     interpolations: {
-      [actors.nidorino]: ipStrafe,
-      [actors.gengar]: ipStrafe,
+      [actors.actorA]: ipStrafe,
+      [actors.actorB]: ipStrafe,
     },
   },
   // STAGE_POSED_1,
@@ -572,24 +577,24 @@ export const stages: Stage[] = [
   // ATTACK 1
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         from: { strafe: 0 },
         to: { strafe: 0.8 },
         config,
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         from: { attack: 0 },
         to: { attack: 0.6 },
         config,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     interpolations: {
-      [actors.nidorino]: ipHop({ translate: { x: 4, y: 1 } }),
-      [actors.gengar]: ipSwipe({ translate: { x: 18, y: 1 } }),
+      [actors.actorA]: ipHop({ translate: { x: 4, y: 1 } }),
+      [actors.actorB]: ipSwipe({ translate: { x: 18, y: 1 } }),
     },
   },
   STAGE_RESET,
@@ -597,36 +602,36 @@ export const stages: Stage[] = [
   // STRAFE 2
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         from: { strafe: 0 },
         to: { strafe: 1 },
         config: config_fast,
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         from: { strafe: 0 },
         to: { strafe: 1 },
         config,
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     interpolations: {
-      [actors.nidorino]: ipStrafe,
-      [actors.gengar]: ipStrafe,
+      [actors.actorA]: ipStrafe,
+      [actors.actorB]: ipStrafe,
     },
   },
 
   // ATTACK 2
   {
     animations: {
-      [actors.nidorino]: {
+      [actors.actorA]: {
         from: { attack: 0 },
         to: { attack: 0.9 },
         config: config_slow,
       },
-      [actors.gengar]: {
+      [actors.actorB]: {
         from: { attack: 0 },
         to: { attack: 1 },
         config,
@@ -634,12 +639,12 @@ export const stages: Stage[] = [
       },
     },
     imageIndecies: {
-      [actors.nidorino]: [0, 0],
-      [actors.gengar]: [1, 1],
+      [actors.actorA]: [0, 0],
+      [actors.actorB]: [1, 1],
     },
     interpolations: {
-      [actors.nidorino]: ipSwipe({ translate: { x: -30, y: -2 } }),
-      [actors.gengar]: ipTilt({ rotate: 2 }),
+      [actors.actorA]: ipSwipe({ translate: { x: -30, y: -2 } }),
+      [actors.actorB]: ipTilt({ rotate: 2 }),
     },
   },
   // STAGE_STOP,

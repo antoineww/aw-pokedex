@@ -7,6 +7,7 @@ import {
   applyInterpolation,
   getActorImage,
   STAGE_STOP,
+  rotateActors,
 } from "./util"
 
 const getStage = (stage: number, onRest: Function) => (index: number) => {
@@ -24,47 +25,47 @@ const getFighters: (params: getFighterProps) => any = ({
   springs,
   currentStage,
 }) => {
-  let nidorinoStyle = springs[actors.nidorino]
-  let gengarStyle = springs[actors.gengar]
+  let actorAStyle = springs[actors.actorA]
+  let actorBStyle = springs[actors.actorB]
   if (currentStage.interpolations) {
-    nidorinoStyle = applyInterpolation(
-      currentStage.interpolations[actors.nidorino],
-      nidorinoStyle
+    actorAStyle = applyInterpolation(
+      currentStage.interpolations[actors.actorA],
+      actorAStyle
     )
-    gengarStyle = applyInterpolation(
-      currentStage.interpolations[actors.gengar],
-      gengarStyle
+    actorBStyle = applyInterpolation(
+      currentStage.interpolations[actors.actorB],
+      actorBStyle
     )
   }
 
-  let nidorino_img
-  let gengar_img
+  let actorA_img
+  let actorB_img
   if (currentStage.imageIndecies) {
-    nidorino_img = getActorImage(...currentStage.imageIndecies[actors.nidorino])
-    gengar_img = getActorImage(...currentStage.imageIndecies[actors.gengar])
+    actorA_img = getActorImage(...currentStage.imageIndecies[actors.actorA])
+    actorB_img = getActorImage(...currentStage.imageIndecies[actors.actorB])
   }
 
-  const nidorino = (
+  const actorA = (
     <animated.img
-      src={nidorino_img}
-      alt="nidorino_img"
+      src={actorA_img}
+      alt="actorA_img"
       className={`pokemon-img-lg mk-absolute`}
-      style={nidorinoStyle}
+      style={actorAStyle}
     />
   )
 
-  const gengar = (
+  const actorB = (
     <animated.img
-      src={gengar_img}
-      alt="gengar_img"
+      src={actorB_img}
+      alt="actorB_img"
       className={`pokemon-img-lg mk-absolute`}
-      style={gengarStyle}
+      style={actorBStyle}
     />
   )
 
   return {
-    nidorino,
-    gengar,
+    actorA,
+    actorB,
   }
 }
 
@@ -85,6 +86,7 @@ const PokeFight: React.FC<PokeFightProps> = ({
     if (newStage < stages.length) {
       setStatePokeFight({ ...statePokeFight, stage: newStage })
     } else if (canLoop) {
+      // rotateActors()
       setStatePokeFight({ ...statePokeFight, stage: 0 })
     }
   }
@@ -115,15 +117,15 @@ const PokeFight: React.FC<PokeFightProps> = ({
   }, [stop])
 
   const currentStage = stages[stage]
-  const { nidorino, gengar } = getFighters({ springs, currentStage })
+  const { actorA, actorB } = getFighters({ springs, currentStage })
   // console.log({ currentStage })
 
   return (
     <div className="container is-flex is-align-items-center">
       <div className="notification is-primary is-centered arena">
         {/* <FlashingBackground /> */}
-        {nidorino}
-        {gengar}
+        {actorA}
+        {actorB}
       </div>
       {isTest && (
         <div className="debugSection p-6">
