@@ -85,11 +85,11 @@ export const ipSquish: (props: BasicAnimatedValue) => {} = ({
 }) => ({
   ...restOfProps,
   transform: squish
-    .interpolate({
+    ?.interpolate({
       range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
       output: [1, 0.97, 0.8, 1.1, 0.8, 1.1, 1.03, 1],
     })
-    .interpolate((val: any) => `scale(${val})`),
+    ?.interpolate((val: any) => `scale(${val})`),
 })
 export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
   strafe,
@@ -97,11 +97,11 @@ export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
 }) => ({
   ...restOfProps,
   transform: strafe
-    .interpolate({
+    ?.interpolate({
       range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
       output: [-5, 5, -10, 5, -5, 10, -5, -5],
     })
-    .interpolate((val: any) => `translate(${val}%)`),
+    ?.interpolate((val: any) => `translate(${val}%)`),
 })
 
 const PARABOLA_CONVEX = (x: number) => 6 * x - Math.pow(x, 2)
@@ -114,11 +114,11 @@ export const ipHop: (
 }) => ({
   ...restOfProps,
   transform: strafe
-    .interpolate({
+    ?.interpolate({
       range: [0, 0.3, 0.5, 1],
       output: [0, -8, 0, -8],
     })
-    .interpolate(
+    ?.interpolate(
       (val: any) =>
         `translate(${val * (translate?.x ?? 1)}%,${
           PARABOLA_CONCAVE(val) * (translate?.y ?? 1)
@@ -133,11 +133,11 @@ export const ipSwipe: (
 }) => ({
   ...restOfProps,
   transform: attack
-    .interpolate({
+    ?.interpolate({
       range: [0, 0.3, 1],
       output: [0, 8, 0],
     })
-    .interpolate(
+    ?.interpolate(
       (val: any) =>
         `translate(${val * (translate?.x ?? 1)}0%, ${
           PARABOLA_CONVEX(val) * (translate?.y ?? 1)
@@ -152,11 +152,11 @@ export const ipTilt: (
 }) => ({
   ...restOfProps,
   transform: attack
-    .interpolate({
+    ?.interpolate({
       range: [0, 0.3, 1],
       output: [1, 0, -20],
     })
-    .interpolate(
+    ?.interpolate(
       (val: any) =>
         `translate(${val * (translate?.x ?? 1)}%, ${
           PARABOLA_CONVEX(val) * (translate?.y ?? 1)
