@@ -125,12 +125,16 @@ const PokeFight: React.FC<PokeFightProps> = ({
   // console.log({ currentStage })
 
   return (
-    <div className="container is-flex is-align-items-center">
+    <div className="container is-flex-direction-column is-flex is-align-items-center is-justify-content-center">
+      {/* <progress className="progress is-small is-primary" max="100"></progress> */}
       <div className="notification is-primary is-centered arena">
         {/* <FlashingBackground /> */}
         {actorA}
         {actorB}
       </div>
+      <progress className="progress is-small is-primary" max="100"></progress>
+      <span className="tag is-primary is-medium m-3">Loading</span>
+
       {isTest && (
         <div className="debugSection p-6">
           <p>{`Stage: ${stage}`}</p>

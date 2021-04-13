@@ -766,7 +766,7 @@ export class StageShow {
         },
         interpolations: {
           [this.actors.actorA]: ipHop({ translate: { x: 4, y: 1 } }),
-          [this.actors.actorB]: ipSwipe({ translate: { x: 18, y: 1 } }),
+          [this.actors.actorB]: ipSwipe({ translate: { x: 26, y: 1 } }),
         },
       },
       this.STAGE_RESET,
@@ -828,7 +828,7 @@ export class StageShow {
         interpolations: {
           [this.stayActor]: ipSwipe({
             translate: {
-              x: -30 * (this.isStayActor(this.actors.actorA) ? 1 : -1),
+              x: -33 * (this.isStayActor(this.actors.actorA) ? 1 : -1),
               y: -2 * (this.isStayActor(this.actors.actorA) ? 1 : -1),
             },
           }),
