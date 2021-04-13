@@ -7,7 +7,7 @@ const images = Object.entries(poke_images)
 export const getActorImage = (index: number, indexFront: any = 0) =>
   indexFront === 0 ? images[index][1].front : images[index][1].back
 
-export const config_slow = { duration: 5000 }
+export const config_slow = { duration: 2000 }
 export const config = { duration: 1000 }
 export const config_fast = { duration: 500 }
 export const config_instant = { duration: 0 }
@@ -146,17 +146,22 @@ export const ipSwipe: (
 })
 export const ipTilt: (
   args: TransformArgs
-) => (props: BasicAnimatedValue) => {} = ({ rotate }) => ({
+) => (props: BasicAnimatedValue) => {} = ({ rotate, translate }) => ({
   attack,
   ...restOfProps
 }) => ({
   ...restOfProps,
   transform: attack
     .interpolate({
-      range: [0, 0.2, 0.4, 0.6, 0.8, 1],
-      output: [1, 0, -1, -2, -3, -4],
+      range: [0, 0.3, 1],
+      output: [1, 0, -20],
     })
-    .interpolate((val: any) => `rotate(${val * (rotate ?? 1)}0deg)`),
+    .interpolate(
+      (val: any) =>
+        `translate(${val * (translate?.x ?? 1)}%, ${
+          PARABOLA_CONVEX(val) * (translate?.y ?? 1)
+        }%) rotate(${val * (rotate ?? 1)}0deg)`
+    ),
 })
 
 export const applyInterpolation = (
@@ -182,6 +187,7 @@ export class StageShow {
     actorB: 1,
   }
 
+  stayActor = this.actors.actorA
   flipActor = this.actors.actorB
 
   actors_images = {
@@ -194,27 +200,21 @@ export class StageShow {
     back: 1,
   }
 
-  getRotatedActorImages = () => {
-    return [
-      (this.actors_images.actorA + 1) % images.length,
-      (this.actors_images.actorB + 1) % images.length,
-    ]
-  }
+  isFlipActor = (actor: number) => this.flipActor === actor
+  isStayActor = (actor: number) => this.stayActor === actor
 
-  // rotateActorImages = () => {
-  //   if (this.flipActor === this.actors.actorA) {
-  //     this.flipActor = this.actors.actorB
-  //     this.actors_images.actorA =
-  //       (this.actors_images.actorA + 1) % images.length
-  //   } else {
-  //     this.flipActor = this.actors.actorA
-  //     this.actors_images.actorB =
-  //       (this.actors_images.actorB + 1) % images.length
-  //   }
-  // }
   rotateActorImages = () => {
-    this.actors_images.actorA = (this.actors_images.actorA + 1) % images.length
-    this.actors_images.actorB = (this.actors_images.actorB + 1) % images.length
+    if (this.isFlipActor(this.actors.actorA)) {
+      this.stayActor = this.actors.actorA
+      this.flipActor = this.actors.actorB
+      this.actors_images.actorA =
+        (this.actors_images.actorA + 2) % images.length
+    } else {
+      this.stayActor = this.actors.actorB
+      this.flipActor = this.actors.actorA
+      this.actors_images.actorB =
+        (this.actors_images.actorB + 2) % images.length
+    }
   }
 
   STAGE_RESET: Stage = {
@@ -804,16 +804,15 @@ export class StageShow {
       // ATTACK 2
       {
         animations: {
-          [this.actors.actorA]: {
+          [this.stayActor]: {
             from: { attack: 0 },
             to: { attack: 0.9 },
             config: config_slow,
           },
-          [this.actors.actorB]: {
+          [this.flipActor]: {
             from: { attack: 0 },
             to: { attack: 1 },
-            config,
-            delay: 400,
+            config: config_slow,
           },
         },
         imageIndecies: {
@@ -827,8 +826,19 @@ export class StageShow {
           ],
         },
         interpolations: {
-          [this.actors.actorA]: ipSwipe({ translate: { x: -30, y: -2 } }),
-          [this.actors.actorB]: ipTilt({ rotate: 2 }),
+          [this.stayActor]: ipSwipe({
+            translate: {
+              x: -30 * (this.isStayActor(this.actors.actorA) ? 1 : -1),
+              y: -2 * (this.isStayActor(this.actors.actorA) ? 1 : -1),
+            },
+          }),
+          [this.flipActor]: ipTilt({
+            rotate: 10 * (this.isFlipActor(this.actors.actorB) ? 1 : -1),
+            translate: {
+              x: 10 * (this.isFlipActor(this.actors.actorB) ? 1 : -1),
+              y: 1 * (this.isFlipActor(this.actors.actorB) ? -1 : 1),
+            },
+          }),
         },
       },
       // this.STAGE_STOP,
