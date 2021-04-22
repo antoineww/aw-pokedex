@@ -32,7 +32,7 @@ const getPokemonEvolutions: (
 }
 
 const DEV_MODE = true
-const DEV_MODE_LOADING = true
+const DEV_MODE_LOADING = false
 
 const getChainForms = (evoChain: PokeEvolutionChain) => {
   const chainForms: PokemonRef[] = []
@@ -65,26 +65,37 @@ const getEvolutionChain: FT_EvolutionChain = (
   let found: boolean = false
   let foundChain: PokeEvolutionChain | null = null
 
-  evolutionChains.forEach((evoChain) => {
+  // console.log({ pokem, evolutionChains })
+  for (
+    let evoChainIndex = 0;
+    evoChainIndex < evolutionChains.length;
+    evoChainIndex++
+  ) {
+    const evoChain = evolutionChains[evoChainIndex]
     found = getChainBlobIndex(evoChain, pokem) > -1
+    // console.log({ found, evoChain })
 
     if (found) {
       const chainForms = getChainForms(evoChain)
+      // console.log({ chainForms })
       chainForms.forEach((form, index) => {
         const foundPokem = _.find(
           pokemons,
           (pokemCurrent) =>
             pokemCurrent.name.toLowerCase() === form.name.toLowerCase()
         )
+        // console.log({ foundPokem })
         if (foundPokem)
           chainForms[index] = { ...chainForms[index], ...foundPokem }
       })
 
       evoChain.chainForms = chainForms as Pokemon[]
       foundChain = evoChain
-      return
+      // console.log({ foundChain })
+      break
     }
-  })
+  }
+  // console.log({ found, foundChain })
 
   if (found) {
     return foundChain

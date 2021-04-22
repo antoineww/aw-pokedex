@@ -35,11 +35,10 @@ export const PokeList: React.FC<PropsPokeList> = ({
       }
       if (getPokeEvolutionChain) {
         const evolutionChain = getPokeEvolutionChain(pokemonSelected)
-        if (evolutionChain) {
-          newState = {
-            ...newState,
-            evolutionChain,
-          }
+        // console.log({ evolutionChain })
+        newState = {
+          ...newState,
+          evolutionChain,
         }
       }
       setStatePokeList(newState)
