@@ -54,14 +54,16 @@ export const PokeList: React.FC<PropsPokeList> = ({
   }
 
   return (
-    <div className="mx-6 ">
-      <h1 className="title has-text-primary-light has-text-centered">
-        {_.capitalize(title)}
-      </h1>
+    <div className="tile is-vertical ">
+      <div className="tile is-child">
+        <h1 className="title has-text-primary-light has-text-centered">
+          {_.capitalize(title)}
+        </h1>
+      </div>
 
       <PokeModal {...modalProps} />
 
-      <div className="columns is-flex-wrap-wrap ">
+      <div className="tile is-parent is-flex-wrap-wrap">
         {pokemon.map((pokem, index) => (
           <PokemonCard
             key={`slot-${index}`}
