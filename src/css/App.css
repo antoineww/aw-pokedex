@@ -115,13 +115,13 @@ body {
 .highcharts-background {
   fill: none !important;
 }
-rect[Attributes Style] {
+/* rect[Attributes Style] {
   fill: none !important;
-}
-.highcharts-credits {
+} */
+/* .highcharts-credits {
   display: none !important;
   pointer-events: none !important;
-}
+} */
 
 /* Disable highcharts background*/
 .highcharts-container text {
