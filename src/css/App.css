@@ -104,9 +104,6 @@ body {
 .evolveModalButton {
   margin-top: -4em;
 }
-.evolution-chain-display {
-  min-height: 128px;
-}
 
 /* Disable highcharts background*/
 .highcharts-container {
@@ -157,7 +154,21 @@ body {
   margin-right: auto;
 } */
 
+.evolution-chain-display {
+  min-height: 128px;
+  background-color: hsl(0, 0%, 40%, 0.5);
+  border-radius: 10rem;
+  padding: 0.5rem 1rem;
+}
 .masked {
   filter: brightness(0);
   -webkit-filter: brightness(0);
+}
+.evolution-chain-display-pokemon {
+  /* transition: background-color 100ms ease; */
+  border-radius: 10rem;
+}
+.evolution-chain-display-pokemon:hover,
+.evolution-chain-display-pokemon:focus {
+  background-color: hsl(0, 0%, 100%, 0.5);
 }

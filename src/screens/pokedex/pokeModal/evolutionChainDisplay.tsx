@@ -9,7 +9,7 @@ const EvoChainLinkImage: React.FC<PropsEvoChainLinkImage> = ({
   return (
     <figure
       key={`Evolution-Chain-Display-${pokem.name}`}
-      className={`image is-128x128 mk-center-x`}
+      className={`image is-128x128 mk-center-x evolution-chain-display-pokemon`}
       onClick={() => volvePokemon()}
       onDoubleClick={() => setRevealState(!reveal)}
     >
