@@ -251,6 +251,13 @@ interface PropsPokemonModalDisplay {
 
 interface PropsEvolutionChainDisplay {
   evolutionChain?: PokeEvolutionChain
+  volvePokemon: Function
+}
+
+interface PropsEvoChainLinkImage {
+  pokem: Pokemon
+  showChain: boolean
+  volvePokemon: Function
 }
 
 //

@@ -29,21 +29,34 @@ const PokemonModalDisplay: React.FC<PropsPokemonModalDisplay> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokem])
 
-  const volvePokemon = (volve: volveType = "evolve") => {
+  // const volvePokemon = (volve: volveType = "evolve") => {
+  //   if (!evolutionChain?.chainForms) return
+  //   const { chainForms } = evolutionChain
+  //   const chainIndex = _.findIndex(chainForms, (pok) => pok.id === pokem.id)
+
+  //   if (volve === "evolve") {
+  //     if (chainIndex < chainForms.length - 1) {
+  //       const nextPokemon = chainForms[chainIndex + 1]
+  //       if (nextPokemon) setModalOpen(true, nextPokemon)
+  //     }
+  //   } else {
+  //     if (chainIndex > 0) {
+  //       const nextPokemon = chainForms[chainIndex - 1]
+  //       if (nextPokemon) setModalOpen(true, nextPokemon)
+  //     }
+  //   }
+  // }
+  const volvePokemon = (nextPokem: Pokemon) => {
     if (!evolutionChain?.chainForms) return
     const { chainForms } = evolutionChain
     const chainIndex = _.findIndex(chainForms, (pok) => pok.id === pokem.id)
+    const chainIndexNext = _.findIndex(
+      chainForms,
+      (pok) => pok.id === nextPokem.id
+    )
 
-    if (volve === "evolve") {
-      if (chainIndex < chainForms.length - 1) {
-        const nextPokemon = chainForms[chainIndex + 1]
-        if (nextPokemon) setModalOpen(true, nextPokemon)
-      }
-    } else {
-      if (chainIndex > 0) {
-        const nextPokemon = chainForms[chainIndex - 1]
-        if (nextPokemon) setModalOpen(true, nextPokemon)
-      }
+    if (chainIndex + 1 === chainIndexNext) {
+      setModalOpen(true, nextPokem)
     }
   }
 
@@ -64,7 +77,7 @@ const PokemonModalDisplay: React.FC<PropsPokemonModalDisplay> = ({
               />
             </figure>
           )}
-          <div className="is-flex is-flex-direction-row">
+          {/* <div className="is-flex is-flex-direction-row">
             <button
               className="button is-primary devolveModalButton m-0 mx-4 p-3"
               onClick={() => {
@@ -81,9 +94,12 @@ const PokemonModalDisplay: React.FC<PropsPokemonModalDisplay> = ({
             >
               Evolve
             </button>
-          </div>
+          </div> */}
           {!!evolutionChain && (
-            <EvolutionChainDisplay evolutionChain={evolutionChain} />
+            <EvolutionChainDisplay
+              evolutionChain={evolutionChain}
+              volvePokemon={volvePokemon}
+            />
           )}
         </div>
         <div className="column is-6 p-1 m-0">
