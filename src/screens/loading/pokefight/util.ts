@@ -7,10 +7,15 @@ const images = Object.entries(poke_images)
 export const getActorImage = (index: number, indexFront: any = 0) =>
   indexFront === 0 ? images[index][1].front : images[index][1].back
 
-export const config_slow = { duration: 2000 }
 export const config = { duration: 1000 }
-export const config_fast = { duration: 500 }
+export const delay = 2000
+
+export const config_slow = { duration: config.duration * 2 }
+export const config_fast = { duration: config.duration * 0.5 }
 export const config_instant = { duration: 0 }
+export const delay_slow = delay * 2
+export const delay_fast = delay * 0.5
+export const delay_instant = 0
 
 const max = {
   right: "70%",
@@ -85,11 +90,11 @@ export const ipSquish: (props: BasicAnimatedValue) => {} = ({
 }) => ({
   ...restOfProps,
   transform: squish
-    ?.interpolate({
+    ?.to({
       range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
       output: [1, 0.97, 0.8, 1.1, 0.8, 1.1, 1.03, 1],
     })
-    ?.interpolate((val: any) => `scale(${val})`),
+    ?.to((val: any) => `scale(${val})`),
 })
 export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
   strafe,
@@ -97,72 +102,68 @@ export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
 }) => ({
   ...restOfProps,
   transform: strafe
-    ?.interpolate({
+    ?.to({
       range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
       output: [-5, 5, -10, 5, -5, 10, -5, -5],
     })
-    ?.interpolate((val: any) => `translate(${val}%)`),
+    ?.to((val: any) => `translate(${val}%)`),
 })
 
 const PARABOLA_CONVEX = (x: number) => 6 * x - Math.pow(x, 2)
 const PARABOLA_CONCAVE = (x: number) => 6 * x + Math.pow(x, 2)
-export const ipHop: (
-  args: TransformArgs
-) => (props: BasicAnimatedValue) => {} = ({ translate = {} }) => ({
-  strafe,
-  ...restOfProps
-}) => ({
-  ...restOfProps,
-  transform: strafe
-    ?.interpolate({
-      range: [0, 0.3, 0.5, 1],
-      output: [0, -8, 0, -8],
+export const ipHop: (args: TransformArgs) => (props: BasicAnimatedValue) => {} =
+
+    ({ translate = {} }) =>
+    ({ strafe, ...restOfProps }) => ({
+      ...restOfProps,
+      transform: strafe
+        ?.to({
+          range: [0, 0.3, 0.5, 1],
+          output: [0, -8, 0, -8],
+        })
+        ?.to(
+          (val: any) =>
+            `translate(${val * (translate?.x ?? 1)}%,${
+              PARABOLA_CONCAVE(val) * (translate?.y ?? 1)
+            }%)`
+        ),
     })
-    ?.interpolate(
-      (val: any) =>
-        `translate(${val * (translate?.x ?? 1)}%,${
-          PARABOLA_CONCAVE(val) * (translate?.y ?? 1)
-        }%)`
-    ),
-})
 export const ipSwipe: (
   args: TransformArgs
-) => (props: BasicAnimatedValue) => {} = ({ translate }) => ({
-  attack,
-  ...restOfProps
-}) => ({
-  ...restOfProps,
-  transform: attack
-    ?.interpolate({
-      range: [0, 0.3, 1],
-      output: [0, 8, 0],
-    })
-    ?.interpolate(
-      (val: any) =>
-        `translate(${val * (translate?.x ?? 1)}0%, ${
-          PARABOLA_CONVEX(val) * (translate?.y ?? 1)
-        }0%) rotate(${val}0deg)`
-    ),
-})
+) => (props: BasicAnimatedValue) => {} =
+  ({ translate }) =>
+  ({ attack, ...restOfProps }) => ({
+    ...restOfProps,
+    transform: attack
+      ?.to({
+        range: [0, 0.3, 1],
+        output: [0, 8, 0],
+      })
+      ?.to(
+        (val: any) =>
+          `translate(${val * (translate?.x ?? 1)}0%, ${
+            PARABOLA_CONVEX(val) * (translate?.y ?? 1)
+          }0%) rotate(${val}0deg)`
+      ),
+  })
 export const ipTilt: (
   args: TransformArgs
-) => (props: BasicAnimatedValue) => {} = ({ rotate, translate }) => ({
-  attack,
-  ...restOfProps
-}) => ({
-  ...restOfProps,
-  transform: attack
-    ?.interpolate({
-      range: [0, 0.3, 1],
-      output: [1, 0, -20],
-    })
-    ?.interpolate(
-      (val: any) =>
-        `translate(${val * (translate?.x ?? 1)}%, ${
-          PARABOLA_CONVEX(val) * (translate?.y ?? 1)
-        }%) rotate(${val * (rotate ?? 1)}0deg)`
-    ),
-})
+) => (props: BasicAnimatedValue) => {} =
+  ({ rotate, translate }) =>
+  ({ attack, ...restOfProps }) => ({
+    ...restOfProps,
+    transform: attack
+      ?.to({
+        range: [0, 0.3, 1],
+        output: [1, 0, -20],
+      })
+      ?.to(
+        (val: any) =>
+          `translate(${val * (translate?.x ?? 1)}%, ${
+            PARABOLA_CONVEX(val) * (translate?.y ?? 1)
+          }%) rotate(${val * (rotate ?? 1)}0deg)`
+      ),
+  })
 
 export const applyInterpolation = (
   interpolater: Function,
@@ -256,7 +257,12 @@ export class StageShow {
   STAGE_ENTRY: Stage = {
     animations: {
       [this.actors.actorA]: {
-        from: {},
+        from: {
+          top: "0%",
+          left: "0%",
+          zIndex: 0,
+          transform: `scaleX(1)`,
+        },
         to: {
           ...flipX("-1").to,
           ...slideLeft().to,
@@ -265,7 +271,12 @@ export class StageShow {
         config: config_instant,
       },
       [this.actors.actorB]: {
-        from: {},
+        from: {
+          top: "0%",
+          left: "0%",
+          zIndex: 0,
+          transform: `scaleX(1)`,
+        },
         to: {
           ...flipX("-1").to,
           ...slideRight().to,
@@ -416,7 +427,7 @@ export class StageShow {
           ],
           [this.actors.actorB]: [
             this.actors_images.actorB,
-            this.actors_pose.back,
+            this.actors_pose.front,
           ],
         },
         coverScreen: false,
@@ -656,29 +667,29 @@ export class StageShow {
         coverScreen: false,
       },
       // Flip X1-2
-      {
-        animations: {
-          [this.actors.actorB]: {
-            ...flipX(),
-            config: config_instant,
-          },
-        },
-        imageIndecies: {
-          [this.actors.actorA]: [
-            this.actors_images.actorA,
-            this.actors_pose.front,
-          ],
-          [this.actors.actorB]: [
-            this.actors_images.actorB,
-            this.actors_pose.back,
-          ],
-        },
-        coverScreen: false,
-      },
+      // {
+      //   animations: {
+      //     [this.actors.actorB]: {
+      //       ...flipX("1"),
+      //       config: config_instant,
+      //     },
+      //   },
+      //   imageIndecies: {
+      //     [this.actors.actorA]: [
+      //       this.actors_images.actorA,
+      //       this.actors_pose.front,
+      //     ],
+      //     [this.actors.actorB]: [
+      //       this.actors_images.actorB,
+      //       this.actors_pose.back,
+      //     ],
+      //   },
+      //   coverScreen: false,
+      // },
 
       // PREP FIGHT
-      this.STAGE_RESET,
-      // SQUISH
+      // this.STAGE_RESET,
+      // SQUISH 1
       {
         animations: {
           [this.actors.actorA]: {
@@ -708,6 +719,29 @@ export class StageShow {
           [this.actors.actorB]: ipSquish,
         },
       },
+      // SQUISH 1.5
+      // {
+      //   animations: {
+      //     [this.actors.actorB]: {
+      //       from: { squish: 0 },
+      //       to: { squish: 1 },
+      //       config,
+      //     },
+      //   },
+      //   imageIndecies: {
+      //     [this.actors.actorA]: [
+      //       this.actors_images.actorA,
+      //       this.actors_pose.front,
+      //     ],
+      //     [this.actors.actorB]: [
+      //       this.actors_images.actorB,
+      //       this.actors_pose.back,
+      //     ],
+      //   },
+      //   interpolations: {
+      //     [this.actors.actorB]: ipSquish,
+      //   },
+      // },
       // STRAFE 1
       {
         animations: {
@@ -715,12 +749,6 @@ export class StageShow {
             from: { strafe: 0 },
             to: { strafe: 1.5 },
             config: config_fast,
-          },
-          [this.actors.actorB]: {
-            from: { strafe: 0 },
-            to: { strafe: 1 },
-            config: config,
-            delay: 1000,
           },
         },
         imageIndecies: {
@@ -738,8 +766,32 @@ export class StageShow {
           [this.actors.actorB]: ipStrafe,
         },
       },
+      // STRAFE 1.5
+      // {
+      //   animations: {
+      //     [this.actors.actorB]: {
+      //       from: { strafe: 0 },
+      //       to: { strafe: 1 },
+      //       config: config,
+      //     },
+      //   },
+      //   imageIndecies: {
+      //     [this.actors.actorA]: [
+      //       this.actors_images.actorA,
+      //       this.actors_pose.front,
+      //     ],
+      //     [this.actors.actorB]: [
+      //       this.actors_images.actorB,
+      //       this.actors_pose.back,
+      //     ],
+      //   },
+      //   interpolations: {
+      //     [this.actors.actorA]: ipStrafe,
+      //     [this.actors.actorB]: ipStrafe,
+      //   },
+      // },
       // this.STAGE_POSED_1,
-      this.STAGE_RESET,
+      // this.STAGE_RESET,
       // ATTACK 1
       {
         animations: {
@@ -769,7 +821,7 @@ export class StageShow {
           [this.actors.actorB]: ipSwipe({ translate: { x: 26, y: 1 } }),
         },
       },
-      this.STAGE_RESET,
+      // this.STAGE_RESET,
 
       // STRAFE 2
       {

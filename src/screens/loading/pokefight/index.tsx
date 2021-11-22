@@ -1,16 +1,66 @@
 import React, { useEffect, useState } from "react"
 import { animated, useSpring, useSprings } from "react-spring"
-import { StageShow, applyInterpolation, getActorImage } from "./util"
+import {
+  StageShow,
+  applyInterpolation,
+  getActorImage,
+  config_instant,
+} from "./util"
 
 const stageShow = new StageShow()
+const springCount = Object.keys(stageShow.actors).length // 2
+const getKeyWithMaxDuration = (animations: { [key: number]: StageActor }) => {
+  const keys = Object.keys(animations)
+  let maxDuration = 0
+  let keyWithMaxDuration = parseInt(keys[0])
+  keys.forEach((key) => {
+    const currentKey = parseInt(key)
+    //@ts-ignore
+    const duration = animations[currentKey]?.config?.duration || maxDuration
+    if (duration > maxDuration) {
+      maxDuration = duration
+      keyWithMaxDuration = currentKey
+    }
+  })
 
-const getStage = (springCount: number, stage: number, onRest: Function) => (
-  index: number
-) => {
-  let actorPart = stageShow.getStages()[stage].animations[index] || {}
-  if (index === springCount - 1) actorPart = { ...actorPart, onRest }
-  return actorPart
+  return keyWithMaxDuration
 }
+
+const getStage =
+  (springCount: number, stage: number, onRest: Function) => (index: number) => {
+    const { animations } = stageShow.getStages()[stage]
+    let actorPart = animations[index] || {}
+    let prevActorPart
+    if (stage > 0) {
+      prevActorPart = stageShow.getStages()[stage - 1].animations[index] || {}
+      actorPart = {
+        // ...prevActorPart,
+        onRest: undefined,
+        ...(Object.keys(actorPart).length < 1
+          ? {
+              from: { opacity: 0.8 },
+              to: { opacity: 1 },
+              config: config_instant,
+            }
+          : actorPart),
+      }
+    }
+
+    // const isLastActor = index === springCount - 1
+    // const isLastActorInScene = !!animations[index + 1]
+    const isActorWithLongestDurationInScene =
+      index === getKeyWithMaxDuration(animations)
+    if (isActorWithLongestDurationInScene) actorPart = { ...actorPart, onRest }
+
+    console.log("getStage", {
+      actorPart,
+      prevActorPart,
+      index,
+      isActorWithLongestDurationInScene,
+    })
+
+    return actorPart
+  }
 
 const initialState: PokeFightState = {
   stage: 0,
@@ -69,18 +119,17 @@ const getFighters: (params: getFighterProps) => any = ({
   }
 }
 
-const PokeFight: React.FC<PokeFightProps> = ({
-  isTest = false,
-  canLoop = false,
-  endLoading,
-}) => {
-  const [statePokeFight, setStatePokeFight] = useState<PokeFightState>(
-    initialState
-  )
-  const { stage, stop } = statePokeFight
-
-  const onRestGoToNextStage = (newStage: number, fnName: string) => () => {
-    // console.log("onRest ", { stage, newStage, canLoop, fnName })
+const onRestGoToNextStage =
+  (
+    newStage: number,
+    stop: boolean,
+    canLoop: boolean,
+    statePokeFight: PokeFightState,
+    setStatePokeFight: React.Dispatch<React.SetStateAction<PokeFightState>>,
+    fnName: string
+  ) =>
+  () => {
+    console.log("onRest ", { newStage, canLoop, fnName })
     if (stop) return
 
     if (newStage < stageShow.getStages().length) {
@@ -91,38 +140,76 @@ const PokeFight: React.FC<PokeFightProps> = ({
     }
   }
 
-  const springCount = Object.keys(stageShow.actors).length // 2
+const usePokeFight = (canLoop: boolean, endLoading: Function | undefined) => {
+  const [statePokeFight, setStatePokeFight] =
+    useState<PokeFightState>(initialState)
+  const { stage, stop } = statePokeFight
 
-  const [springs, set] = useSprings(
-    springCount,
-    getStage(springCount, stage, onRestGoToNextStage(stage + 1, "useSprings"))
-  )
+  const [springs, api] = useSprings(springCount, () => ({}))
 
   useEffect(() => {
-    if (typeof endLoading == "function") {
-      set((index: number) => {
+    if (stop && typeof endLoading == "function") {
+      endLoading()
+    } else if (typeof endLoading == "function") {
+      api.start((index: number) => {
         let actorPart = stageShow.STAGE_STOP.animations[index]
         return actorPart
       })
       setStatePokeFight({ ...statePokeFight, stop: true })
-      return
+    } else {
+      api.start(
+        getStage(
+          springCount,
+          stage,
+          onRestGoToNextStage(
+            stage + 1,
+            stop,
+            canLoop,
+            statePokeFight,
+            setStatePokeFight,
+            "useEffect"
+          )
+        )
+      )
     }
-    // @ts-ignore typescript-types broken in v8 but fixed in v9
-    set(
-      getStage(springCount, stage, onRestGoToNextStage(stage + 1, "useEffect"))
-    )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, endLoading])
+  }, [stage, endLoading, stop])
 
+  // useEffect(() => {
+  //   if (stop && typeof endLoading == "function") endLoading()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [stop])
+
+  return { springs, stage }
+}
+const useTestStages = (isTest: boolean, stage: number, currentStage: Stage) => {
+  const [testStages, setTestStages] = useState<Stage[]>([])
   useEffect(() => {
-    if (stop && typeof endLoading == "function") endLoading()
+    if (isTest) {
+      setTestStages([
+        ...(testStages.length - 1 > stageShow.getStages().length
+          ? []
+          : testStages),
+        currentStage,
+      ])
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stop])
+  }, [stage])
+  return [testStages]
+}
 
+const PokeFight: React.FC<PokeFightProps> = ({
+  isTest = false,
+  canLoop = false,
+  endLoading,
+}) => {
+  const { springs, stage } = usePokeFight(canLoop, endLoading)
   const currentStage = stageShow.getStages()[stage]
   const { actorA, actorB } = getFighters({ springs, currentStage })
-  // console.log({ currentStage })
+  const [testStages] = useTestStages(isTest, stage, currentStage)
+
+  // console.log({ stage, currentStage })
 
   return (
     <div className="container is-flex-direction-column is-flex is-align-items-center is-justify-content-center">
@@ -137,12 +224,16 @@ const PokeFight: React.FC<PokeFightProps> = ({
 
       {isTest && (
         <div className="debugSection p-6">
-          <p>{`Stage: ${stage}`}</p>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(currentStage, undefined, 2),
-            }}
-          ></div>
+          {testStages.map((testStage, index) => (
+            <div key={`testStage ${index}`}>
+              <p>{`Stage: ${index}`}</p>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify(testStage, undefined, 2),
+                }}
+              ></div>
+            </div>
+          ))}
         </div>
       )}
     </div>
