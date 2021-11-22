@@ -17,12 +17,11 @@ const POKEDEX_STATE_DEFAULT: PokedexProps = {
   loadingSafeToStop: false,
 }
 
-const getPokemonGenerations: (
-  arg?: boolean
-) => Promise<GenResponse | null> = async (isTest = false) => {
-  if (isTest) return await testGeneration
-  return await requestGenerations()
-}
+const getPokemonGenerations: (arg?: boolean) => Promise<GenResponse | null> =
+  async (isTest = false) => {
+    if (isTest) return await testGeneration
+    return await requestGenerations()
+  }
 
 const getPokemonEvolutions: (
   arg?: boolean
@@ -31,8 +30,8 @@ const getPokemonEvolutions: (
   return await requestEvolutions()
 }
 
-const DEV_MODE = true
-const DEV_MODE_LOADING = false
+const DEV_MODE = !!process.env.REACT_APP_DEV_MODE
+const DEV_MODE_LOADING = !!process.env.REACT_APP_DEV_MODE_LOADING
 
 const getChainForms = (evoChain: PokeEvolutionChain) => {
   const chainForms: PokemonRef[] = []
@@ -58,50 +57,49 @@ export const getChainBlobIndex: FT_getChainBlobIndex = (
   return blob.indexOf(`${pokem.name}`.toLowerCase())
 }
 
-const getEvolutionChain: FT_EvolutionChain = (
-  pokemons: Pokemon[],
-  evolutionChains: PokeEvolutionChain[]
-) => (pokem: Pokemon) => {
-  let found: boolean = false
-  let foundChain: PokeEvolutionChain | null = null
+const getEvolutionChain: FT_EvolutionChain =
+  (pokemons: Pokemon[], evolutionChains: PokeEvolutionChain[]) =>
+  (pokem: Pokemon) => {
+    let found: boolean = false
+    let foundChain: PokeEvolutionChain | null = null
 
-  // console.log({ pokem, evolutionChains })
-  for (
-    let evoChainIndex = 0;
-    evoChainIndex < evolutionChains.length;
-    evoChainIndex++
-  ) {
-    const evoChain = evolutionChains[evoChainIndex]
-    found = getChainBlobIndex(evoChain, pokem) > -1
-    // console.log({ found, evoChain })
+    // console.log({ pokem, evolutionChains })
+    for (
+      let evoChainIndex = 0;
+      evoChainIndex < evolutionChains.length;
+      evoChainIndex++
+    ) {
+      const evoChain = evolutionChains[evoChainIndex]
+      found = getChainBlobIndex(evoChain, pokem) > -1
+      // console.log({ found, evoChain })
+
+      if (found) {
+        const chainForms = getChainForms(evoChain)
+        // console.log({ chainForms })
+        chainForms.forEach((form, index) => {
+          const foundPokem = _.find(
+            pokemons,
+            (pokemCurrent) =>
+              pokemCurrent.name.toLowerCase() === form.name.toLowerCase()
+          )
+          // console.log({ foundPokem })
+          if (foundPokem)
+            chainForms[index] = { ...chainForms[index], ...foundPokem }
+        })
+
+        evoChain.chainForms = chainForms as Pokemon[]
+        foundChain = evoChain
+        // console.log({ foundChain })
+        break
+      }
+    }
+    // console.log({ found, foundChain })
 
     if (found) {
-      const chainForms = getChainForms(evoChain)
-      // console.log({ chainForms })
-      chainForms.forEach((form, index) => {
-        const foundPokem = _.find(
-          pokemons,
-          (pokemCurrent) =>
-            pokemCurrent.name.toLowerCase() === form.name.toLowerCase()
-        )
-        // console.log({ foundPokem })
-        if (foundPokem)
-          chainForms[index] = { ...chainForms[index], ...foundPokem }
-      })
-
-      evoChain.chainForms = chainForms as Pokemon[]
-      foundChain = evoChain
-      // console.log({ foundChain })
-      break
+      return foundChain
     }
+    return null
   }
-  // console.log({ found, foundChain })
-
-  if (found) {
-    return foundChain
-  }
-  return null
-}
 
 const Pokedex: React.FC = (props) => {
   const [pokedexState, setPokedexState] = useState(POKEDEX_STATE_DEFAULT)
