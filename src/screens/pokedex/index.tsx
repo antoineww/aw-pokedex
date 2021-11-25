@@ -30,8 +30,8 @@ const getPokemonEvolutions: (
   return await requestEvolutions()
 }
 
-const DEV_MODE = !!process.env.REACT_APP_DEV_MODE
-const DEV_MODE_LOADING = !!process.env.REACT_APP_DEV_MODE_LOADING
+const DEV_MODE = process.env.REACT_APP_DEV_MODE === "true"
+const DEV_MODE_LOADING = process.env.REACT_APP_DEV_MODE_LOADING === "true"
 
 const getChainForms = (evoChain: PokeEvolutionChain) => {
   const chainForms: PokemonRef[] = []

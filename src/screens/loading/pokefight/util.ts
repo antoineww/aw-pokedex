@@ -697,12 +697,6 @@ export class StageShow {
             to: { squish: 1 },
             config,
           },
-          [this.actors.actorB]: {
-            from: { squish: 0 },
-            to: { squish: 1 },
-            config,
-            delay: 1000,
-          },
         },
         imageIndecies: {
           [this.actors.actorA]: [
@@ -716,32 +710,31 @@ export class StageShow {
         },
         interpolations: {
           [this.actors.actorA]: ipSquish,
-          [this.actors.actorB]: ipSquish,
         },
       },
       // SQUISH 1.5
-      // {
-      //   animations: {
-      //     [this.actors.actorB]: {
-      //       from: { squish: 0 },
-      //       to: { squish: 1 },
-      //       config,
-      //     },
-      //   },
-      //   imageIndecies: {
-      //     [this.actors.actorA]: [
-      //       this.actors_images.actorA,
-      //       this.actors_pose.front,
-      //     ],
-      //     [this.actors.actorB]: [
-      //       this.actors_images.actorB,
-      //       this.actors_pose.back,
-      //     ],
-      //   },
-      //   interpolations: {
-      //     [this.actors.actorB]: ipSquish,
-      //   },
-      // },
+      {
+        animations: {
+          [this.actors.actorB]: {
+            from: { squish: 0 },
+            to: { squish: 1 },
+            config,
+          },
+        },
+        imageIndecies: {
+          [this.actors.actorA]: [
+            this.actors_images.actorA,
+            this.actors_pose.front,
+          ],
+          [this.actors.actorB]: [
+            this.actors_images.actorB,
+            this.actors_pose.back,
+          ],
+        },
+        interpolations: {
+          [this.actors.actorB]: ipSquish,
+        },
+      },
       // STRAFE 1
       {
         animations: {
