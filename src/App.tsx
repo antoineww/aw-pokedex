@@ -1,12 +1,13 @@
 import React from "react"
 
 import Pokedex from "./screens/pokedex"
+import ContainerCentered from "./components/layout/containerCentered"
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <ContainerCentered>
       <Pokedex />
-    </div>
+    </ContainerCentered>
   )
 }
 

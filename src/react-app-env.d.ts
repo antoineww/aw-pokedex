@@ -267,3 +267,9 @@ interface PokeFightProps {
   canLoop?: boolean
   endLoading?: Function
 }
+
+//
+
+interface I_LayoutPane {
+  ratio?: number
+}
