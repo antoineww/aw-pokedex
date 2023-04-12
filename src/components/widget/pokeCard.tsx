@@ -1,27 +1,6 @@
 import React from "react"
 import _ from "lodash"
-
-export const sortAscending = (a: string, b: string) => a.length - b.length
-export const sortStatsAscending = (a: BaseStat, b: BaseStat) =>
-  sortAscending(a.stat.name, b.stat.name)
-
-export const BaseStatTags: React.FC<{ stats: BaseStat[]; pokem: Pokemon }> = ({
-  stats,
-  pokem,
-}) => (
-  <div className="columns is-flex-wrap-wrap">
-    {stats.sort(sortStatsAscending).map((stat) => (
-      <div key={`${pokem.name}-${stat.stat.name}`} className="column is-6 p-1">
-        <div className="tags has-addons are-medium">
-          <span className="tag is-flex-grow-1 p-0">{`${_.capitalize(
-            stat.stat.name
-          )}`}</span>
-          <span className="tag is-primary">{`${stat.base_stat}`}</span>
-        </div>
-      </div>
-    ))}
-  </div>
-)
+import BaseStatTags from "./baseStatTags"
 
 export const PokemonCard: React.FC<I_PokemonCard> = ({
   pokemon: pokem,

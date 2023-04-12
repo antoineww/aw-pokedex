@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import _ from "lodash"
 import "../../css/App.css"
-import PokemonCard from "./pokeCard"
+import PokemonCard from "../../components/widget/pokeCard"
 import PokeModal from "./pokeModal"
 
 const DEFAULT_STATE: StatePokeList = {
