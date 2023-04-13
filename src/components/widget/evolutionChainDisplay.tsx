@@ -1,33 +1,12 @@
-import { useState } from "react"
+import React, { useState } from "react"
+import EvoChainLinkImage from "./evoChainLinkImage"
 
-const EvoChainLinkImage: React.FC<PropsEvoChainLinkImage> = ({
-  pokem,
-  showChain,
-  volvePokemon,
-}) => {
-  const [reveal, setRevealState] = useState(false)
-  return (
-    <figure
-      key={`Evolution-Chain-Display-${pokem.name}`}
-      className={`image is-128x128 mk-center-x evolution-chain-display-pokemon`}
-      onClick={() => volvePokemon()}
-      onDoubleClick={() => setRevealState(!reveal)}
-    >
-      <img
-        loading="lazy"
-        src={pokem.sprites.front_default}
-        alt={`Evolution-Chain-Display-${pokem.name}`}
-        className={`${showChain || reveal ? "" : "masked"}`}
-      />
-    </figure>
-  )
-}
-
-const EvolutionChainDisplay: React.FC<PropsEvolutionChainDisplay> = ({
+export const EvolutionChainDisplay: React.FC<PropsEvolutionChainDisplay> = ({
   evolutionChain,
   volvePokemon,
 }) => {
   const [displayState, setDisplayState] = useState({ showChain: false })
+
   if (!evolutionChain?.chainForms) return null
   const { showChain } = displayState
   const setShowChain = (show = true) =>

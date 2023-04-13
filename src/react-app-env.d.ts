@@ -284,3 +284,11 @@ interface I_WidgetList {
   itemWidget: T_ListedWidget
   moreProps: object
 }
+
+interface I_pokeModalDisplay {
+  pokemon: Pokemon
+  evolutionChain: PokeEvolutionChain | null | undefined
+  formattedName: string
+  volvePokemon
+  options
+}
