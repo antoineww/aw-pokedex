@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { useEffect, useState } from "react"
-import { getOptions } from "./util"
 import PokeModalDisplay from "../../../components/widget/pokeModalDisplay"
+import { getOptions } from "../../../utils"
 
 const PokemonModalDisplay: React.FC<PropsPokemonModalDisplay> = ({
   pokemon: pokem,
