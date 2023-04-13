@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react"
 
 import "../../css/App.css"
-import Loading from "../loading"
 import PokeList from "./pokeList"
 import Tabs from "../../components/layout/tabs"
 import { testEvolutionChain, testGeneration } from "../../__tests__/testList"
 import { requestEvolutions, requestGenerations } from "../../api/paw"
 import _ from "lodash"
+import {
+  LoadingDefault,
+  LoadingPokefight as Loading,
+} from "../../components/widget/loading"
 
 const POKEDEX_STATE_DEFAULT: PokedexProps = {
   generations: [],

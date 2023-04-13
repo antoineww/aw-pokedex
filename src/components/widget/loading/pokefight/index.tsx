@@ -52,12 +52,12 @@ const getStage =
       index === getKeyWithMaxDuration(animations)
     if (isActorWithLongestDurationInScene) actorPart = { ...actorPart, onRest }
 
-    console.log("getStage", {
-      actorPart,
-      prevActorPart,
-      index,
-      isActorWithLongestDurationInScene,
-    })
+    // console.log("getStage", {
+    //   actorPart,
+    //   prevActorPart,
+    //   index,
+    //   isActorWithLongestDurationInScene,
+    // })
 
     return actorPart
   }
@@ -129,7 +129,7 @@ const onRestGoToNextStage =
     fnName: string
   ) =>
   () => {
-    console.log("onRest ", { newStage, canLoop, fnName })
+    // console.log("onRest ", { newStage, canLoop, fnName })
     if (stop) return
 
     if (newStage < stageShow.getStages().length) {

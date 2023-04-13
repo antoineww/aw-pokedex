@@ -1,4 +1,4 @@
-import poke_images from "../../../assets/images"
+import poke_images from "../../../../assets/images"
 
 // @ts-ignore
 const images = Object.entries(poke_images)
@@ -111,23 +111,24 @@ export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
 
 const PARABOLA_CONVEX = (x: number) => 6 * x - Math.pow(x, 2)
 const PARABOLA_CONCAVE = (x: number) => 6 * x + Math.pow(x, 2)
-export const ipHop: (args: TransformArgs) => (props: BasicAnimatedValue) => {} =
-
-    ({ translate = {} }) =>
-    ({ strafe, ...restOfProps }) => ({
-      ...restOfProps,
-      transform: strafe
-        ?.to({
-          range: [0, 0.3, 0.5, 1],
-          output: [0, -8, 0, -8],
-        })
-        ?.to(
-          (val: any) =>
-            `translate(${val * (translate?.x ?? 1)}%,${
-              PARABOLA_CONCAVE(val) * (translate?.y ?? 1)
-            }%)`
-        ),
-    })
+export const ipHop: (
+  args: TransformArgs
+) => (props: BasicAnimatedValue) => {} =
+  ({ translate = {} }) =>
+  ({ strafe, ...restOfProps }) => ({
+    ...restOfProps,
+    transform: strafe
+      ?.to({
+        range: [0, 0.3, 0.5, 1],
+        output: [0, -8, 0, -8],
+      })
+      ?.to(
+        (val: any) =>
+          `translate(${val * (translate?.x ?? 1)}%,${
+            PARABOLA_CONCAVE(val) * (translate?.y ?? 1)
+          }%)`
+      ),
+  })
 export const ipSwipe: (
   args: TransformArgs
 ) => (props: BasicAnimatedValue) => {} =

@@ -1,5 +1,5 @@
 import LoadingDefault from "./default"
 import LoadingPokefight from "./pokefight"
 
-// export default LoadingDefault
+export { LoadingDefault, LoadingPokefight }
 export default LoadingPokefight
