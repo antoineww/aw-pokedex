@@ -262,7 +262,11 @@ interface PropsEvoChainLinkImage {
 
 //
 
-interface I_LayoutPane {
+interface I_P_BasicFC {
+  children: ReactNode
+}
+
+interface I_P_LayoutPane extends I_P_BasicFC {
   ratio?: number
 }
 
