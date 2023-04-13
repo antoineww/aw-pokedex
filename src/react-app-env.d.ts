@@ -273,3 +273,14 @@ interface PokeFightProps {
 interface I_LayoutPane {
   ratio?: number
 }
+
+type T_ListedWidget = React.FC<any>
+// type T_ListedWidget = React.FC<I_PokemonCard>
+
+interface I_WidgetList {
+  title?: string
+  items: object[]
+  itemKey: string
+  itemWidget: T_ListedWidget
+  moreProps: object
+}

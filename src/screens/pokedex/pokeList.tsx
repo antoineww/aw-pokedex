@@ -3,6 +3,7 @@ import _ from "lodash"
 import "../../css/App.css"
 import PokemonCard from "../../components/widget/pokeCard"
 import PokeModal from "./pokeModal"
+import TiledList from "../../components/layout/tiledList"
 
 const DEFAULT_STATE: StatePokeList = {
   modalOpen: false,
@@ -53,25 +54,16 @@ export const PokeList: React.FC<PropsPokeList> = ({
   }
 
   return (
-    <div className="tile is-vertical ">
-      <div className="tile is-child">
-        <h1 className="title has-text-primary-light has-text-centered">
-          {_.capitalize(title)}
-        </h1>
-      </div>
-
+    <>
       <PokeModal {...modalProps} />
-
-      <div className="tile is-parent is-flex-wrap-wrap">
-        {pokemon.map((pokem, index) => (
-          <PokemonCard
-            key={`slot-${index}`}
-            pokemon={pokem}
-            setModalOpen={setModalOpen}
-          />
-        ))}
-      </div>
-    </div>
+      <TiledList
+        title={title}
+        items={pokemon}
+        itemKey={"pokemon"}
+        itemWidget={PokemonCard}
+        moreProps={{ setModalOpen }}
+      ></TiledList>
+    </>
   )
 }
 
