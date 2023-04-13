@@ -199,7 +199,7 @@ const useTestStages = (isTest: boolean, stage: number, currentStage: Stage) => {
   return [testStages]
 }
 
-const PokeFight: React.FC<PokeFightProps> = ({
+const PokeFight: React.FC<I_WidgetLoading> = ({
   isTest = false,
   canLoop = false,
   endLoading,

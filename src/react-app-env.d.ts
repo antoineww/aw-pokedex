@@ -262,14 +262,6 @@ interface PropsEvoChainLinkImage {
 
 //
 
-interface PokeFightProps {
-  isTest?: boolean
-  canLoop?: boolean
-  endLoading?: Function
-}
-
-//
-
 interface I_LayoutPane {
   ratio?: number
 }
@@ -291,4 +283,10 @@ interface I_pokeModalDisplay {
   formattedName: string
   volvePokemon
   options
+}
+
+interface I_WidgetLoading {
+  isTest?: boolean
+  canLoop?: boolean
+  endLoading?: Function
 }
