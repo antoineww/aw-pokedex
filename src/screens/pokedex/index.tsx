@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import "../../css/App.css"
 import Loading from "../loading"
 import PokeList from "./pokeList"
-import Tabs from "./tabs"
+import Tabs from "../../components/layout/tabs"
 import { testEvolutionChain, testGeneration } from "../../__tests__/testList"
 import { requestEvolutions, requestGenerations } from "../../api/paw"
 import _ from "lodash"
@@ -17,11 +17,12 @@ const POKEDEX_STATE_DEFAULT: PokedexProps = {
   loadingSafeToStop: false,
 }
 
-const getPokemonGenerations: (arg?: boolean) => Promise<GenResponse | null> =
-  async (isTest = false) => {
-    if (isTest) return await testGeneration
-    return await requestGenerations()
-  }
+const getPokemonGenerations: (
+  arg?: boolean
+) => Promise<GenResponse | null> = async (isTest = false) => {
+  if (isTest) return await testGeneration
+  return await requestGenerations()
+}
 
 const getPokemonEvolutions: (
   arg?: boolean
@@ -30,8 +31,8 @@ const getPokemonEvolutions: (
   return await requestEvolutions()
 }
 
-const DEV_MODE = process.env.REACT_APP_DEV_MODE === "true"
-const DEV_MODE_LOADING = process.env.REACT_APP_DEV_MODE_LOADING === "true"
+const DEV_MODE = true // process.env.REACT_APP_DEV_MODE === "true"
+const DEV_MODE_LOADING = false // process.env.REACT_APP_DEV_MODE_LOADING === "true"
 
 const getChainForms = (evoChain: PokeEvolutionChain) => {
   const chainForms: PokemonRef[] = []
