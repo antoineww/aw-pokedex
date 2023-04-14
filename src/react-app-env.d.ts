@@ -3,7 +3,7 @@
 // DECLARATION
 declare module "*.png" {
   const value: any
-  export = value
+  export default value
 }
 
 // API

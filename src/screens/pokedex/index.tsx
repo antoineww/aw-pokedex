@@ -4,8 +4,8 @@ import "../../css/App.css"
 import PokeList from "./pokeList"
 import Tabs from "../../components/layout/tabs"
 import {
-  LoadingDefault as Loading,
-  LoadingPokefight,
+  LoadingDefault,
+  LoadingPokefight as Loading,
 } from "../../components/widget/loading"
 
 import { usePokedexState } from "../../hooks/ui"

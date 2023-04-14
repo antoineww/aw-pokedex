@@ -1,8 +1,6 @@
-import poke_images from "../../../../assets/images"
+import { pokeFightImages } from "./helper"
 
-// @ts-ignore
-const images = Object.entries(poke_images)
-// console.log({ poke_images, images })
+const images = Object.entries(pokeFightImages)
 
 export const getActorImage = (index: number, indexFront: any = 0) =>
   indexFront === 0 ? images[index][1].front : images[index][1].back
