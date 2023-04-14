@@ -1,7 +1,7 @@
 import React from "react"
 
 import "../../css/App.css"
-import PokeList from "./pokeList"
+import PokeList from "../../components/widget/pokeList"
 import Tabs from "../../components/layout/tabs"
 import {
   LoadingDefault,
