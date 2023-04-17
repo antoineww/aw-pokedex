@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-export const EvoChainLinkImage: React.FC<PropsEvoChainLinkImage> = ({
+export const EvoChainLinkImage: React.FC<I_P_IM_EvolutionChainLink> = ({
   pokem,
   showChain,
   volvePokemon,

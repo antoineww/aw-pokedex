@@ -8,24 +8,38 @@ declare module "*.png" {
 
 // API
 
-// Types & Interfaces
-type typeProgress = "empty" | "load" | "complete" | "error"
+/*
+T_ - type
+I_ - interface
+P_ - Props
+F_ - Function
+C_ - Citation
+CO_ - Collection Object
+IM_ - Image
+OP_ - Optional Parameters
+RP_ - Request's Parameters
+RR_ - Request's Response
 
-interface PokedexProps {
-  generations: GenData[]
-  evolutionChains: PokeEvolutionChain[]
+*/
+
+// Types & Interfaces
+type T_LoadingProgress = "empty" | "load" | "complete" | "error"
+
+interface I_P_Pokedex {
+  generations: I_PokeGeneration[]
+  evolutionChains: I_PokeEvolutionChain[]
   currentGenId: number
-  progressGenerations: typeProgress
-  progressEvolutions: typeProgress
+  progressGenerations: T_LoadingProgress
+  progressEvolutions: T_LoadingProgress
   loadingSafeToStop: boolean
 }
 
-interface RefData {
+interface I_C_Basic {
   name: string
   url: string
 }
 
-interface BaseStat {
+interface I_BaseStat {
   base_stat: number
   effort: number
   stat: {
@@ -33,7 +47,7 @@ interface BaseStat {
     url: string
   }
 }
-interface PokeType {
+interface I_PokeType {
   slot: number
   type: {
     name: string
@@ -41,7 +55,7 @@ interface PokeType {
   }
 }
 
-interface PokeAbility {
+interface I_PokeAbility {
   slot: number
   ability: {
     name: string
@@ -50,7 +64,7 @@ interface PokeAbility {
   is_hidden: boolean
 }
 
-interface Pokemon {
+interface I_Pokemon {
   url?: string
   name: string
   id: number
@@ -60,83 +74,85 @@ interface Pokemon {
   base_experience: number
 
   is_default: boolean
-  abilities: PokeAbility[]
+  abilities: I_PokeAbility[]
   forms: object[]
   game_indices: object[]
   held_items: object[]
   moves: object[]
   species: object
   sprites: { front_default: string }
-  stats: BaseStat[]
-  types: PokeType[]
+  stats: I_BaseStat[]
+  types: I_PokeType[]
   location_area_encounters: string
 }
 
-interface PokeChainLink {
+interface I_PokeChainLink {
   is_baby: boolean
-  species: PokemonRef
+  species: I_C_Pokemon
   evolution_details: object[]
-  evolves_to: PokeChainLink[]
+  evolves_to: I_PokeChainLink[]
 }
-interface PokeEvolutionChain {
+interface I_PokeEvolutionChain {
   id: number
   baby_trigger_item: any
-  chain: PokeChainLink
-  chainForms?: Pokemon[]
+  chain: I_PokeChainLink
+  chainForms?: I_Pokemon[]
 }
 
-interface PokeEvolutionChainRef {
+interface I_PokeEvolutionChainRef {
   url: string
 }
 
-interface PokeEvolutionsResponse {
+interface I_RR_PokeEvolutions {
   count: number
   next: string
   previous: string
-  evolutionChains: PokeEvolutionChain[]
-  results: PokeEvolutionChainRef[]
+  evolutionChains: I_PokeEvolutionChain[]
+  results: I_PokeEvolutionChainRef[]
 }
 
-interface PokemonRef {
+interface I_C_Pokemon {
   name: string
   url: string
   [key: string]: any
 }
-interface PokeRefResponse {
+interface I_RR_C_Pokemon {
   count: number
   next: string
   previous: string
-  results: PokemonRef[]
+  results: I_C_Pokemon[]
   [key: string]: any
 }
 
-interface GenRefResponse {
-  results: RefData[]
+interface I_RR_C_PokeGeneration {
+  results: I_C_Basic[]
 }
 
-interface GenData {
-  pokemons: Pokemon[]
+interface I_PokeGeneration {
+  pokemons: I_Pokemon[]
   name: string
   id: number
-  pokemon_species: PokemonRef[]
+  pokemon_species: I_C_Pokemon[]
 }
 
-interface GenResponse {
-  generations: GenData[]
+interface I_RR_PokeGeneration {
+  generations: I_PokeGeneration[]
 }
 
-type PokeQuery = {
+type I_RP_Pokemon = {
   limit?: number
   offset?: number
 }
 
-type FT_PokeResponse = (params: PokeQuery) => Promise<PokeRefResponse | null>
+type T_F_RR_Pokemon = (params: I_RP_Pokemon) => Promise<I_RR_C_Pokemon | null>
 
-type FTO_PokeResponse = (params?: PokeQuery) => Promise<PokeRefResponse | null>
+type T_F_OP_RR_Pokemon = (
+  params?: I_RP_Pokemon
+) => Promise<I_RR_C_Pokemon | null>
 
-type FT_GenResponse = () => Promise<GenResponse | null>
+type T_F_RR_PokeGeneration = () => Promise<I_RR_PokeGeneration | null>
 
-type FT_PokeEvolutionsResponse = () => Promise<PokeEvolutionsResponse | null>
+type T_F_RR_PokeEvolution = () => Promise<I_RR_PokeEvolutions | null>
 
 //
 //
@@ -144,136 +160,137 @@ type FT_PokeEvolutionsResponse = () => Promise<PokeEvolutionsResponse | null>
 
 // PokeFight
 
-type ArenaSide = "A" | "B"
-
-interface PokeFightImage {
+interface I_IM_Stage {
   front: any
   back: any
 }
-interface PokeFightImages {
-  [key: string]: PokeFightImage
+interface I_CO_IM_Stage {
+  [key: string]: I_IM_Stage
 }
 
-interface PokeFightState {
+interface I_StageState {
   stop: boolean
   stage: number
 }
-interface StageActor {
+interface I_StageActor {
   to: object
   from: object
   config?: object
   [key: string]: any
 }
 
-interface Stage {
+interface I_Stage {
   animations: {
-    [key: number]: StageActor
+    [key: number]: I_StageActor
   }
   imageIndecies?: { [key: number]: [number, number?] }
   interpolations?: { [key: number]: any }
   coverScreen?: boolean
 }
 
-interface BasicAnimatedValue {
+interface I_StageBasicAnimatedValue {
   [key: string]: any
 }
-interface TransformArgs {
+interface I_StageTransformArgs {
   translate?: { x: number; y: number }
   scale?: number
   rotate?: number
 }
 
-interface getFighterProps {
+type T_F_StageFighters = (params: {
   springs: AnimatedValue<Pick<object, never>>[]
-  currentStage: Stage
+  currentStage: I_Stage
+}) => {
+  actorA: JSX.Element
+  actorB: JSX.Element
 }
 
 //
 
-interface Tab {
+interface I_Tab {
   name: string
   id: number
 }
 
-interface PropsTabs {
-  tabs: Tab[]
+interface I_P_Tabs {
+  tabs: I_Tab[]
   setCurrentTab: (tabId: number) => void
   currentId: number
 }
 
-interface PropsPokeList {
-  pokemon?: Pokemon[]
+interface I_P_PokeList {
+  pokemon?: I_Pokemon[]
   title?: string
-  getPokeEvolutionChain?: (pokem: Pokemon) => PokeEvolutionChain | null
+  getPokeEvolutionChain?: (pokem: I_Pokemon) => I_PokeEvolutionChain | null
 }
 
-interface StatePokeList {
+interface I_StatePokeList {
   modalOpen: boolean
-  pokemonSelected: Pokemon | null
-  evolutionChain: PokeEvolutionChain | null
+  pokemonSelected: I_Pokemon | null
+  evolutionChain: I_PokeEvolutionChain | null
 }
 
-type volveType = "evolve" | "devolve"
+type T_Volve = "evolve" | "devolve"
 
-type FT_getChainBlobIndex = (
-  evoChain: PokeEvolutionChain,
-  pokem: Pokemon
+type T_F_getChainBlobIndex = (
+  evoChain: I_PokeEvolutionChain,
+  pokem: I_Pokemon
 ) => number
 
-type FT_EvolutionChain = (
-  pokemons: Pokemon[],
-  evolutionChains: PokeEvolutionChain[]
-) => (pokem: Pokemon) => PokeEvolutionChain | null
+type T_F_EvolutionChain = (
+  pokemons: I_Pokemon[],
+  evolutionChains: I_PokeEvolutionChain[]
+) => (pokem: I_Pokemon) => I_PokeEvolutionChain | null
 
-type FT_setModalOpen = (open?: boolean, pokem?: Pokemon | null) => void
+type T_F_setModalOpen = (open?: boolean, pokem?: I_Pokemon | null) => void
 
 interface I_PokemonCard {
-  pokemon: Pokemon
-  setModalOpen: FT_setModalOpen
+  pokemon: I_Pokemon
+  setModalOpen: T_F_setModalOpen
 }
 
 type T_ButtonClick = (
   event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
 ) => void
 
-interface PropsPokeModal {
+interface I_P_PokeModal {
   modalOpen: boolean
-  setModalOpen: FT_setModalOpen
-  pokemonSelected: Pokemon | null
-  evolutionChain?: PokeEvolutionChain | null
+  setModalOpen: T_F_setModalOpen
+  pokemonSelected: I_Pokemon | null
+  evolutionChain?: I_PokeEvolutionChain | null
 }
 
-interface PropsPokemonModalDisplay {
-  pokemon: Pokemon
-  evolutionChain?: PokeEvolutionChain | null
-  setModalOpen: FT_setModalOpen
+interface I_P_PokemonModalDisplay {
+  pokemon: I_Pokemon
+  evolutionChain?: I_PokeEvolutionChain | null
+  setModalOpen: T_F_setModalOpen
 }
 
-interface PropsEvolutionChainDisplay {
-  evolutionChain?: PokeEvolutionChain
+interface I_P_EvolutionChainDisplay {
+  evolutionChain?: I_PokeEvolutionChain
   volvePokemon: Function
 }
 
-interface PropsEvoChainLinkImage {
-  pokem: Pokemon
+interface I_P_IM_EvolutionChainLink {
+  pokem: I_Pokemon
   showChain: boolean
   volvePokemon: Function
 }
 
 //
 
-interface I_P_BasicFC {
+interface I_P_FC_Basic {
   children: ReactNode
 }
 
-interface I_P_LayoutPane extends I_P_BasicFC {
+interface I_P_LayoutPane extends I_P_FC_Basic {
   ratio?: number
 }
 
 type T_ListedWidget = React.FC<any>
 // type T_ListedWidget = React.FC<I_PokemonCard>
 
-interface I_WidgetList {
+interface I_P_WidgetList {
   title?: string
   items: object[]
   itemKey: string
@@ -281,15 +298,15 @@ interface I_WidgetList {
   moreProps: object
 }
 
-interface I_pokeModalDisplay {
-  pokemon: Pokemon
-  evolutionChain: PokeEvolutionChain | null | undefined
+interface I_P_pokeModalDisplay {
+  pokemon: I_Pokemon
+  evolutionChain: I_PokeEvolutionChain | null | undefined
   formattedName: string
   volvePokemon
   options
 }
 
-interface I_WidgetLoading {
+interface I_P_WidgetLoading {
   isTest?: boolean
   canLoop?: boolean
   endLoading?: Function

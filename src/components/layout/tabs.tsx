@@ -2,7 +2,7 @@ import React from "react"
 import _ from "lodash"
 import "../../css/App.css"
 
-const Tabs: React.FC<PropsTabs> = ({
+const Tabs: React.FC<I_P_Tabs> = ({
   tabs = [],
   setCurrentTab = () => {},
   currentId,

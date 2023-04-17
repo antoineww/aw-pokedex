@@ -1,8 +1,8 @@
 import _ from "lodash"
 
-export const getChainForms = (evoChain: PokeEvolutionChain) => {
-  const chainForms: PokemonRef[] = []
-  const addForm = (chain: PokeChainLink) => {
+export const getChainForms = (evoChain: I_PokeEvolutionChain) => {
+  const chainForms: I_C_Pokemon[] = []
+  const addForm = (chain: I_PokeChainLink) => {
     chainForms.push(chain.species)
     if (Array.isArray(chain.evolves_to)) {
       chain.evolves_to.forEach((form) => addForm(form))
@@ -12,9 +12,9 @@ export const getChainForms = (evoChain: PokeEvolutionChain) => {
   return chainForms
 }
 
-export const getChainBlobIndex: FT_getChainBlobIndex = (
-  evoChain: PokeEvolutionChain,
-  pokem: Pokemon
+export const getChainBlobIndex: T_F_getChainBlobIndex = (
+  evoChain: I_PokeEvolutionChain,
+  pokem: I_Pokemon
 ) => {
   const blob = JSON.stringify(evoChain.chain).toLowerCase()
   const indexByUrl = blob.indexOf(`${pokem.url}`.toLowerCase())
@@ -24,11 +24,11 @@ export const getChainBlobIndex: FT_getChainBlobIndex = (
   return blob.indexOf(`${pokem.name}`.toLowerCase())
 }
 
-export const getEvolutionChain: FT_EvolutionChain =
-  (pokemons: Pokemon[], evolutionChains: PokeEvolutionChain[]) =>
-  (pokem: Pokemon) => {
+export const getEvolutionChain: T_F_EvolutionChain =
+  (pokemons: I_Pokemon[], evolutionChains: I_PokeEvolutionChain[]) =>
+  (pokem: I_Pokemon) => {
     let found: boolean = false
-    let foundChain: PokeEvolutionChain | null = null
+    let foundChain: I_PokeEvolutionChain | null = null
 
     // console.log({ pokem, evolutionChains })
     for (
@@ -54,7 +54,7 @@ export const getEvolutionChain: FT_EvolutionChain =
             chainForms[index] = { ...chainForms[index], ...foundPokem }
         })
 
-        evoChain.chainForms = chainForms as Pokemon[]
+        evoChain.chainForms = chainForms as I_Pokemon[]
         foundChain = evoChain
         // console.log({ foundChain })
         break

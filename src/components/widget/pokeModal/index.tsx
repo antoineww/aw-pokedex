@@ -1,6 +1,6 @@
 import PokemonModalDisplay from "./pokemonModalDisplay"
 
-const PokeModal: React.FC<PropsPokeModal> = ({
+const PokeModal: React.FC<I_P_PokeModal> = ({
   modalOpen,
   setModalOpen,
   pokemonSelected,

@@ -11,7 +11,7 @@ import BaseStatTags from "./baseStatTags"
 
 HighchartsMore(Highcharts)
 
-export const pokeModalDisplay: React.FC<I_pokeModalDisplay> = ({
+export const pokeModalDisplay: React.FC<I_P_pokeModalDisplay> = ({
   pokemon: pokem,
   evolutionChain,
   formattedName,

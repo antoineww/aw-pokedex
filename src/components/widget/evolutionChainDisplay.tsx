@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import EvoChainLinkImage from "./evoChainLinkImage"
 
-export const EvolutionChainDisplay: React.FC<PropsEvolutionChainDisplay> = ({
+export const EvolutionChainDisplay: React.FC<I_P_EvolutionChainDisplay> = ({
   evolutionChain,
   volvePokemon,
 }) => {

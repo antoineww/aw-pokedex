@@ -82,7 +82,7 @@ export const goOver = {
   from: { zIndex: 0 },
 }
 
-export const ipSquish: (props: BasicAnimatedValue) => {} = ({
+export const ipSquish: (props: I_StageBasicAnimatedValue) => {} = ({
   squish,
   ...restOfProps
 }) => ({
@@ -94,7 +94,7 @@ export const ipSquish: (props: BasicAnimatedValue) => {} = ({
     })
     ?.to((val: any) => `scale(${val})`),
 })
-export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
+export const ipStrafe: (props: I_StageBasicAnimatedValue) => {} = ({
   strafe,
   ...restOfProps
 }) => ({
@@ -110,8 +110,8 @@ export const ipStrafe: (props: BasicAnimatedValue) => {} = ({
 const PARABOLA_CONVEX = (x: number) => 6 * x - Math.pow(x, 2)
 const PARABOLA_CONCAVE = (x: number) => 6 * x + Math.pow(x, 2)
 export const ipHop: (
-  args: TransformArgs
-) => (props: BasicAnimatedValue) => {} =
+  args: I_StageTransformArgs
+) => (props: I_StageBasicAnimatedValue) => {} =
   ({ translate = {} }) =>
   ({ strafe, ...restOfProps }) => ({
     ...restOfProps,
@@ -128,8 +128,8 @@ export const ipHop: (
       ),
   })
 export const ipSwipe: (
-  args: TransformArgs
-) => (props: BasicAnimatedValue) => {} =
+  args: I_StageTransformArgs
+) => (props: I_StageBasicAnimatedValue) => {} =
   ({ translate }) =>
   ({ attack, ...restOfProps }) => ({
     ...restOfProps,
@@ -146,8 +146,8 @@ export const ipSwipe: (
       ),
   })
 export const ipTilt: (
-  args: TransformArgs
-) => (props: BasicAnimatedValue) => {} =
+  args: I_StageTransformArgs
+) => (props: I_StageBasicAnimatedValue) => {} =
   ({ rotate, translate }) =>
   ({ attack, ...restOfProps }) => ({
     ...restOfProps,
@@ -166,7 +166,7 @@ export const ipTilt: (
 
 export const applyInterpolation = (
   interpolater: Function,
-  props: BasicAnimatedValue
+  props: I_StageBasicAnimatedValue
 ) => {
   let style = props
   if (interpolater) style = interpolater(props)
@@ -217,7 +217,7 @@ export class StageShow {
     }
   }
 
-  STAGE_RESET: Stage = {
+  STAGE_RESET: I_Stage = {
     animations: {
       [this.actors.actorA]: {
         from: { squish: 0, strafe: 0, attack: 0 },
@@ -235,7 +235,7 @@ export class StageShow {
       [this.actors.actorB]: [this.actors_images.actorB, this.actors_pose.back],
     },
   }
-  STAGE_STOP: Stage = {
+  STAGE_STOP: I_Stage = {
     animations: {
       [this.actors.actorA]: {
         from: {},
@@ -253,7 +253,7 @@ export class StageShow {
       [this.actors.actorB]: [this.actors_images.actorB, this.actors_pose.back],
     },
   }
-  STAGE_ENTRY: Stage = {
+  STAGE_ENTRY: I_Stage = {
     animations: {
       [this.actors.actorA]: {
         from: {
@@ -290,7 +290,7 @@ export class StageShow {
     },
     coverScreen: false,
   }
-  STAGE_POSED_1: Stage = {
+  STAGE_POSED_1: I_Stage = {
     animations: {
       [this.actors.actorA]: {
         from: {
@@ -324,7 +324,7 @@ export class StageShow {
     coverScreen: false,
   }
 
-  test_stages: Stage[] = [
+  test_stages: I_Stage[] = [
     this.STAGE_ENTRY,
     {
       animations: {
@@ -347,7 +347,7 @@ export class StageShow {
   ]
 
   getStages = () => {
-    const stages: Stage[] = [
+    const stages: I_Stage[] = [
       this.STAGE_ENTRY,
 
       //Slide X1

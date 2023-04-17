@@ -2,7 +2,7 @@ import { webpackContext_imagesPokeFight } from "../../../../assets/images"
 import { stripFileName } from "../../../../utils"
 
 const formatToPokeFightImages = (webpackContext: any) => {
-  const pokeFightImages: PokeFightImages = {}
+  const pokeFightImages: I_CO_IM_Stage = {}
   const imageFilenames: string[] = webpackContext.keys().sort()
 
   imageFilenames.forEach((fileName) => {

@@ -5,14 +5,14 @@ import { POKEDEX_STATE_DEFAULT } from "../screens/pokedex/helper"
 
 export const getPokemonGenerations: (
   arg?: boolean
-) => Promise<GenResponse | null> = async (isTest = false) => {
+) => Promise<I_RR_PokeGeneration | null> = async (isTest = false) => {
   if (isTest) return await testGeneration
   return await requestGenerations()
 }
 
 export const getPokemonEvolutions: (
   arg?: boolean
-) => Promise<PokeEvolutionsResponse | null> = async (isTest = false) => {
+) => Promise<I_RR_PokeEvolutions | null> = async (isTest = false) => {
   if (isTest) return await testEvolutionChain
   return await requestEvolutions()
 }

@@ -9,7 +9,7 @@ import {
 
 const stageShow = new StageShow()
 const springCount = Object.keys(stageShow.actors).length // 2
-const getKeyWithMaxDuration = (animations: { [key: number]: StageActor }) => {
+const getKeyWithMaxDuration = (animations: { [key: number]: I_StageActor }) => {
   const keys = Object.keys(animations)
   let maxDuration = 0
   let keyWithMaxDuration = parseInt(keys[0])
@@ -62,15 +62,12 @@ const getStage =
     return actorPart
   }
 
-const initialState: PokeFightState = {
+const initialState: I_StageState = {
   stage: 0,
   stop: false,
 }
 
-const getFighters: (params: getFighterProps) => any = ({
-  springs,
-  currentStage,
-}) => {
+const getFighters: T_F_StageFighters = ({ springs, currentStage }) => {
   let actorAStyle = springs[stageShow.actors.actorA]
   let actorBStyle = springs[stageShow.actors.actorB]
   if (currentStage.interpolations) {
@@ -124,8 +121,8 @@ const onRestGoToNextStage =
     newStage: number,
     stop: boolean,
     canLoop: boolean,
-    statePokeFight: PokeFightState,
-    setStatePokeFight: React.Dispatch<React.SetStateAction<PokeFightState>>,
+    statePokeFight: I_StageState,
+    setStatePokeFight: React.Dispatch<React.SetStateAction<I_StageState>>,
     fnName: string
   ) =>
   () => {
@@ -142,7 +139,7 @@ const onRestGoToNextStage =
 
 const usePokeFight = (canLoop: boolean, endLoading: Function | undefined) => {
   const [statePokeFight, setStatePokeFight] =
-    useState<PokeFightState>(initialState)
+    useState<I_StageState>(initialState)
   const { stage, stop } = statePokeFight
 
   const [springs, api] = useSprings(springCount, () => ({}))
@@ -183,8 +180,12 @@ const usePokeFight = (canLoop: boolean, endLoading: Function | undefined) => {
 
   return { springs, stage }
 }
-const useTestStages = (isTest: boolean, stage: number, currentStage: Stage) => {
-  const [testStages, setTestStages] = useState<Stage[]>([])
+const useTestStages = (
+  isTest: boolean,
+  stage: number,
+  currentStage: I_Stage
+) => {
+  const [testStages, setTestStages] = useState<I_Stage[]>([])
   useEffect(() => {
     if (isTest) {
       setTestStages([
@@ -199,7 +200,7 @@ const useTestStages = (isTest: boolean, stage: number, currentStage: Stage) => {
   return [testStages]
 }
 
-const PokeFight: React.FC<I_WidgetLoading> = ({
+const PokeFight: React.FC<I_P_WidgetLoading> = ({
   isTest = false,
   canLoop = false,
   endLoading,
@@ -226,7 +227,7 @@ const PokeFight: React.FC<I_WidgetLoading> = ({
         <div className="debugSection p-6">
           {testStages.map((testStage, index) => (
             <div key={`testStage ${index}`}>
-              <p>{`Stage: ${index}`}</p>
+              <p>{`I_Stage: ${index}`}</p>
               <div
                 dangerouslySetInnerHTML={{
                   __html: JSON.stringify(testStage, undefined, 2),

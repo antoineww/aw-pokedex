@@ -10,7 +10,7 @@ HighchartsMore(Highcharts)
 
 // const options: Highcharts.Options = {
 
-export const getTitle = (...pokemon: Pokemon[]) => {
+export const getTitle = (...pokemon: I_Pokemon[]) => {
   let titleNames = ""
   pokemon.forEach((pokem, index) => {
     titleNames += `${index > 0 ? "vs " : ""}${_.capitalize(pokem.name)}`
@@ -18,7 +18,7 @@ export const getTitle = (...pokemon: Pokemon[]) => {
   return titleNames
 }
 
-export const getOptions = (...pokemon: Pokemon[]) => {
+export const getOptions = (...pokemon: I_Pokemon[]) => {
   let categoriesKeys: string[] = []
   let categories: string[] = []
   // const series: { [key: string]: any }[] = []

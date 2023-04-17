@@ -2,7 +2,7 @@ import React from "react"
 import Pane from "./pane"
 import ContainerCentered from "./containerCentered"
 
-const containerSplitScreen: React.FC<I_P_BasicFC> = ({ children }) => {
+const containerSplitScreen: React.FC<I_P_FC_Basic> = ({ children }) => {
   const [left, right] = React.Children.toArray(children)
 
   return (

@@ -1,7 +1,7 @@
 import React from "react"
 import _ from "lodash"
 
-export const tiledList: React.FC<I_WidgetList> = ({
+export const tiledList: React.FC<I_P_WidgetList> = ({
   title,
   items,
   itemKey,

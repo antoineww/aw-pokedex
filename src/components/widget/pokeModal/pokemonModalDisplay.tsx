@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import PokeModalDisplay from "../pokeModalDisplay"
 import { getOptions } from "../../../utils"
 
-const PokemonModalDisplay: React.FC<PropsPokemonModalDisplay> = ({
+const PokemonModalDisplay: React.FC<I_P_PokemonModalDisplay> = ({
   pokemon: pokem,
   evolutionChain,
   setModalOpen,
@@ -19,7 +19,7 @@ const PokemonModalDisplay: React.FC<PropsPokemonModalDisplay> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pokem])
 
-  // const volvePokemon = (volve: volveType = "evolve") => {
+  // const volvePokemon = (volve: T_Volve = "evolve") => {
   //   if (!evolutionChain?.chainForms) return
   //   const { chainForms } = evolutionChain
   //   const chainIndex = _.findIndex(chainForms, (pok) => pok.id === pokem.id)
@@ -36,7 +36,7 @@ const PokemonModalDisplay: React.FC<PropsPokemonModalDisplay> = ({
   //     }
   //   }
   // }
-  const volvePokemon = (nextPokem: Pokemon) => {
+  const volvePokemon = (nextPokem: I_Pokemon) => {
     if (!evolutionChain?.chainForms) return
     const { chainForms } = evolutionChain
     const chainIndex = _.findIndex(chainForms, (pok) => pok.id === pokem.id)

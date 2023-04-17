@@ -5,13 +5,13 @@ import PokemonCard from "./pokeCard"
 import PokeModal from "./pokeModal"
 import TiledList from "../layout/tiledList"
 
-const DEFAULT_STATE: StatePokeList = {
+const DEFAULT_STATE: I_StatePokeList = {
   modalOpen: false,
   pokemonSelected: null,
   evolutionChain: null,
 }
 
-export const PokeList: React.FC<PropsPokeList> = ({
+export const PokeList: React.FC<I_P_PokeList> = ({
   pokemon,
   title,
   getPokeEvolutionChain,
@@ -20,7 +20,7 @@ export const PokeList: React.FC<PropsPokeList> = ({
 
   if (!pokemon) return null
   const { modalOpen, pokemonSelected, evolutionChain } = statePokeList
-  const setModalOpen: FT_setModalOpen = (open = true, pokem = null) => {
+  const setModalOpen: T_F_setModalOpen = (open = true, pokem = null) => {
     const pokemonSelected = pokem ?? statePokeList.pokemonSelected
     // console.log({ pokemonSelected })
     // setStatePokeList({

@@ -6,7 +6,7 @@ let pokeAPI: any = null
 
 const POKE_API_CONFIG = {
   cache: true,
-  timeout: 20 * 1000, // 5s
+  timeout: 30000,
   cacheImages: true,
 }
 
@@ -14,14 +14,15 @@ const initPokeAPI = () => {
   if (!pokeAPI) pokeAPI = new PokeAPI.Pokedex(POKE_API_CONFIG)
 }
 
-export const requestEvolutions: FT_PokeEvolutionsResponse = async () => {
+export const requestEvolutions: T_F_RR_PokeEvolution = async () => {
   try {
     initPokeAPI()
-    const pokeEvolutions: PokeEvolutionsResponse = await pokeAPI.getEvolutionChainsList()
+    const pokeEvolutions: I_RR_PokeEvolutions =
+      await pokeAPI.getEvolutionChainsList()
     // console.log({ pokeEvolutions })
     // fetch chains
     const { results } = pokeEvolutions
-    // const evolutionChains: PokeEvolutionChain[] = []
+    // const evolutionChains: I_PokeEvolutionChain[] = []
     // for (let index = 0; index < 1; index++) {
     //   // for (let index = 0; index < results.length; index++) {
     //   const { url } = results[index]
@@ -35,7 +36,7 @@ export const requestEvolutions: FT_PokeEvolutionsResponse = async () => {
     //   }
     // }
 
-    const evolutionChains: PokeEvolutionChain[] = await Promise.all(
+    const evolutionChains: I_PokeEvolutionChain[] = await Promise.all(
       results.map(async (result) => {
         try {
           const { url } = result
@@ -64,22 +65,23 @@ export const requestEvolutions: FT_PokeEvolutionsResponse = async () => {
 }
 
 //Get all Pokemon
-export const requestPokemon: FT_PokeResponse = async (params: PokeQuery) => {
+export const requestPokemon: T_F_RR_Pokemon = async (params: I_RP_Pokemon) => {
   try {
     initPokeAPI()
-    const pokemonRefs: PokeRefResponse = await pokeAPI.getPokemonsList()
+    const pokemonRefs: I_RR_C_Pokemon = await pokeAPI.getPokemonsList()
     return pokemonRefs
   } catch (error) {}
   return null
 }
 
-export const requestGenerations: FT_GenResponse = async () => {
+export const requestGenerations: T_F_RR_PokeGeneration = async () => {
   try {
     initPokeAPI()
-    const generationRefs: GenRefResponse = await pokeAPI.getGenerationsList()
+    const generationRefs: I_RR_C_PokeGeneration =
+      await pokeAPI.getGenerationsList()
 
     // Get each same time
-    const generations: GenData[] = await Promise.all(
+    const generations: I_PokeGeneration[] = await Promise.all(
       generationRefs.results.map((genRef) =>
         pokeAPI.getGenerationByName(genRef.name)
       )
@@ -89,7 +91,7 @@ export const requestGenerations: FT_GenResponse = async () => {
       // for (let index = 0; index < 1; index++) {
       const genData = generations[index]
 
-      const pokemons: Pokemon[] = await Promise.all(
+      const pokemons: I_Pokemon[] = await Promise.all(
         // eslint-disable-next-line no-loop-func
         genData.pokemon_species.map(async (poke) => {
           try {

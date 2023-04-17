@@ -2,10 +2,10 @@ import React from "react"
 import _ from "lodash"
 import { sortStatsAscending } from "../../utils"
 
-export const baseStatTags: React.FC<{ stats: BaseStat[]; pokem: Pokemon }> = ({
-  stats,
-  pokem,
-}) => (
+export const baseStatTags: React.FC<{
+  stats: I_BaseStat[]
+  pokem: I_Pokemon
+}> = ({ stats, pokem }) => (
   <div className="columns is-flex-wrap-wrap">
     {stats.sort(sortStatsAscending).map((stat) => (
       <div key={`${pokem.name}-${stat.stat.name}`} className="column is-6 p-1">

@@ -1,6 +1,6 @@
 import { getEvolutionChain } from "../../utils"
 
-export const POKEDEX_STATE_DEFAULT: PokedexProps = {
+export const POKEDEX_STATE_DEFAULT: I_P_Pokedex = {
   generations: [],
   evolutionChains: [],
   currentGenId: 0,
@@ -11,7 +11,7 @@ export const POKEDEX_STATE_DEFAULT: PokedexProps = {
 
 export const getTitleAndPokemon = (generation: any) => {
   let title: string | undefined
-  let pokemon: Pokemon[] | undefined
+  let pokemon: I_Pokemon[] | undefined
   if (generation) {
     title = generation.name
     pokemon = generation.pokemons
@@ -24,7 +24,7 @@ export const getFn_getPokeEvolutionChain = (
   evolutionChains: any
 ) => {
   let getPokeEvolutionChain:
-    | ((pokem: Pokemon) => PokeEvolutionChain | null)
+    | ((pokem: I_Pokemon) => I_PokeEvolutionChain | null)
     | undefined
   if (pokemon)
     getPokeEvolutionChain = getEvolutionChain(pokemon, evolutionChains)
