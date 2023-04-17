@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import EvoChainLinkImage from "./evoChainLinkImage"
+import EvoChainLinkImage from "./EvolutionChainLinkImage"
 
 export const EvolutionChainDisplay: React.FC<I_P_EvolutionChainDisplay> = ({
   evolutionChain,

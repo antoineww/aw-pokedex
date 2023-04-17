@@ -1,8 +1,8 @@
 import React from "react"
 import _ from "lodash"
-import BaseStatTags from "./baseStatTags"
+import BaseStatTags from "./BaseStatTags"
 
-export const PokemonCard: React.FC<I_PokemonCard> = ({
+export const PokeCard: React.FC<I_PokemonCard> = ({
   pokemon: pokem,
   setModalOpen,
 }) => {
@@ -75,4 +75,4 @@ export const PokemonCard: React.FC<I_PokemonCard> = ({
   )
 }
 
-export default PokemonCard
+export default PokeCard

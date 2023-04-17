@@ -1,5 +1,5 @@
-import LoadingDefault from "./default"
-import LoadingPokefight from "./pokefight"
+import SpinAtom from "../SpinAtom"
+import Pokefight from "../Pokefight"
 
-export { LoadingDefault, LoadingPokefight }
-export default LoadingPokefight
+export { SpinAtom, Pokefight }
+export default Pokefight

@@ -2,7 +2,7 @@ import React from "react"
 import _ from "lodash"
 import { sortStatsAscending } from "../../utils"
 
-export const baseStatTags: React.FC<{
+export const BaseStatTags: React.FC<{
   stats: I_BaseStat[]
   pokem: I_Pokemon
 }> = ({ stats, pokem }) => (
@@ -20,4 +20,4 @@ export const baseStatTags: React.FC<{
   </div>
 )
 
-export default baseStatTags
+export default BaseStatTags

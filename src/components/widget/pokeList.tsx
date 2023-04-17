@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import _ from "lodash"
 import "../../css/App.css"
-import PokemonCard from "./pokeCard"
-import PokeModal from "./pokeModal"
-import TiledList from "../layout/tiledList"
+import PokemonCard from "./PokeCard"
+import TiledList from "../layout/TiledList"
+import PokeModal from "./PokeModal"
 
 const DEFAULT_STATE: I_StatePokeList = {
   modalOpen: false,

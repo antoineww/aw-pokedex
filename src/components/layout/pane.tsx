@@ -1,7 +1,7 @@
 import React from "react"
 
-const pane: React.FC<I_P_LayoutPane> = ({ ratio, children }) => {
+const Pane: React.FC<I_P_LayoutPane> = ({ ratio, children }) => {
   return <div style={{ flex: ratio ?? 1 }}>{children}</div>
 }
 
-export default pane
+export default Pane

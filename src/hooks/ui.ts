@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { testEvolutionChain, testGeneration } from "../__tests__/testList"
 import { requestGenerations, requestEvolutions } from "../api/paw"
-import { POKEDEX_STATE_DEFAULT } from "../screens/pokedex/helper"
+import { POKEDEX_STATE_DEFAULT } from "../screens/Pokedex/helper"
 
 export const getPokemonGenerations: (
   arg?: boolean

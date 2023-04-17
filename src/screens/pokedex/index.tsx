@@ -1,12 +1,9 @@
 import React from "react"
 
 import "../../css/App.css"
-import PokeList from "../../components/widget/pokeList"
-import Tabs from "../../components/layout/tabs"
-import {
-  LoadingDefault,
-  LoadingPokefight as Loading,
-} from "../../components/widget/loading"
+import PokeList from "../../components/widget/PokeList"
+import Tabs from "../../components/layout/Tabs"
+import { SpinAtom, Pokefight as Loading } from "../../components/widget/Loading"
 
 import { usePokedexState } from "../../hooks/ui"
 import {

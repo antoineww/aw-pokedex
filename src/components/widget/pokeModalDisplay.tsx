@@ -6,12 +6,12 @@ import "highcharts/css/themes/dark-unica.css"
 // import "highcharts/css/themes/grid-light.css"
 // import "highcharts/css/themes/sand-signika.css"
 import _ from "lodash"
-import EvolutionChainDisplay from "./evolutionChainDisplay"
-import BaseStatTags from "./baseStatTags"
+import EvolutionChainDisplay from "./EvolutionChainDisplay"
+import BaseStatTags from "./BaseStatTags"
 
 HighchartsMore(Highcharts)
 
-export const pokeModalDisplay: React.FC<I_P_pokeModalDisplay> = ({
+export const PokeModalDisplay: React.FC<I_P_pokeModalDisplay> = ({
   pokemon: pokem,
   evolutionChain,
   formattedName,
@@ -127,4 +127,4 @@ export const pokeModalDisplay: React.FC<I_P_pokeModalDisplay> = ({
   )
 }
 
-export default pokeModalDisplay
+export default PokeModalDisplay

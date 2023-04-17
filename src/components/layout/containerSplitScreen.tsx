@@ -1,8 +1,8 @@
 import React from "react"
-import Pane from "./pane"
-import ContainerCentered from "./containerCentered"
+import ContainerCentered from "./ContainerCentered"
+import Pane from "./Pane"
 
-const containerSplitScreen: React.FC<I_P_FC_Basic> = ({ children }) => {
+const ContainerSplitScreen: React.FC<I_P_FC_Basic> = ({ children }) => {
   const [left, right] = React.Children.toArray(children)
 
   return (
@@ -13,4 +13,4 @@ const containerSplitScreen: React.FC<I_P_FC_Basic> = ({ children }) => {
   )
 }
 
-export default containerSplitScreen
+export default ContainerSplitScreen

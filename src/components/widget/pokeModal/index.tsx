@@ -1,4 +1,4 @@
-import PokemonModalDisplay from "./pokemonModalDisplay"
+import PokemonModalDisplay from "./PokemonModalDisplay"
 
 const PokeModal: React.FC<I_P_PokeModal> = ({
   modalOpen,

@@ -1,7 +1,7 @@
 import React from "react"
 
-import Pokedex from "./pokedex"
-import ContainerCentered from "../components/layout/containerCentered"
+import Pokedex from "./Pokedex"
+import ContainerCentered from "../components/layout/ContainerCentered"
 
 const MainScreen: React.FC = () => {
   return (

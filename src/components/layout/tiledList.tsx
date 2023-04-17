@@ -1,7 +1,7 @@
 import React from "react"
 import _ from "lodash"
 
-export const tiledList: React.FC<I_P_WidgetList> = ({
+export const TiledList: React.FC<I_P_WidgetList> = ({
   title,
   items,
   itemKey,
@@ -31,4 +31,4 @@ export const tiledList: React.FC<I_P_WidgetList> = ({
   )
 }
 
-export default tiledList
+export default TiledList

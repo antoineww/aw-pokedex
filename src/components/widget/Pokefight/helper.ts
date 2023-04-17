@@ -1,5 +1,5 @@
-import { webpackContext_imagesPokeFight } from "../../../../assets/images"
-import { stripFileName } from "../../../../utils"
+import { webpackContext_imagesPokeFight } from "../../../assets/images"
+import { stripFileName } from "../../../utils"
 
 const formatToPokeFightImages = (webpackContext: any) => {
   const pokeFightImages: I_CO_IM_Stage = {}
